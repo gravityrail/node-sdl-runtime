@@ -1,11 +1,11 @@
 {
-  "author": "Tim Caswell <tim@creationix.com> (http://creationix.com/)",
-  "name": "sdl",
+  "author": "LazerUnicorns Ltd.",
+  "name": "node-sdl",
   "description": "SDL bindings for node",
   "version": "0.1.8",
   "repository": {
     "type": "git",
-    "url": "git://github.com/creationix/node-sdl.git"
+    "url": "git://github.com/LazerUnicorns/node-sdl.git"
   },
   "main": "sdl.js",
   "engines": {
