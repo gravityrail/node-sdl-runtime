@@ -2,7 +2,7 @@
   "author": "LazerUnicorns Ltd.",
   "name": "node-sdl",
   "description": "SDL bindings for node",
-  "version": "0.1.8",
+  "version": "0.2.0",
   "repository": {
     "type": "git",
     "url": "git://github.com/LazerUnicorns/node-sdl.git"
