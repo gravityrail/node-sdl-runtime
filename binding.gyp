@@ -3,7 +3,7 @@
 		'target_name': 'libnode_sdl',
 		'include_dirs' : [
 		    "<!(node -e \"require('nan')\")"
-		]
+		],
 		'sources': [
 			'src/helpers.cc',
 			'src/node_sdl.cc',
