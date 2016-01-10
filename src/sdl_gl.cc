@@ -8,8 +8,8 @@ using namespace node;
 
 
 void sdl::gl::Init(Handle<Object> exports) {
-	Local<Object> GL = Object::New();
-	exports->Set(String::New("GL"), GL);
+	Local<Object> GL = Nan::New<Object>();
+	Nan::Set(exports, Nan::New<String>("GL").ToLocalChecked(), GL));
 	ContextWrapper::Init(GL);
 
 	NODE_SET_METHOD(GL, "bindTexture", BindTexture);
@@ -31,39 +31,39 @@ void sdl::gl::Init(Handle<Object> exports) {
 	NODE_SET_METHOD(GL, "getSwapInterval", GetSwapInterval);
 
 	// SDL_GLattr enum.
-	GL->Set(String::New("RED_SIZE"), Number::New(SDL_GL_RED_SIZE));
-	GL->Set(String::New("GREEN_SIZE"), Number::New(SDL_GL_GREEN_SIZE));
-	GL->Set(String::New("BLUE_SIZE"), Number::New(SDL_GL_BLUE_SIZE));
-	GL->Set(String::New("ALPHA_SIZE"), Number::New(SDL_GL_ALPHA_SIZE));
-	GL->Set(String::New("BUFFER_SIZE"), Number::New(SDL_GL_BUFFER_SIZE));
-	GL->Set(String::New("DOUBLEBUFFER"), Number::New(SDL_GL_DOUBLEBUFFER));
-	GL->Set(String::New("DEPTH_SIZE"), Number::New(SDL_GL_DEPTH_SIZE));
-	GL->Set(String::New("STENCIL_SIZE"), Number::New(SDL_GL_STENCIL_SIZE));
-	GL->Set(String::New("ACCUM_RED_SIZE"), Number::New(SDL_GL_ACCUM_RED_SIZE));
-	GL->Set(String::New("ACCUM_GREEN_SIZE"), Number::New(SDL_GL_ACCUM_GREEN_SIZE));
-	GL->Set(String::New("ACCUM_BLUE_SIZE"), Number::New(SDL_GL_ACCUM_BLUE_SIZE));
-	GL->Set(String::New("ACCUM_ALPHA_SIZE"), Number::New(SDL_GL_ACCUM_ALPHA_SIZE));
-	GL->Set(String::New("STEREO"), Number::New(SDL_GL_STEREO));
-	GL->Set(String::New("MULTISAMPLEBUFFERS"), Number::New(SDL_GL_MULTISAMPLEBUFFERS));
-	GL->Set(String::New("MULTISAMPLESAMPLES"), Number::New(SDL_GL_MULTISAMPLESAMPLES));
-	GL->Set(String::New("ACCELERATED_VISUAL"), Number::New(SDL_GL_ACCELERATED_VISUAL));
-	GL->Set(String::New("RETAINED_BACKING"), Number::New(SDL_GL_RETAINED_BACKING));
-	GL->Set(String::New("CONTEXT_MAJOR_VERSION"), Number::New(SDL_GL_CONTEXT_MAJOR_VERSION));
-	GL->Set(String::New("CONTEXT_MINOR_VERSION"), Number::New(SDL_GL_CONTEXT_MINOR_VERSION));
-	GL->Set(String::New("CONTEXT_EGL"), Number::New(SDL_GL_CONTEXT_EGL));
-	GL->Set(String::New("CONTEXT_FLAGS"), Number::New(SDL_GL_CONTEXT_FLAGS));
-	GL->Set(String::New("CONTEXT_PROFILE_MASK"), Number::New(SDL_GL_CONTEXT_PROFILE_MASK));
-	GL->Set(String::New("SHARE_WITH_CURRENT_CONTEXT"), Number::New(SDL_GL_SHARE_WITH_CURRENT_CONTEXT));
-	GL->Set(String::New("FRAMEBUFFER_SRGB_CAPABLE"), Number::New(SDL_GL_FRAMEBUFFER_SRGB_CAPABLE));
+	Nan::Set(GL, Nan::New<String>("RED_SIZE").ToLocalChecked(), Nan::New<Number>(SDL_GL_RED_SIZE)));
+	Nan::Set(GL, Nan::New<String>("GREEN_SIZE").ToLocalChecked(), Nan::New<Number>(SDL_GL_GREEN_SIZE)));
+	Nan::Set(GL, Nan::New<String>("BLUE_SIZE").ToLocalChecked(), Nan::New<Number>(SDL_GL_BLUE_SIZE)));
+	Nan::Set(GL, Nan::New<String>("ALPHA_SIZE").ToLocalChecked(), Nan::New<Number>(SDL_GL_ALPHA_SIZE)));
+	Nan::Set(GL, Nan::New<String>("BUFFER_SIZE").ToLocalChecked(), Nan::New<Number>(SDL_GL_BUFFER_SIZE)));
+	Nan::Set(GL, Nan::New<String>("DOUBLEBUFFER").ToLocalChecked(), Nan::New<Number>(SDL_GL_DOUBLEBUFFER)));
+	Nan::Set(GL, Nan::New<String>("DEPTH_SIZE").ToLocalChecked(), Nan::New<Number>(SDL_GL_DEPTH_SIZE)));
+	Nan::Set(GL, Nan::New<String>("STENCIL_SIZE").ToLocalChecked(), Nan::New<Number>(SDL_GL_STENCIL_SIZE)));
+	Nan::Set(GL, Nan::New<String>("ACCUM_RED_SIZE").ToLocalChecked(), Nan::New<Number>(SDL_GL_ACCUM_RED_SIZE)));
+	Nan::Set(GL, Nan::New<String>("ACCUM_GREEN_SIZE").ToLocalChecked(), Nan::New<Number>(SDL_GL_ACCUM_GREEN_SIZE)));
+	Nan::Set(GL, Nan::New<String>("ACCUM_BLUE_SIZE").ToLocalChecked(), Nan::New<Number>(SDL_GL_ACCUM_BLUE_SIZE)));
+	Nan::Set(GL, Nan::New<String>("ACCUM_ALPHA_SIZE").ToLocalChecked(), Nan::New<Number>(SDL_GL_ACCUM_ALPHA_SIZE)));
+	Nan::Set(GL, Nan::New<String>("STEREO").ToLocalChecked(), Nan::New<Number>(SDL_GL_STEREO)));
+	Nan::Set(GL, Nan::New<String>("MULTISAMPLEBUFFERS").ToLocalChecked(), Nan::New<Number>(SDL_GL_MULTISAMPLEBUFFERS)));
+	Nan::Set(GL, Nan::New<String>("MULTISAMPLESAMPLES").ToLocalChecked(), Nan::New<Number>(SDL_GL_MULTISAMPLESAMPLES)));
+	Nan::Set(GL, Nan::New<String>("ACCELERATED_VISUAL").ToLocalChecked(), Nan::New<Number>(SDL_GL_ACCELERATED_VISUAL)));
+	Nan::Set(GL, Nan::New<String>("RETAINED_BACKING").ToLocalChecked(), Nan::New<Number>(SDL_GL_RETAINED_BACKING)));
+	Nan::Set(GL, Nan::New<String>("CONTEXT_MAJOR_VERSION").ToLocalChecked(), Nan::New<Number>(SDL_GL_CONTEXT_MAJOR_VERSION)));
+	Nan::Set(GL, Nan::New<String>("CONTEXT_MINOR_VERSION").ToLocalChecked(), Nan::New<Number>(SDL_GL_CONTEXT_MINOR_VERSION)));
+	Nan::Set(GL, Nan::New<String>("CONTEXT_EGL").ToLocalChecked(), Nan::New<Number>(SDL_GL_CONTEXT_EGL)));
+	Nan::Set(GL, Nan::New<String>("CONTEXT_FLAGS").ToLocalChecked(), Nan::New<Number>(SDL_GL_CONTEXT_FLAGS)));
+	Nan::Set(GL, Nan::New<String>("CONTEXT_PROFILE_MASK").ToLocalChecked(), Nan::New<Number>(SDL_GL_CONTEXT_PROFILE_MASK)));
+	Nan::Set(GL, Nan::New<String>("SHARE_WITH_CURRENT_CONTEXT").ToLocalChecked(), Nan::New<Number>(SDL_GL_SHARE_WITH_CURRENT_CONTEXT)));
+	Nan::Set(GL, Nan::New<String>("FRAMEBUFFER_SRGB_CAPABLE").ToLocalChecked(), Nan::New<Number>(SDL_GL_FRAMEBUFFER_SRGB_CAPABLE)));
 	// SDL_GLprofile enum.
-	GL->Set(String::New("CONTEXT_PROFILE_CORE"), Number::New(SDL_GL_CONTEXT_PROFILE_CORE));
-	GL->Set(String::New("CONTEXT_PROFILE_COMPATIBILITY"), Number::New(SDL_GL_CONTEXT_PROFILE_COMPATIBILITY));
-	GL->Set(String::New("PROFILE_ES"), Number::New(SDL_GL_CONTEXT_PROFILE_ES));
+	Nan::Set(GL, Nan::New<String>("CONTEXT_PROFILE_CORE").ToLocalChecked(), Nan::New<Number>(SDL_GL_CONTEXT_PROFILE_CORE)));
+	Nan::Set(GL, Nan::New<String>("CONTEXT_PROFILE_COMPATIBILITY").ToLocalChecked(), Nan::New<Number>(SDL_GL_CONTEXT_PROFILE_COMPATIBILITY)));
+	Nan::Set(GL, Nan::New<String>("PROFILE_ES").ToLocalChecked(), Nan::New<Number>(SDL_GL_CONTEXT_PROFILE_ES)));
 	// SDL_GLcontextFlag enum.
-	GL->Set(String::New("CONTEXT_DEBUG_FLAG"), Number::New(SDL_GL_CONTEXT_DEBUG_FLAG));
-	GL->Set(String::New("CONTEXT_FORWARD_COMPATIBLE_FLAG"), Number::New(SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG));
-	GL->Set(String::New("CONTEXT_ROBUST_ACCESS_FLAG"), Number::New(SDL_GL_CONTEXT_ROBUST_ACCESS_FLAG));
-	GL->Set(String::New("CONTEXT_RESET_ISOLATION_FLAG"), Number::New(SDL_GL_CONTEXT_RESET_ISOLATION_FLAG));
+	Nan::Set(GL, Nan::New<String>("CONTEXT_DEBUG_FLAG").ToLocalChecked(), Nan::New<Number>(SDL_GL_CONTEXT_DEBUG_FLAG)));
+	Nan::Set(GL, Nan::New<String>("CONTEXT_FORWARD_COMPATIBLE_FLAG").ToLocalChecked(), Nan::New<Number>(SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG)));
+	Nan::Set(GL, Nan::New<String>("CONTEXT_ROBUST_ACCESS_FLAG").ToLocalChecked(), Nan::New<Number>(SDL_GL_CONTEXT_ROBUST_ACCESS_FLAG)));
+	Nan::Set(GL, Nan::New<String>("CONTEXT_RESET_ISOLATION_FLAG").ToLocalChecked(), Nan::New<Number>(SDL_GL_CONTEXT_RESET_ISOLATION_FLAG)));
 }
 
 Persistent<FunctionTemplate> sdl::gl::ContextWrapper::wrap_template_;
@@ -84,15 +84,15 @@ void sdl::gl::ContextWrapper::Init(Handle<Object> exports) {
 	wrap_template_ = Persistent<FunctionTemplate>::New(tpl);
 
 	wrap_template_->InstanceTemplate()->SetInternalFieldCount(1);
-	wrap_template_->SetClassName(String::NewSymbol("ContextWrapper"));
+	wrap_template_->SetClassName(Nan::New<String>("ContextWrapper"));
 }
 
-Handle<Value> sdl::gl::ContextWrapper::New(const Arguments& args) {
+NAN_METHOD(sdl::gl::ContextWrapper::New) {
 	HandleScope scope;
 
 	if(args.Length() < 1) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: Expected new sdl.ContextWrapper(Window)")));
+			Nan::New<String>("Invalid arguments: Expected new sdl.ContextWrapper(Window)")));
 	}
 
 	WindowWrapper* window = ObjectWrap::Unwrap<WindowWrapper>(Handle<Object>::Cast(args[0]));
@@ -107,17 +107,17 @@ Handle<Value> sdl::gl::ContextWrapper::New(const Arguments& args) {
 	return args.This();
 }
 
-Handle<Value> sdl::gl::BindTexture(const Arguments& args) {
+NAN_METHOD(sdl::gl::BindTexture) {
 	if(!args.IsConstructCall()) {
 		return ThrowException(Exception::TypeError(
-			String::New("Must create a Context with the new operator.")));
+			Nan::New<String>("Must create a Context with the new operator.")));
 	}
 
 	HandleScope scope;
 
 	if(args.Length() < 1) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: Expected BindTexture(Texture)")));
+			Nan::New<String>("Invalid arguments: Expected BindTexture(Texture)")));
 	}
 
 	TextureWrapper* obj = ObjectWrap::Unwrap<TextureWrapper>(Handle<Object>::Cast(args[0]));
@@ -128,16 +128,16 @@ Handle<Value> sdl::gl::BindTexture(const Arguments& args) {
 	}
 
 	Handle<Array> ret = Array::New(2);
-	ret->Set(0, Number::New(texw));
-	ret->Set(1, Number::New(texh));
+	Nan::Set(ret, 0, Nan::New<Number>(texw));
+	Nan::Set(ret, 1, Nan::New<Number>(texh));
 	return scope.Close(ret);
 }
-Handle<Value> sdl::gl::UnbindTexture(const Arguments& args) {
+NAN_METHOD(sdl::gl::UnbindTexture) {
 	HandleScope scope;
 
 	if(args.Length() < 1) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: Expected BindTexture(Texture)")));
+			Nan::New<String>("Invalid arguments: Expected BindTexture(Texture)")));
 	}
 
 	TextureWrapper* obj = ObjectWrap::Unwrap<TextureWrapper>(Handle<Object>::Cast(args[0]));
@@ -149,20 +149,20 @@ Handle<Value> sdl::gl::UnbindTexture(const Arguments& args) {
 	return Undefined();
 }
 
-Handle<Value> sdl::gl::ExtensionSupported(const Arguments& args) {
+NAN_METHOD(sdl::gl::ExtensionSupported) {
 	HandleScope scope;
 
 	if(args.Length() < 1) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: Expected ExtensionSupported(String)")));
+			Nan::New<String>("Invalid arguments: Expected ExtensionSupported(String)")));
 	}
 
 	String::Utf8Value name(args[0]);
 	SDL_bool ret = SDL_GL_ExtensionSupported(*name);
-	return scope.Close(Boolean::New(ret ? true : false));
+	return scope.Close(Nan::New<Boolean>(ret ? true : false));
 }
 
-Handle<Value> sdl::gl::LoadLibrary(const Arguments& args) {
+NAN_METHOD(sdl::gl::LoadLibrary) {
 	HandleScope scope;
 
 	int err;
@@ -179,7 +179,7 @@ Handle<Value> sdl::gl::LoadLibrary(const Arguments& args) {
 
 	return Undefined();
 }
-Handle<Value> sdl::gl::UnloadLibrary(const Arguments& args) {
+NAN_METHOD(sdl::gl::UnloadLibrary) {
 	HandleScope scope;
 
 	SDL_GL_UnloadLibrary();
@@ -187,11 +187,11 @@ Handle<Value> sdl::gl::UnloadLibrary(const Arguments& args) {
 	return Undefined();
 }
 
-Handle<Value> sdl::gl::SetAttribute(const Arguments& args) {
+NAN_METHOD(sdl::gl::SetAttribute) {
 	HandleScope scope;
 
 	if (!(args.Length() == 2 && args[0]->IsNumber() && args[1]->IsNumber())) {
-		return ThrowException(Exception::TypeError(String::New("Invalid arguments: Expected SetAttribute(Number, Number)")));
+		return ThrowException(Exception::TypeError(Nan::New<String>("Invalid arguments: Expected SetAttribute(Number, Number)")));
 	}
 
 	int attr = args[0]->Int32Value();
@@ -200,12 +200,12 @@ Handle<Value> sdl::gl::SetAttribute(const Arguments& args) {
 	if (SDL_GL_SetAttribute((SDL_GLattr)attr, value)) return ThrowSDLException(__func__);
 	return Undefined();
 }
-Handle<Value> sdl::gl::MakeCurrent(const Arguments& args) {
+NAN_METHOD(sdl::gl::MakeCurrent) {
 	HandleScope scope;
 
 	if(args.Length() < 2) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: Expected MakeCurrent(Window, GLContext)")));
+			Nan::New<String>("Invalid arguments: Expected MakeCurrent(Window, GLContext)")));
 	}
 
 	WindowWrapper* window = ObjectWrap::Unwrap<WindowWrapper>(Handle<Object>::Cast(args[0]));
@@ -217,12 +217,12 @@ Handle<Value> sdl::gl::MakeCurrent(const Arguments& args) {
 
 	return Undefined();
 }
-Handle<Value> sdl::gl::SetSwapInterval(const Arguments& args) {
+NAN_METHOD(sdl::gl::SetSwapInterval) {
 	HandleScope scope;
 
 	if(args.Length() < 1) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: Exception SetSwapInterval(Number)")));
+			Nan::New<String>("Invalid arguments: Exception SetSwapInterval(Number)")));
 	}
 
 	int interval = args[0]->Int32Value();
@@ -234,11 +234,11 @@ Handle<Value> sdl::gl::SetSwapInterval(const Arguments& args) {
 	return Undefined();
 }
 
-Handle<Value> sdl::gl::GetAttribute(const Arguments& args) {
+NAN_METHOD(sdl::gl::GetAttribute) {
 	HandleScope scope;
 
 	if (!(args.Length() == 1 && args[0]->IsNumber())) {
-		return ThrowException(Exception::TypeError(String::New("Invalid arguments: Expected GetAttribute(Number)")));
+		return ThrowException(Exception::TypeError(Nan::New<String>("Invalid arguments: Expected GetAttribute(Number)")));
 	}
 
 	int attr = args[0]->Int32Value();
@@ -246,9 +246,9 @@ Handle<Value> sdl::gl::GetAttribute(const Arguments& args) {
 
 	if (SDL_GL_GetAttribute((SDL_GLattr)attr, &value)) return ThrowSDLException(__func__);
 
-	return Number::New(value);
+	return Nan::New<Number>(value);
 }
-Handle<Value> sdl::gl::GetCurrentContext(const Arguments& args) {
+NAN_METHOD(sdl::gl::GetCurrentContext) {
 	HandleScope scope;
 
 	SDL_GLContext context = SDL_GL_GetCurrentContext();
@@ -256,12 +256,12 @@ Handle<Value> sdl::gl::GetCurrentContext(const Arguments& args) {
 		return ThrowSDLException(__func__);
 	}
 
-	Handle<Object> newObj = Object::New();
+	Handle<Object> newObj = Nan::New<Object>();
 	ContextWrapper* wrap = new ContextWrapper(newObj);
 	wrap->context_ = context;
 	return scope.Close(newObj);
 }
-Handle<Value> sdl::gl::GetCurrentWindow(const Arguments& args) {
+NAN_METHOD(sdl::gl::GetCurrentWindow) {
 	HandleScope scope;
 
 	SDL_Window* window = SDL_GL_GetCurrentWindow();
@@ -269,18 +269,18 @@ Handle<Value> sdl::gl::GetCurrentWindow(const Arguments& args) {
 		return ThrowSDLException(__func__);
 	}
 
-	Handle<Object> newObj = Object::New();
+	Handle<Object> newObj = Nan::New<Object>();
 	WindowWrapper* wrap = new WindowWrapper(newObj);
 	wrap->window_ = window;
 	return scope.Close(newObj);
 }
 // TODO: Migrate to WindowWrapper object.
-Handle<Value> sdl::gl::GetDrawableSize(const Arguments& args) {
+NAN_METHOD(sdl::gl::GetDrawableSize) {
 	HandleScope scope;
 
 	if(args.Length() < 1) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: Expected GetDrawableSize(Window)")));
+			Nan::New<String>("Invalid arguments: Expected GetDrawableSize(Window)")));
 	}
 
 	WindowWrapper* wrap = ObjectWrap::Unwrap<WindowWrapper>(Handle<Object>::Cast(args[0]));
@@ -288,21 +288,21 @@ Handle<Value> sdl::gl::GetDrawableSize(const Arguments& args) {
 	SDL_GL_GetDrawableSize(wrap->window_, &w, &h);
 
 	Handle<Array> ret = Array::New(2);
-	ret->Set(0, Number::New(w));
-	ret->Set(0, Number::New(h));
+	Nan::Set(ret, 0, Nan::New<Number>(w));
+	Nan::Set(ret, 0, Nan::New<Number>(h));
 	return scope.Close(ret);
 }
 // TODO: Handle this somehow?
 // Theoretically handleable with Handle<External>, but I don't see any use in wrapping a function
 // pointer for Javascript. Better off loading addresses invisibly when SDL/OpenGl gets initialized
 // and providing an API to access the functions.
-// Handle<Value> sdl::gl::GetProcAddress(const Arguments& args) {
+// NAN_METHOD(sdl::gl::GetProcAddress) {
 // }
-Handle<Value> sdl::gl::GetSwapInterval(const Arguments& args) {
+NAN_METHOD(sdl::gl::GetSwapInterval) {
 	HandleScope scope;
 
 	int interval = SDL_GL_GetSwapInterval();
-	return scope.Close(Number::New(interval));
+	return scope.Close(Nan::New<Number>(interval));
 }
 
 

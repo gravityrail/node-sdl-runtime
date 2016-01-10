@@ -19,34 +19,34 @@ namespace sdl {
 			~GameControllerWrapper();
 
 			static void Init(v8::Handle<v8::Object> exports);
-			static v8::Handle<v8::Value> New(const v8::Arguments& args);
+			static NAN_METHOD(New);
 
-			static v8::Handle<v8::Value> GetAttached(const v8::Arguments& args);
-			static v8::Handle<v8::Value> GetAxis(const v8::Arguments& args);
-			static v8::Handle<v8::Value> GetBindForAxis(const v8::Arguments& args);
-			static v8::Handle<v8::Value> GetBindForButton(const v8::Arguments& args);
-			static v8::Handle<v8::Value> GetButton(const v8::Arguments& args);
-			static v8::Handle<v8::Value> GetJoystick(const v8::Arguments& args);
-			static v8::Handle<v8::Value> GetMapping(const v8::Arguments& args);
-			static v8::Handle<v8::Value> GetName(const v8::Arguments& args);
+			static NAN_METHOD(GetAttached);
+			static NAN_METHOD(GetAxis);
+			static NAN_METHOD(GetBindForAxis);
+			static NAN_METHOD(GetBindForButton);
+			static NAN_METHOD(GetButton);
+			static NAN_METHOD(GetJoystick);
+			static NAN_METHOD(GetMapping);
+			static NAN_METHOD(GetName);
 
 			SDL_GameController* controller_;
 		};
 
-		v8::Handle<v8::Value> AddMapping(const v8::Arguments& args);
-		v8::Handle<v8::Value> AddMappingsFromFile(const v8::Arguments& args);
+		NAN_METHOD(AddMapping);
+		NAN_METHOD(AddMappingsFromFile);
 
-		v8::Handle<v8::Value> MappingForGUID(const v8::Arguments& args);
-		v8::Handle<v8::Value> NameForIndex(const v8::Arguments& args);
+		NAN_METHOD(MappingForGUID);
+		NAN_METHOD(NameForIndex);
 
-		v8::Handle<v8::Value> EventState(const v8::Arguments& args);
-		v8::Handle<v8::Value> GetAxisFromString(const v8::Arguments& args);
-		v8::Handle<v8::Value> GetButtonFromString(const v8::Arguments& args);
-		v8::Handle<v8::Value> GetStringForAxis(const v8::Arguments& args);
-		v8::Handle<v8::Value> GetStringForButton(const v8::Arguments& args);
+		NAN_METHOD(EventState);
+		NAN_METHOD(GetAxisFromString);
+		NAN_METHOD(GetButtonFromString);
+		NAN_METHOD(GetStringForAxis);
+		NAN_METHOD(GetStringForButton);
 
-		v8::Handle<v8::Value> Update(const v8::Arguments& args);
-		v8::Handle<v8::Value> IsController(const v8::Arguments& args);
+		NAN_METHOD(Update);
+		NAN_METHOD(IsController);
 	}
 }
 

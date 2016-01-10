@@ -2,6 +2,7 @@
 #define HELPERS_H_
 
 #include <v8.h>
+#include <nan.h>
 #include <node.h>
 #include <node_buffer.h>
 #include <sstream>
@@ -21,7 +22,7 @@
 		ss << S(function_name); \
 		ss << "'."; \
 		return v8::ThrowException(v8::Exception::TypeError( \
-			v8::String::New(ss.str().c_str()))); \
+			v8::Nan::New<String>(ss.str().c_str()))); \
 	}
 
 #define CHECK_STRING(arg_n) \
@@ -31,7 +32,7 @@
 		ss << arg_n; \
 		ss << " to be a String."; \
 		return v8::ThrowException(v8::Exception::TypeError( \
-			v8::String::New(ss.str().c_str()))); \
+			v8::Nan::New<String>(ss.str().c_str()))); \
 	}
 #define CHECK_STRING_F(arg_n, function_name) \
 	if(!args[arg_n]->IsString()) { \
@@ -42,7 +43,7 @@
 		ss << S(function_name); \
 		ss << ")"; \
 		return v8::ThrowException(v8::Exception::TypeError( \
-			v8::String::New(ss.str().c_str()))); \
+			v8::Nan::New<String>(ss.str().c_str()))); \
 	}
 
 #define CHECK_NUMBER(arg_n) \
@@ -52,7 +53,7 @@
 		ss << arg_n; \
 		ss << " to be a Number."; \
 		return v8::ThrowException(v8::Exception::TypeError( \
-			v8::String::New(ss.str().c_str()))); \
+			v8::Nan::New<String>(ss.str().c_str()))); \
 	}
 #define CHECK_NUMBER_F(arg_n, function_name) \
 	if(!args[arg_n]->IsNumber()) { \
@@ -63,7 +64,7 @@
 		ss << S(function_name); \
 		ss << ")"; \
 		return v8::ThrowException(v8::Exception::TypeError( \
-			v8::String::New(ss.str().c_str()))); \
+			v8::Nan::New<String>(ss.str().c_str()))); \
 	}
 
 #define CHECK_BOOL(arg_n) \
@@ -73,7 +74,7 @@
 		ss << arg_n; \
 		ss << " to be a Boolean."; \
 		return v8::ThrowException(v8::Exception::TypeError( \
-			v8::String::New(ss.str().c_str()))); \
+			v8::Nan::New<String>(ss.str().c_str()))); \
 	}
 #define CHECK_BOOL_F(arg_n, function_name) \
 	if(!args[arg_n]->IsBoolean()) { \
@@ -84,7 +85,7 @@
 		ss << S(function_name); \
 		ss << ")"; \
 		return v8::ThrowException(v8::Exception::TypeError( \
-			v8::String::New(ss.str().c_str()))); \
+			v8::Nan::New<String>(ss.str().c_str()))); \
 	}
 
 #define CHECK_WRAPPER(name, type) \
@@ -94,7 +95,7 @@
 		ss << S(type); \
 		ss << "."; \
 		return v8::ThrowException(v8::Exception::TypeError( \
-			v8::String::New(ss.str().c_str()))); \
+			v8::Nan::New<String>(ss.str().c_str()))); \
 	}
 
 #define CHECK_CONSTRUCT(class_name) \
@@ -102,7 +103,7 @@
 		std::stringstream ss; \
 		ss << "Must use the new operator to create instances of class " << S(type); \
 		return v8::ThrowException(v8::Exception::TypeError( \
-			String::New(ss.str().c_str()))); \
+			Nan::New<String>(ss.str().c_str()))); \
 	}
 
 #define CHECK_EXTERNAL(arg_n) \
@@ -112,7 +113,7 @@
     ss << arg_n; \
     ss << " to be an External."; \
     return v8::ThrowException(v8::Exception::TypeError( \
-      v8::String::New(ss.str().c_str()))); \
+      v8::Nan::New<String>(ss.str().c_str()))); \
   }
 #else
 #define CHECK_ARGLEN(function_name, num_args)
@@ -133,12 +134,12 @@
 #define CHECK_EXTERNAL(arg_n)
 #endif
 
-#define FUNCTION_DEF(name) v8::Handle<v8::Value> name(const v8::Arguments& args)
-#define FUNCTION_DEFP(prefix, name) v8::Handle<v8::Value> prefix::name(const v8::Arguments& args)
+#define FUNCTION_DEF(name) NAN_METHOD(name)
+#define FUNCTION_DEFP(prefix, name) NAN_METHOD(prefix::name)
 #define FUNCTION_BEGIN(name, num_args) FUNCTION_DEF(name) { \
 	v8::HandleScope scope; \
 	CHECK_ARGLEN(name, num_args);
-#define FUNCTION_BEGINP(prefix, name, num_args) v8::Handle<v8::Value> prefix::name(const v8::Arguments& args) { \
+#define FUNCTION_BEGINP(prefix, name, num_args) NAN_METHOD(prefix::name) { \
 	v8::HandleScope scope; \
 	CHECK_ARGLEN(name, num_args);
 #define FUNCTION_END(ret) return scope.Close(ret); \
@@ -146,7 +147,7 @@
 #define FUNCTION_UNDEFINED return Undefined(); \
 }
 
-#define GETTER_DEF(func_name) v8::Handle<v8::Value> func_name(v8::Local<v8::String> name, const v8::AccessorInfo& info)
+#define GETTER_DEF(func_name) NAN_GETTER(func_name);
 #define GETTER_DEFP(prefix, func_name) v8::Handle<v8::Value> prefix::func_name(v8::Local<v8::String> name, const v8::AccessorInfo& info)
 #define GETTER_BEGIN(prefix, func_name) GETTER_DEFP(prefix, func_name) { \
 	v8::HandleScope scope;
@@ -155,7 +156,7 @@
 #define GETTER_UNDEFINED return Undefined(); \
 }
 
-#define SETTER_DEF(func_name) void func_name(v8::Local<v8::String> name, v8::Local<v8::Value> value, const v8::AccessorInfo& info)
+#define SETTER_DEF(func_name) NAN_SETTER(func_name);
 #define SETTER_DEFP(prefix, func_name) void prefix::func_name(v8::Local<v8::String> name, v8::Local<v8::Value> value, const v8::AccessorInfo& info)
 #define SETTER_BEGIN(prefix, func_name) SETTER_DEFP(prefix, func_name) { \
 	v8::HandleScope scope;
@@ -234,7 +235,7 @@
 		static v8::Persistent<v8::FunctionTemplate> wrap_template_; \
 		~type(); \
 		static void Init(v8::Handle<v8::Object> target); \
-		static v8::Handle<v8::Value> New(const v8::Arguments& args);
+		static NAN_METHOD(New);
 #define CLOSE_OBJECTWRAP(wrap_type) wrap_type* wrapped; \
 	};
 
@@ -242,10 +243,10 @@
 	v8::Local<v8::FunctionTemplate> tpl = v8::FunctionTemplate::New(New); \
 	template = v8::Persistent<v8::FunctionTemplate>::New(tpl); \
 	template->InstanceTemplate()->SetInternalFieldCount(2); \
-	template->SetClassName(v8::String::NewSymbol(S(type)));
-#define GETTER(template, name, fun) template->PrototypeTemplate()->SetAccessor(String::NewSymbol(name), fun);
-#define GETTER_SETTER(template, name, get, set) template->PrototypeTemplate()->SetAccessor(String::NewSymbol(name), get, set);
-#define SET(target, symbol, object) target->Set(String::NewSymbol(symbol), object)
+	template->SetClassName(v8::Nan::New<String>(S(type)));
+#define GETTER(template, name, fun) template->PrototypeTemplate()->SetAccessor(Nan::New<String>(name), fun);
+#define GETTER_SETTER(template, name, get, set) template->PrototypeTemplate()->SetAccessor(Nan::New<String>(name), get, set);
+#define SET(target, symbol, object) target->Set(Nan::New<String>(symbol), object)
 #define START_INIT(prefix, type) \
   v8::Persistent<v8::FunctionTemplate> prefix::type::wrap_template_; \
   void prefix::type::Init(Handle<Object> target) { \
@@ -255,12 +256,12 @@
 
 #define PROTO_METHOD(target, name, callback) \
     v8::Local<v8::FunctionTemplate> TOKENPASTE2(template, name) = v8::FunctionTemplate::New(callback); \
-    target->PrototypeTemplate()->Set(v8::String::NewSymbol(S(name)), TOKENPASTE2(template, name));
+    Nan::Set(target->PrototypeTemplate(), v8::Nan::New<String>(S(name)), TOKENPASTE2(template, name));
 
 #define UNWRAP_EXTERNAL(type, name, arg) \
   CHECK_EXTERNAL(arg) \
   type* name = static_cast<type*>(Handle<External>::Cast(args[arg])->Value())
-#define START_NEW(prefix, type, num_args) v8::Handle<v8::Value> prefix::type::New(const v8::Arguments& args) { \
+#define START_NEW(prefix, type, num_args) NAN_METHOD(prefix::type::New) { \
 	CHECK_CONSTRUCT(S(type)) \
 	HandleScope scope; \
 	CHECK_ARGLEN(S(type), num_args);
@@ -279,10 +280,10 @@ namespace sdl {
   v8::Local<v8::Value> MakeSDLException(const char* name);
 
   // Helpers to work with buffers
-  char* BufferData(node::Buffer *b);
-  size_t BufferLength(node::Buffer *b);
-  char* BufferData(v8::Local<v8::Object> buf_obj);
-  size_t BufferLength(v8::Local<v8::Object> buf_obj);
+  // char* BufferData(Nan::MaybeLocal<v8::Object> *b);
+  // size_t BufferLength(Nan::MaybeLocal<v8::Object> *b);
+  // char* BufferData(v8::Local<v8::Object> buf_obj);
+  // size_t BufferLength(v8::Local<v8::Object> buf_obj);
 
   v8::Local<v8::Object> SDLDisplayModeToJavascriptObject(const SDL_DisplayMode& mode);
 

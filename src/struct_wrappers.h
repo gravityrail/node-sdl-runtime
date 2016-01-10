@@ -6,6 +6,7 @@
 #include "SDL_image.h"
 
 #include <v8.h>
+#include <nan.h>
 #include <node.h>
 #include <node_buffer.h>
 
@@ -29,76 +30,83 @@ namespace sdl {
 		~PointWrapper();
 
 		static void Init(v8::Handle<v8::Object> exports);
-		static v8::Handle<v8::Value> New(const v8::Arguments& args);
-
-		static v8::Handle<v8::Value> GetX(v8::Local<v8::String> name, const v8::AccessorInfo& info);
-		static v8::Handle<v8::Value> GetY(v8::Local<v8::String> name, const v8::AccessorInfo& info);
-		static void SetX(v8::Local<v8::String> name, v8::Local<v8::Value> value, const v8::AccessorInfo& info);
-		static void SetY(v8::Local<v8::String> name, v8::Local<v8::Value> value, const v8::AccessorInfo& info);
-		static v8::Handle<v8::Value> ToString(const v8::Arguments& args);
-
+		// static NAN_METHOD(New);
+		// static v8::Handle<v8::Value> GetX(v8::Local<v8::String> name, const v8::AccessorInfo& info);
+		// static v8::Handle<v8::Value> GetY(v8::Local<v8::String> name, const v8::AccessorInfo& info);
+		// static void SetX(v8::Local<v8::String> name, v8::Local<v8::Value> value, const v8::AccessorInfo& info);
+		// static void SetY(v8::Local<v8::String> name, v8::Local<v8::Value> value, const v8::AccessorInfo& info);
+		// static NAN_METHOD(ToString);
+		NAN_METHOD(New);
+		NAN_GETTER(GetX);
+		NAN_GETTER(GetY);
+		NAN_SETTER(SetX);
+		NAN_SETTER(SetY);
+		NAN_METHOD(ToString);
+		
 		SDL_Point* point_;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////
 	// SDL_Color Wrapper/Unwrapper.
-	v8::Handle<v8::Value> ConstructColor(const v8::Arguments& args);
+	// NAN_METHOD(ConstructColor);
+	NAN_METHOD(ConstructColor);
 	v8::Handle<v8::Object> WrapColor(SDL_Color* color);
 	SDL_Color* UnwrapColor(v8::Handle<v8::Object> obj);
+
 	// Property getters.
-	v8::Handle<v8::Value> GetColorRed(v8::Local<v8::String> name, const v8::AccessorInfo& info);
-	v8::Handle<v8::Value> GetColorGreen(v8::Local<v8::String> name, const v8::AccessorInfo& info);
-	v8::Handle<v8::Value> GetColorBlue(v8::Local<v8::String> name, const v8::AccessorInfo& info);
-	v8::Handle<v8::Value> GetColorAlpha(v8::Local<v8::String> name, const v8::AccessorInfo& info);
+	NAN_GETTER(GetColorRed);
+	NAN_GETTER(GetColorGreen);
+	NAN_GETTER(GetColorBlue);
+	NAN_GETTER(GetColorAlpha);
 	// Property setters.
-	void SetColorRed(v8::Local<v8::String> name, v8::Local<v8::Value> value, const v8::AccessorInfo& info);
-	void SetColorGreen(v8::Local<v8::String> name, v8::Local<v8::Value> value, const v8::AccessorInfo& info);
-	void SetColorBlue(v8::Local<v8::String> name, v8::Local<v8::Value> value, const v8::AccessorInfo& info);
-	void SetColorAlpha(v8::Local<v8::String> name, v8::Local<v8::Value> value, const v8::AccessorInfo& info);
+	NAN_SETTER(SetColorRed);
+	NAN_SETTER(SetColorGreen);
+	NAN_SETTER(SetColorBlue);
+	NAN_SETTER(SetColorAlpha);
 
 	///////////////////////////////////////////////////////////////////////////////
 	// SDL_Palette Wrapper/Unwrapper.
-	v8::Handle<v8::Value> ConstructPalette(const v8::Arguments& args);
+	NAN_METHOD(ConstructPalette);
 	v8::Handle<v8::Object> WrapPalette(SDL_Palette* palette);
 	SDL_Palette* UnwrapPalette(v8::Handle<v8::Object> obj);
 	// Property functions.
-	v8::Handle<v8::Value> GetNcolors(v8::Local<v8::String> name, const v8::AccessorInfo& info);
-	v8::Handle<v8::Value> GetColors(v8::Local<v8::String> name, const v8::AccessorInfo& info);
+	NAN_GETTER(GetNcolors);
+	NAN_GETTER(GetColors);
 
 	///////////////////////////////////////////////////////////////////////////////
 	// SDL_DisplayMode Wrapper/Unwrapper.
 	v8::Handle<v8::Object> WrapDisplayMode(SDL_DisplayMode* mode);
 	SDL_DisplayMode* UnwrapDisplayMode(v8::Handle<v8::Value> val);
-	v8::Handle<v8::Value> GetDisplayModeFormat(v8::Local<v8::String> name, const v8::AccessorInfo& info);
-	v8::Handle<v8::Value> GetDisplayModeWidth(v8::Local<v8::String> name, const v8::AccessorInfo& info);
-	v8::Handle<v8::Value> GetDisplayModeHeight(v8::Local<v8::String> name, const v8::AccessorInfo& info);
-	v8::Handle<v8::Value> GetDisplayModeRefreshRate(v8::Local<v8::String> name, const v8::AccessorInfo& info);
+	NAN_GETTER(GetDisplayModeFormat);
+	NAN_GETTER(GetDisplayModeWidth);
+	NAN_GETTER(GetDisplayModeHeight);
+	NAN_GETTER(GetDisplayModeRefreshRate);
 
 	///////////////////////////////////////////////////////////////////////////////
 	// SDL_PixelFormat Wrapper/Unwrapper.
 	v8::Handle<v8::Object> WrapPixelFormat(SDL_PixelFormat* pixelformat);
 	SDL_PixelFormat* UnwrapPixelFormat(v8::Handle<v8::Object> obj);
 	// Property getters.
-	v8::Handle<v8::Value> GetFormatFormat(v8::Local<v8::String> name, const v8::AccessorInfo& info);
-	v8::Handle<v8::Value> GetFormatPalette(v8::Local<v8::String> name, const v8::AccessorInfo& info);
-	v8::Handle<v8::Value> GetFormatBits(v8::Local<v8::String> name, const v8::AccessorInfo& info);
-	v8::Handle<v8::Value> GetFormatBytes(v8::Local<v8::String> name, const v8::AccessorInfo& info);
-	v8::Handle<v8::Value> GetFormatRmask(v8::Local<v8::String> name, const v8::AccessorInfo& info);
-	v8::Handle<v8::Value> GetFormatGmask(v8::Local<v8::String> name, const v8::AccessorInfo& info);
-	v8::Handle<v8::Value> GetFormatBmask(v8::Local<v8::String> name, const v8::AccessorInfo& info);
-	v8::Handle<v8::Value> GetFormatAmask(v8::Local<v8::String> name, const v8::AccessorInfo& info);
+	NAN_GETTER(GetFormatFormat);
+	NAN_GETTER(GetFormatPalette);
+	NAN_GETTER(GetFormatBits);
+	NAN_GETTER(GetFormatBytes);
+	NAN_GETTER(GetFormatRmask);
+	NAN_GETTER(GetFormatGmask);
+	NAN_GETTER(GetFormatBmask);
+	NAN_GETTER(GetFormatAmask);
 
 	///////////////////////////////////////////////////////////////////////////////
 	// SDL_RendererInfo Wrapper/Unwrapper.
 	v8::Handle<v8::Object> WrapRendererInfo(SDL_RendererInfo* info);
 	SDL_RendererInfo* UnwrapRendererInfo(v8::Handle<v8::Object> obj);
 	// Property getters.
-	v8::Handle<v8::Value> GetRendererInfoName(v8::Local<v8::String> name, const v8::AccessorInfo& info);
-	v8::Handle<v8::Value> GetRendererInfoFlags(v8::Local<v8::String> name, const v8::AccessorInfo& info);
-	v8::Handle<v8::Value> GetRendererInfoNumTextureFormats(v8::Local<v8::String> name, const v8::AccessorInfo& info);
-	v8::Handle<v8::Value> GetRendererInfoTextureFormats(v8::Local<v8::String> name, const v8::AccessorInfo& info);
-	v8::Handle<v8::Value> GetRendererInfoMaxTextureWidth(v8::Local<v8::String> name, const v8::AccessorInfo& info);
-	v8::Handle<v8::Value> GetRendererInfoMaxTextureHeight(v8::Local<v8::String> name, const v8::AccessorInfo& info);
+	NAN_GETTER(GetRendererInfoName);
+	NAN_GETTER(GetRendererInfoFlags);
+	NAN_GETTER(GetRendererInfoNumTextureFormats);
+	NAN_GETTER(GetRendererInfoTextureFormats);
+	NAN_GETTER(GetRendererInfoMaxTextureWidth);
+	NAN_GETTER(GetRendererInfoMaxTextureHeight);
 
 	///////////////////////////////////////////////////////////////////////////////
 	// SDL_Joystick Wrapper/Unwrapper.

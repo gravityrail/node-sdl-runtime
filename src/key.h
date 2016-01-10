@@ -13,27 +13,27 @@ namespace sdl {
 		void Init(v8::Handle<v8::Object> exports);
 	}
 
-	// v8::Handle<v8::Value> GetKeyFromName(const v8::Arguments& args);
+	// NAN_METHOD(GetKeyFromName);
 	FUNCTION_DEF(GetKeyFromName);
-	v8::Handle<v8::Value> GetKeyFromScancode(const v8::Arguments& args);
-	v8::Handle<v8::Value> GetKeyName(const v8::Arguments& args);
+	NAN_METHOD(GetKeyFromScancode);
+	NAN_METHOD(GetKeyName);
 	
-	v8::Handle<v8::Value> GetScancodeFromKey(const v8::Arguments& args);
-	v8::Handle<v8::Value> GetScancodeFromName(const v8::Arguments& args);
-	v8::Handle<v8::Value> GetScancodeName(const v8::Arguments& args);
+	NAN_METHOD(GetScancodeFromKey);
+	NAN_METHOD(GetScancodeFromName);
+	NAN_METHOD(GetScancodeName);
 
-	v8::Handle<v8::Value> HasScreenKeyboardSupport(const v8::Arguments& args);
-	v8::Handle<v8::Value> IsScreenKeyboardShown(const v8::Arguments& args);
+	NAN_METHOD(HasScreenKeyboardSupport);
+	NAN_METHOD(IsScreenKeyboardShown);
 
-	v8::Handle<v8::Value> GetKeyboardFocus(const v8::Arguments& args);
-	v8::Handle<v8::Value> GetKeyboardState(const v8::Arguments& args);
-	v8::Handle<v8::Value> GetModState(const v8::Arguments& args);
-	v8::Handle<v8::Value> SetModState(const v8::Arguments& args);
+	NAN_METHOD(GetKeyboardFocus);
+	NAN_METHOD(GetKeyboardState);
+	NAN_METHOD(GetModState);
+	NAN_METHOD(SetModState);
 
-	v8::Handle<v8::Value> IsTextInputActive(const v8::Arguments& args);
-	v8::Handle<v8::Value> SetTextInputRect(const v8::Arguments& args);
-	v8::Handle<v8::Value> StartTextInput(const v8::Arguments& args);
-	v8::Handle<v8::Value> StopTextInput(const v8::Arguments& args);
+	NAN_METHOD(IsTextInputActive);
+	NAN_METHOD(SetTextInputRect);
+	NAN_METHOD(StartTextInput);
+	NAN_METHOD(StopTextInput);
 }
 
 #endif

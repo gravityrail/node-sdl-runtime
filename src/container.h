@@ -29,7 +29,7 @@ namespace sdl {
 	// 	~RectWrapper();
 
 	// 	static void Init(v8::Handle<v8::Object> exports);
-	// 	static v8::Handle<v8::Value> New(const v8::Arguments& args);
+	// 	static NAN_METHOD(New);
 
 	// 	static GETTER_DEF(GetX);
 	// 	static GETTER_DEF(GetY);
@@ -51,20 +51,20 @@ namespace sdl {
 		~ColorWrapper();
 
 		static void Init(v8::Handle<v8::Object> exports);
-		static v8::Handle<v8::Value> New(const v8::Arguments& args);
+		NAN_METHOD(New);
 
-		static v8::Handle<v8::Value> GetRed(v8::Local<v8::String> name, const v8::AccessorInfo& info);
-		static v8::Handle<v8::Value> GetGreen(v8::Local<v8::String> name, const v8::AccessorInfo& info);
-		static v8::Handle<v8::Value> GetBlue(v8::Local<v8::String> name, const v8::AccessorInfo& info);
-		static v8::Handle<v8::Value> GetAlpha(v8::Local<v8::String> name, const v8::AccessorInfo& info);
-		static v8::Handle<v8::Value> GetColor(const v8::Arguments& args);
+		NAN_GETTER(GetRed);
+		NAN_GETTER(GetGreen);
+		NAN_GETTER(GetBlue);
+		NAN_GETTER(GetAlpha);
+		NAN_GETTER(GetColor);
 
-		static void SetRed(v8::Local<v8::String> name, v8::Local<v8::Value> value, const v8::AccessorInfo& info);
-		static void SetGreen(v8::Local<v8::String> name, v8::Local<v8::Value> value, const v8::AccessorInfo& info);
-		static void SetBlue(v8::Local<v8::String> name, v8::Local<v8::Value> value, const v8::AccessorInfo& info);
-		static void SetAlpha(v8::Local<v8::String> name, v8::Local<v8::Value> value, const v8::AccessorInfo& info);
+		NAN_SETTER(SetRed);
+		NAN_SETTER(SetGreen);
+		NAN_SETTER(SetBlue);
+		NAN_SETTER(SetAlpha);
 
-		static v8::Handle<v8::Value> ToString(const v8::Arguments& args);
+		NAN_METHOD(ToString);
 
 		SDL_Color* color_;
 	};
@@ -78,12 +78,12 @@ namespace sdl {
 		~FingerWrapper();
 
 		static void Init(v8::Handle<v8::Object> exports);
-		static v8::Handle<v8::Value> New(const v8::Arguments& args);
+		NAN_METHOD(New);
 
-		static v8::Handle<v8::Value> GetFingerID(v8::Local<v8::String> name, const v8::AccessorInfo& info);
-		static v8::Handle<v8::Value> GetX(v8::Local<v8::String> name, const v8::AccessorInfo& info);
-		static v8::Handle<v8::Value> GetY(v8::Local<v8::String> name, const v8::AccessorInfo& info);
-		static v8::Handle<v8::Value> GetPressure(v8::Local<v8::String> name, const v8::AccessorInfo& info);
+		NAN_GETTER(GetFingerID);
+		NAN_GETTER(GetX);
+		NAN_GETTER(GetY);
+		NAN_GETTER(GetPressure);
 
 		SDL_Finger* finger_;
 	};

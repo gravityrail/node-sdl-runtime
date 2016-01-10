@@ -7,23 +7,23 @@ using namespace node;
 
 
 static Handle<Object> ControllerButtonBindToObject(SDL_GameControllerButtonBind bind) {
-	Handle<Object> ret = Object::New();
-	ret->Set(String::NewSymbol("type"), Number::New(bind.bindType));
+	Handle<Object> ret = Nan::New<Object>();
+	Nan::Set(ret, Nan::New<String>("type"), Nan::New<Number>(bind.bindType));
 	switch(bind.bindType) {
 	case SDL_CONTROLLER_BINDTYPE_NONE:
 		// Nothing to do here. Just wanted to shut the compiler up :)
 		break;
 	case SDL_CONTROLLER_BINDTYPE_BUTTON:
-		ret->Set(String::NewSymbol("button"), Number::New(bind.value.button));
+		Nan::Set(ret, Nan::New<String>("button"), Nan::New<Number>(bind.value.button));
 		break;
 	case SDL_CONTROLLER_BINDTYPE_AXIS:
-		ret->Set(String::NewSymbol("axis"), Number::New(bind.value.axis));
+		Nan::Set(ret, Nan::New<String>("axis"), Nan::New<Number>(bind.value.axis));
 		break;
 	case SDL_CONTROLLER_BINDTYPE_HAT:
-		Handle<Object> hat = Object::New();
-		hat->Set(String::NewSymbol("hat"), Number::New(bind.value.hat.hat));
-		hat->Set(String::NewSymbol("hatMask"), Number::New(bind.value.hat.hat_mask));
-		ret->Set(String::NewSymbol("hat"), hat);
+		Handle<Object> hat = Nan::New<Object>();
+		Nan::Set(hat, Nan::New<String>("hat"), Nan::New<Number>(bind.value.hat.hat));
+		Nan::Set(hat, Nan::New<String>("hatMask"), Nan::New<Number>(bind.value.hat.hat_mask));
+		Nan::Set(ret, Nan::New<String>("hat"), hat);
 		break;
 	}
 	return ret;
@@ -42,43 +42,43 @@ void sdl::controller::Init(Handle<Object> exports) {
 	NODE_SET_METHOD(exports, "getAxisFromString", GetAxisFromString);
 	NODE_SET_METHOD(exports, "getButtonFromString", GetButtonFromString);
 
-	Handle<Object> BINDTYPE = Object::New();
-	exports->Set(String::NewSymbol("BINDTYPE"), BINDTYPE);
-	BINDTYPE->Set(String::NewSymbol("NONE"), Number::New(SDL_CONTROLLER_BINDTYPE_NONE));
-	BINDTYPE->Set(String::NewSymbol("BUTTON"), Number::New(SDL_CONTROLLER_BINDTYPE_BUTTON));
-	BINDTYPE->Set(String::NewSymbol("AXIS"), Number::New(SDL_CONTROLLER_BINDTYPE_AXIS));
-	BINDTYPE->Set(String::NewSymbol("HAT"), Number::New(SDL_CONTROLLER_BINDTYPE_HAT));
+	Handle<Object> BINDTYPE = Nan::New<Object>();
+	Nan::Set(exports, Nan::New<String>("BINDTYPE"), BINDTYPE);
+	Nan::Set(BINDTYPE, Nan::New<String>("NONE"), Nan::New<Number>(SDL_CONTROLLER_BINDTYPE_NONE));
+	Nan::Set(BINDTYPE, Nan::New<String>("BUTTON"), Nan::New<Number>(SDL_CONTROLLER_BINDTYPE_BUTTON));
+	Nan::Set(BINDTYPE, Nan::New<String>("AXIS"), Nan::New<Number>(SDL_CONTROLLER_BINDTYPE_AXIS));
+	Nan::Set(BINDTYPE, Nan::New<String>("HAT"), Nan::New<Number>(SDL_CONTROLLER_BINDTYPE_HAT));
 
-	Handle<Object> AXIS = Object::New();
-	exports->Set(String::NewSymbol("AXIS"), AXIS);
-	AXIS->Set(String::NewSymbol("INVALID"), Number::New(SDL_CONTROLLER_AXIS_INVALID));
-	AXIS->Set(String::NewSymbol("LEFTX"), Number::New(SDL_CONTROLLER_AXIS_LEFTX));
-	AXIS->Set(String::NewSymbol("LEFTY"), Number::New(SDL_CONTROLLER_AXIS_LEFTY));
-	AXIS->Set(String::NewSymbol("RIGHTX"), Number::New(SDL_CONTROLLER_AXIS_RIGHTX));
-	AXIS->Set(String::NewSymbol("RIGHTY"), Number::New(SDL_CONTROLLER_AXIS_RIGHTY));
-	AXIS->Set(String::NewSymbol("TRIGGERLEFT"), Number::New(SDL_CONTROLLER_AXIS_TRIGGERLEFT));
-	AXIS->Set(String::NewSymbol("TRIGGERRIGHT"), Number::New(SDL_CONTROLLER_AXIS_TRIGGERRIGHT));
-	AXIS->Set(String::NewSymbol("MAX"), Number::New(SDL_CONTROLLER_AXIS_MAX));
+	Handle<Object> AXIS = Nan::New<Object>();
+	Nan::Set(exports, Nan::New<String>("AXIS"), AXIS);
+	Nan::Set(AXIS, Nan::New<String>("INVALID"), Nan::New<Number>(SDL_CONTROLLER_AXIS_INVALID));
+	Nan::Set(AXIS, Nan::New<String>("LEFTX"), Nan::New<Number>(SDL_CONTROLLER_AXIS_LEFTX));
+	Nan::Set(AXIS, Nan::New<String>("LEFTY"), Nan::New<Number>(SDL_CONTROLLER_AXIS_LEFTY));
+	Nan::Set(AXIS, Nan::New<String>("RIGHTX"), Nan::New<Number>(SDL_CONTROLLER_AXIS_RIGHTX));
+	Nan::Set(AXIS, Nan::New<String>("RIGHTY"), Nan::New<Number>(SDL_CONTROLLER_AXIS_RIGHTY));
+	Nan::Set(AXIS, Nan::New<String>("TRIGGERLEFT"), Nan::New<Number>(SDL_CONTROLLER_AXIS_TRIGGERLEFT));
+	Nan::Set(AXIS, Nan::New<String>("TRIGGERRIGHT"), Nan::New<Number>(SDL_CONTROLLER_AXIS_TRIGGERRIGHT));
+	Nan::Set(AXIS, Nan::New<String>("MAX"), Nan::New<Number>(SDL_CONTROLLER_AXIS_MAX));
 
-	Handle<Object> BUTTON = Object::New();
-	exports->Set(String::NewSymbol("BUTTON"), BUTTON);
-	BUTTON->Set(String::NewSymbol("INVALID"), Number::New(SDL_CONTROLLER_BUTTON_INVALID));
-	BUTTON->Set(String::NewSymbol("A"), Number::New(SDL_CONTROLLER_BUTTON_A));
-	BUTTON->Set(String::NewSymbol("B"), Number::New(SDL_CONTROLLER_BUTTON_B));
-	BUTTON->Set(String::NewSymbol("X"), Number::New(SDL_CONTROLLER_BUTTON_X));
-	BUTTON->Set(String::NewSymbol("Y"), Number::New(SDL_CONTROLLER_BUTTON_Y));
-	BUTTON->Set(String::NewSymbol("BACK"), Number::New(SDL_CONTROLLER_BUTTON_BACK));
-	BUTTON->Set(String::NewSymbol("GUIDE"), Number::New(SDL_CONTROLLER_BUTTON_GUIDE));
-	BUTTON->Set(String::NewSymbol("START"), Number::New(SDL_CONTROLLER_BUTTON_START));
-	BUTTON->Set(String::NewSymbol("LEFTSTICK"), Number::New(SDL_CONTROLLER_BUTTON_LEFTSTICK));
-	BUTTON->Set(String::NewSymbol("RIGHTSTICK"), Number::New(SDL_CONTROLLER_BUTTON_RIGHTSTICK));
-	BUTTON->Set(String::NewSymbol("LEFTSHOULDER"), Number::New(SDL_CONTROLLER_BUTTON_LEFTSHOULDER));
-	BUTTON->Set(String::NewSymbol("RIGHTSHOULDER"), Number::New(SDL_CONTROLLER_BUTTON_RIGHTSHOULDER));
-	BUTTON->Set(String::NewSymbol("DPAD_UP"), Number::New(SDL_CONTROLLER_BUTTON_DPAD_UP));
-	BUTTON->Set(String::NewSymbol("DPAD_DOWN"), Number::New(SDL_CONTROLLER_BUTTON_DPAD_DOWN));
-	BUTTON->Set(String::NewSymbol("DPAD_LEFT"), Number::New(SDL_CONTROLLER_BUTTON_DPAD_LEFT));
-	BUTTON->Set(String::NewSymbol("DPAD_RIGHT"), Number::New(SDL_CONTROLLER_BUTTON_DPAD_RIGHT));
-	BUTTON->Set(String::NewSymbol("MAX"), Number::New(SDL_CONTROLLER_BUTTON_MAX));
+	Handle<Object> BUTTON = Nan::New<Object>();
+	Nan::Set(exports, Nan::New<String>("BUTTON"), BUTTON);
+	Nan::Set(BUTTON, Nan::New<String>("INVALID"), Nan::New<Number>(SDL_CONTROLLER_BUTTON_INVALID));
+	Nan::Set(BUTTON, Nan::New<String>("A"), Nan::New<Number>(SDL_CONTROLLER_BUTTON_A));
+	Nan::Set(BUTTON, Nan::New<String>("B"), Nan::New<Number>(SDL_CONTROLLER_BUTTON_B));
+	Nan::Set(BUTTON, Nan::New<String>("X"), Nan::New<Number>(SDL_CONTROLLER_BUTTON_X));
+	Nan::Set(BUTTON, Nan::New<String>("Y"), Nan::New<Number>(SDL_CONTROLLER_BUTTON_Y));
+	Nan::Set(BUTTON, Nan::New<String>("BACK"), Nan::New<Number>(SDL_CONTROLLER_BUTTON_BACK));
+	Nan::Set(BUTTON, Nan::New<String>("GUIDE"), Nan::New<Number>(SDL_CONTROLLER_BUTTON_GUIDE));
+	Nan::Set(BUTTON, Nan::New<String>("START"), Nan::New<Number>(SDL_CONTROLLER_BUTTON_START));
+	Nan::Set(BUTTON, Nan::New<String>("LEFTSTICK"), Nan::New<Number>(SDL_CONTROLLER_BUTTON_LEFTSTICK));
+	Nan::Set(BUTTON, Nan::New<String>("RIGHTSTICK"), Nan::New<Number>(SDL_CONTROLLER_BUTTON_RIGHTSTICK));
+	Nan::Set(BUTTON, Nan::New<String>("LEFTSHOULDER"), Nan::New<Number>(SDL_CONTROLLER_BUTTON_LEFTSHOULDER));
+	Nan::Set(BUTTON, Nan::New<String>("RIGHTSHOULDER"), Nan::New<Number>(SDL_CONTROLLER_BUTTON_RIGHTSHOULDER));
+	Nan::Set(BUTTON, Nan::New<String>("DPAD_UP"), Nan::New<Number>(SDL_CONTROLLER_BUTTON_DPAD_UP));
+	Nan::Set(BUTTON, Nan::New<String>("DPAD_DOWN"), Nan::New<Number>(SDL_CONTROLLER_BUTTON_DPAD_DOWN));
+	Nan::Set(BUTTON, Nan::New<String>("DPAD_LEFT"), Nan::New<Number>(SDL_CONTROLLER_BUTTON_DPAD_LEFT));
+	Nan::Set(BUTTON, Nan::New<String>("DPAD_RIGHT"), Nan::New<Number>(SDL_CONTROLLER_BUTTON_DPAD_RIGHT));
+	Nan::Set(BUTTON, Nan::New<String>("MAX"), Nan::New<Number>(SDL_CONTROLLER_BUTTON_MAX));
 }
 
 Persistent<FunctionTemplate> sdl::controller::GameControllerWrapper::wrap_template_;
@@ -96,7 +96,7 @@ void sdl::controller::GameControllerWrapper::Init(Handle<Object> exports) {
 	wrap_template_ = Persistent<FunctionTemplate>::New(tpl);
 
 	wrap_template_->InstanceTemplate()->SetInternalFieldCount(1);
-	wrap_template_->SetClassName(String::NewSymbol("GameControllerWrapper"));
+	wrap_template_->SetClassName(Nan::New<String>("GameControllerWrapper"));
 
 	NODE_SET_PROTOTYPE_METHOD(wrap_template_, "getAttached", GetAttached);
 	NODE_SET_PROTOTYPE_METHOD(wrap_template_, "getAxis", GetAxis);
@@ -109,20 +109,20 @@ void sdl::controller::GameControllerWrapper::Init(Handle<Object> exports) {
 	NODE_SET_PROTOTYPE_METHOD(wrap_template_, "getMapping", GetMapping);
   	NODE_SET_PROTOTYPE_METHOD(wrap_template_, "getName", GetName);
 
-	exports->Set(String::NewSymbol("GameController"), wrap_template_->GetFunction());
+	Nan::Set(exports, Nan::New<String>("GameController"), wrap_template_->GetFunction());
 }
 
-Handle<Value> sdl::controller::GameControllerWrapper::New(const Arguments& args) {
+NAN_METHOD(sdl::controller::GameControllerWrapper::New) {
 	if(!args.IsConstructCall()) {
 		return ThrowException(Exception::TypeError(
-			String::New("Must create a GameController with the new operator.")));
+			Nan::New<String>("Must create a GameController with the new operator.")));
 	}
 
 	HandleScope scope;
 
 	if(args.Length() < 1) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: Exepcted new sdl.GameController(Number)")));
+			Nan::New<String>("Invalid arguments: Exepcted new sdl.GameController(Number)")));
 	}
 
 	int index = args[0]->Int32Value();
@@ -138,34 +138,34 @@ Handle<Value> sdl::controller::GameControllerWrapper::New(const Arguments& args)
 	return args.This();
 }
 
-Handle<Value> sdl::controller::GameControllerWrapper::GetAttached(const Arguments& args) {
+NAN_METHOD(sdl::controller::GameControllerWrapper::GetAttached) {
 	HandleScope scope;
 
 	GameControllerWrapper* wrap = ObjectWrap::Unwrap<GameControllerWrapper>(args.This());
 	SDL_bool ret = SDL_GameControllerGetAttached(wrap->controller_);
 
-	return scope.Close(Boolean::New(ret == SDL_TRUE ? true : false));
+	return scope.Close(Nan::New<Boolean>(ret == SDL_TRUE ? true : false));
 }
-Handle<Value> sdl::controller::GameControllerWrapper::GetAxis(const Arguments& args) {
+NAN_METHOD(sdl::controller::GameControllerWrapper::GetAxis) {
 	HandleScope scope;
 
 	if(args.Length() < 1) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: Expected GetAxis(Number)")));
+			Nan::New<String>("Invalid arguments: Expected GetAxis(Number)")));
 	}
 
 	GameControllerWrapper* wrap = ObjectWrap::Unwrap<GameControllerWrapper>(args.This());
 	SDL_GameControllerAxis axis = static_cast<SDL_GameControllerAxis>(args[0]->Int32Value());
 	int16_t ret = SDL_GameControllerGetAxis(wrap->controller_, axis);
 
-	return scope.Close(Number::New(ret));
+	return scope.Close(Nan::New<Number>(ret));
 }
-Handle<Value> sdl::controller::GameControllerWrapper::GetBindForAxis(const Arguments& args) {
+NAN_METHOD(sdl::controller::GameControllerWrapper::GetBindForAxis) {
 	HandleScope scope;
 
 	if(args.Length() < 1) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: Expected GetBindForAxis(Number)")));
+			Nan::New<String>("Invalid arguments: Expected GetBindForAxis(Number)")));
 	}
 
 	GameControllerWrapper* wrap = ObjectWrap::Unwrap<GameControllerWrapper>(args.This());
@@ -174,12 +174,12 @@ Handle<Value> sdl::controller::GameControllerWrapper::GetBindForAxis(const Argum
 
 	return scope.Close(ControllerButtonBindToObject(bind));
 }
-Handle<Value> sdl::controller::GameControllerWrapper::GetBindForButton(const Arguments& args) {
+NAN_METHOD(sdl::controller::GameControllerWrapper::GetBindForButton) {
 	HandleScope scope;
 
 	if(args.Length() < 1) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: Expected GetBindForButton(Number)")));
+			Nan::New<String>("Invalid arguments: Expected GetBindForButton(Number)")));
 	}
 
 	GameControllerWrapper* wrap = ObjectWrap::Unwrap<GameControllerWrapper>(args.This());
@@ -188,31 +188,31 @@ Handle<Value> sdl::controller::GameControllerWrapper::GetBindForButton(const Arg
 
 	return scope.Close(ControllerButtonBindToObject(bind));
 }
-Handle<Value> sdl::controller::GameControllerWrapper::GetButton(const Arguments& args) {
+NAN_METHOD(sdl::controller::GameControllerWrapper::GetButton) {
 	HandleScope scope;
 
 	if(args.Length() < 1) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: Expected GetButton(Number)")));
+			Nan::New<String>("Invalid arguments: Expected GetButton(Number)")));
 	}
 
 	GameControllerWrapper* wrap = ObjectWrap::Unwrap<GameControllerWrapper>(args.This());
 	SDL_GameControllerButton button = static_cast<SDL_GameControllerButton>(args[0]->Int32Value());
 	uint8_t ret = SDL_GameControllerGetButton(wrap->controller_, button);
 
-	return scope.Close(Boolean::New(ret == 1 ? true : false));
+	return scope.Close(Nan::New<Boolean>(ret == 1 ? true : false));
 }
-Handle<Value> sdl::controller::GameControllerWrapper::GetJoystick(const Arguments& args) {
+NAN_METHOD(sdl::controller::GameControllerWrapper::GetJoystick) {
 	HandleScope scope;
 
 	GameControllerWrapper* wrap = ObjectWrap::Unwrap<GameControllerWrapper>(args.This());
 	SDL_Joystick* joystick = SDL_GameControllerGetJoystick(wrap->controller_);
 
 	Handle<Value> arg = External::New(joystick);
-	Handle<Value> argv[] = {arg, Boolean::New(false)};
+	Handle<Value> argv[] = {arg, Nan::New<Boolean>(false)};
 	return scope.Close(JoystickWrapper::wrap_template_->GetFunction()->NewInstance(2, argv));
 }
-Handle<Value> sdl::controller::GameControllerWrapper::GetMapping(const Arguments& args) {
+NAN_METHOD(sdl::controller::GameControllerWrapper::GetMapping) {
 	HandleScope scope;
 
 	GameControllerWrapper* wrap = ObjectWrap::Unwrap<GameControllerWrapper>(args.This());
@@ -221,9 +221,9 @@ Handle<Value> sdl::controller::GameControllerWrapper::GetMapping(const Arguments
 		return ThrowSDLException(__func__);
 	}
 
-	return scope.Close(String::New(mapping));
+	return scope.Close(Nan::New<String>(mapping));
 }
-Handle<Value> sdl::controller::GameControllerWrapper::GetName(const Arguments& args) {
+NAN_METHOD(sdl::controller::GameControllerWrapper::GetName) {
 	HandleScope scope;
 
 	GameControllerWrapper* wrap = ObjectWrap::Unwrap<GameControllerWrapper>(args.This());
@@ -232,15 +232,15 @@ Handle<Value> sdl::controller::GameControllerWrapper::GetName(const Arguments& a
 		return ThrowSDLException(__func__);
 	}
 
-	return scope.Close(String::New(name));
+	return scope.Close(Nan::New<String>(name));
 }
 
-Handle<Value> sdl::controller::AddMapping(const Arguments& args) {
+NAN_METHOD(sdl::controller::AddMapping) {
 	HandleScope scope;
 
 	if(args.Length() < 1) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: Expected AddMapping(String)")));
+			Nan::New<String>("Invalid arguments: Expected AddMapping(String)")));
 	}
 
 	String::Utf8Value mapping(args[0]);
@@ -249,14 +249,14 @@ Handle<Value> sdl::controller::AddMapping(const Arguments& args) {
 		return ThrowSDLException(__func__);
 	}
 
-	return scope.Close(Number::New(err));
+	return scope.Close(Nan::New<Number>(err));
 }
-Handle<Value> sdl::controller::AddMappingsFromFile(const Arguments& args) {
+NAN_METHOD(sdl::controller::AddMappingsFromFile) {
 	HandleScope scope;
 
 	if(args.Length() < 1) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: Expected AddMappingFromFile(String)")));
+			Nan::New<String>("Invalid arguments: Expected AddMappingFromFile(String)")));
 	}
 
 	String::Utf8Value file(args[0]);
@@ -265,15 +265,15 @@ Handle<Value> sdl::controller::AddMappingsFromFile(const Arguments& args) {
 		return ThrowSDLException(__func__);
 	}
 
-	return scope.Close(Number::New(err));
+	return scope.Close(Nan::New<Number>(err));
 }
 
-Handle<Value> sdl::controller::MappingForGUID(const Arguments& args) {
+NAN_METHOD(sdl::controller::MappingForGUID) {
 	HandleScope scope;
 
 	if(args.Length() < 1) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: Expected MappingForGUID(String)")));
+			Nan::New<String>("Invalid arguments: Expected MappingForGUID(String)")));
 	}
 
 	String::Utf8Value jsGuid(args[0]);
@@ -286,14 +286,14 @@ Handle<Value> sdl::controller::MappingForGUID(const Arguments& args) {
 		return ThrowSDLException(__func__);
 	}
 
-	return scope.Close(String::New(mapping));
+	return scope.Close(Nan::New<String>(mapping));
 }
-Handle<Value> sdl::controller::NameForIndex(const Arguments& args) {
+NAN_METHOD(sdl::controller::NameForIndex) {
 	HandleScope scope;
 
 	if(args.Length() < 1) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: Expected NameForIndex(Number)")));
+			Nan::New<String>("Invalid arguments: Expected NameForIndex(Number)")));
 	}
 
 	int index = args[0]->Int32Value();
@@ -302,92 +302,92 @@ Handle<Value> sdl::controller::NameForIndex(const Arguments& args) {
 		return ThrowSDLException(__func__);
 	}
 
-	return scope.Close(String::New(name));
+	return scope.Close(Nan::New<String>(name));
 }
 
-Handle<Value> sdl::controller::EventState(const Arguments& args) {
+NAN_METHOD(sdl::controller::EventState) {
 	HandleScope scope;
 
 	if(args.Length() < 1) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: Expected EventState(Number)")));
+			Nan::New<String>("Invalid arguments: Expected EventState(Number)")));
 	}
 
 	int state = args[0]->Int32Value();
 	int ret = SDL_GameControllerEventState(state);
 
-	return scope.Close(Number::New(ret));
+	return scope.Close(Nan::New<Number>(ret));
 }
-Handle<Value> sdl::controller::GetAxisFromString(const Arguments& args) {
+NAN_METHOD(sdl::controller::GetAxisFromString) {
 	HandleScope scope;
 
 	if(args.Length() < 1) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: Expected GetAxisFromString(String)")));
+			Nan::New<String>("Invalid arguments: Expected GetAxisFromString(String)")));
 	}
 
 	String::Utf8Value pchString(args[0]);
 	SDL_GameControllerAxis axis = SDL_GameControllerGetAxisFromString(*pchString);
 
-	return scope.Close(Number::New(axis));
+	return scope.Close(Nan::New<Number>(axis));
 }
-Handle<Value> sdl::controller::GetButtonFromString(const Arguments& args) {
+NAN_METHOD(sdl::controller::GetButtonFromString) {
 	HandleScope scope;
 
 	if(args.Length() < 1) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: Expected GetButtonFromString(String)")));
+			Nan::New<String>("Invalid arguments: Expected GetButtonFromString(String)")));
 	}
 
 	String::Utf8Value pchString(args[0]);
 	SDL_GameControllerButton button = SDL_GameControllerGetButtonFromString(*pchString);
 
-	return scope.Close(Number::New(button));
+	return scope.Close(Nan::New<Number>(button));
 }
-Handle<Value> sdl::controller::GetStringForAxis(const Arguments& args) {
+NAN_METHOD(sdl::controller::GetStringForAxis) {
 	HandleScope scope;
 
 	if(args.Length() < 1) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: Expected GetStringForAxis(Number)")));
+			Nan::New<String>("Invalid arguments: Expected GetStringForAxis(Number)")));
 	}
 
 	SDL_GameControllerAxis axis = static_cast<SDL_GameControllerAxis>(args[0]->Int32Value());
 	const char* axisString = SDL_GameControllerGetStringForAxis(axis);
 
-	return scope.Close(String::New(axisString));
+	return scope.Close(Nan::New<String>(axisString));
 }
-Handle<Value> sdl::controller::GetStringForButton(const Arguments& args) {
+NAN_METHOD(sdl::controller::GetStringForButton) {
 	HandleScope scope;
 
 	if(args.Length() < 1) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: Expected GetStringForButton(Number)")));
+			Nan::New<String>("Invalid arguments: Expected GetStringForButton(Number)")));
 	}
 
 	SDL_GameControllerButton button = static_cast<SDL_GameControllerButton>(args[0]->Int32Value());
 	const char* buttonString = SDL_GameControllerGetStringForButton(button);
 
-	return scope.Close(String::New(buttonString));
+	return scope.Close(Nan::New<String>(buttonString));
 }
 
-Handle<Value> Update(const Arguments& args) {
+NAN_METHOD(Update) {
 	HandleScope scope;
 
 	SDL_GameControllerUpdate();
 
 	return Undefined();
 }
-Handle<Value> IsController(const Arguments& args) {
+NAN_METHOD(IsController) {
 	HandleScope scope;
 
 	if(args.Length() < 1) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: Expected IsController(Number)")));
+			Nan::New<String>("Invalid arguments: Expected IsController(Number)")));
 	}
 
 	int index = args[0]->Int32Value();
 	SDL_bool ret = SDL_IsGameController(index);
 
-	return scope.Close(Boolean::New(ret == SDL_TRUE ? true : false));
+	return scope.Close(Nan::New<Boolean>(ret == SDL_TRUE ? true : false));
 }

@@ -21,33 +21,33 @@ namespace sdl {
 		~JoystickWrapper();
 
 		static void Init(v8::Handle<v8::Object> exports);
-		static v8::Handle<v8::Value> New(const v8::Arguments& args);
+		static NAN_METHOD(New);
 
-		static v8::Handle<v8::Value> GetAttached(const v8::Arguments& args);
-		static v8::Handle<v8::Value> GetAxis(const v8::Arguments& args);
-		static v8::Handle<v8::Value> GetBall(const v8::Arguments& args);
-		static v8::Handle<v8::Value> GetButton(const v8::Arguments& args);
-		static v8::Handle<v8::Value> GetGUID(const v8::Arguments& args);
-		static v8::Handle<v8::Value> GetHat(const v8::Arguments& args);
-		static v8::Handle<v8::Value> GetName(const v8::Arguments& args);
-		static v8::Handle<v8::Value> GetNumAxes(const v8::Arguments& args);
-		static v8::Handle<v8::Value> GetNumButtons(const v8::Arguments& args);
-		static v8::Handle<v8::Value> GetNumBalls(const v8::Arguments& args);
-		static v8::Handle<v8::Value> GetNumHats(const v8::Arguments& args);
+		static NAN_METHOD(GetAttached);
+		static NAN_METHOD(GetAxis);
+		static NAN_METHOD(GetBall);
+		static NAN_METHOD(GetButton);
+		static NAN_METHOD(GetGUID);
+		static NAN_METHOD(GetHat);
+		static NAN_METHOD(GetName);
+		static NAN_METHOD(GetNumAxes);
+		static NAN_METHOD(GetNumButtons);
+		static NAN_METHOD(GetNumBalls);
+		static NAN_METHOD(GetNumHats);
 
 		SDL_Joystick* joystick_;
 		bool owned_;
 	};
 
-	v8::Handle<v8::Value> NumJoysticks(const v8::Arguments& args);
+	NAN_METHOD(NumJoysticks);
 
-	v8::Handle<v8::Value> JoystickNameForIndex(const v8::Arguments& args);
-	v8::Handle<v8::Value> JoystickGetDeviceGUID(const v8::Arguments& args);
-	v8::Handle<v8::Value> JoystickGetGUIDFromString(const v8::Arguments& args);
-	v8::Handle<v8::Value> JoystickGetGUIDString(const v8::Arguments& args);
+	NAN_METHOD(JoystickNameForIndex);
+	NAN_METHOD(JoystickGetDeviceGUID);
+	NAN_METHOD(JoystickGetGUIDFromString);
+	NAN_METHOD(JoystickGetGUIDString);
 
-	v8::Handle<v8::Value> JoystickUpdate(const v8::Arguments& args);
-	v8::Handle<v8::Value> JoystickEventState(const v8::Arguments& args);
+	NAN_METHOD(JoystickUpdate);
+	NAN_METHOD(JoystickEventState);
 }
 
 #endif

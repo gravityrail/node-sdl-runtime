@@ -33,7 +33,7 @@ void sdl::WindowWrapper::Init(Handle<Object> exports) {
 	window_wrap_template_ = Persistent<FunctionTemplate>::New(tpl);
 
 	window_wrap_template_->InstanceTemplate()->SetInternalFieldCount(1);
-	window_wrap_template_->SetClassName(String::NewSymbol("WindowWrapper"));
+	window_wrap_template_->SetClassName(Nan::New<String>("WindowWrapper"));
 
 	NODE_SET_PROTOTYPE_METHOD(window_wrap_template_, "getBrightness", GetBrightness);
 	NODE_SET_PROTOTYPE_METHOD(window_wrap_template_, "getDisplayMode", GetDisplayMode);
@@ -75,13 +75,13 @@ void sdl::WindowWrapper::Init(Handle<Object> exports) {
 	NODE_SET_PROTOTYPE_METHOD(window_wrap_template_, "updateWindowSurface", UpdateWindowSurface);
 	NODE_SET_PROTOTYPE_METHOD(window_wrap_template_, "updateWindowSurfaceRects", UpdateWindowSurfaceRects);
 
-	exports->Set(String::NewSymbol("Window"), window_wrap_template_->GetFunction());
+	Nan::Set(exports, Nan::New<String>("Window"), window_wrap_template_->GetFunction());
 }
 
-Handle<Value> sdl::WindowWrapper::New(const Arguments& args) {
+NAN_METHOD(sdl::WindowWrapper::New) {
 	if(!args.IsConstructCall()) {
 		return ThrowException(Exception::TypeError(
-			String::New("Use the new operator to create instances of a Window.")));
+			Nan::New<String>("Use the new operator to create instances of a Window.")));
 	}
 
 	HandleScope scope;
@@ -104,16 +104,16 @@ Handle<Value> sdl::WindowWrapper::New(const Arguments& args) {
 	return scope.Close(args.This());
 }
 
-Handle<Value> sdl::WindowWrapper::GetBrightness(const Arguments& args) {
+NAN_METHOD(sdl::WindowWrapper::GetBrightness) {
 	HandleScope scope;
 
 	WindowWrapper* obj = ObjectWrap::Unwrap<WindowWrapper>(args.This());
   // SDL documentation does not say this function can return an erroneous value, so
   // we don't do any error checking.
-	return scope.Close(Number::New(SDL_GetWindowBrightness(obj->window_)));
+	return scope.Close(Nan::New<Number>(SDL_GetWindowBrightness(obj->window_)));
 }
 
-Handle<Value> sdl::WindowWrapper::GetDisplayIndex(const Arguments& args) {
+NAN_METHOD(sdl::WindowWrapper::GetDisplayIndex) {
 	HandleScope scope;
 
 	WindowWrapper* obj = ObjectWrap::Unwrap<WindowWrapper>(args.This());
@@ -123,10 +123,10 @@ Handle<Value> sdl::WindowWrapper::GetDisplayIndex(const Arguments& args) {
 		return ThrowSDLException("Window->GetDisplayIndex");
 	}
 
-	return scope.Close(Number::New(ret));
+	return scope.Close(Nan::New<Number>(ret));
 }
 
-Handle<Value> sdl::WindowWrapper::GetDisplayMode(const Arguments& args) {
+NAN_METHOD(sdl::WindowWrapper::GetDisplayMode) {
 	HandleScope scope;
 
 	WindowWrapper* obj = ObjectWrap::Unwrap<WindowWrapper>(args.This());
@@ -145,16 +145,16 @@ Handle<Value> sdl::WindowWrapper::GetDisplayMode(const Arguments& args) {
 	return scope.Close(SDLDisplayModeToJavascriptObject(mode));
 }
 
-Handle<Value> sdl::WindowWrapper::GetFlags(const Arguments& args) {
+NAN_METHOD(sdl::WindowWrapper::GetFlags) {
 	HandleScope scope;
 
 	WindowWrapper* obj = ObjectWrap::Unwrap<WindowWrapper>(args.This());
   // TODO: Return an array of human-readable strings denoting each flag instead?
   // SDL documentation does not say this function can return an error code.
-	return scope.Close(Number::New(SDL_GetWindowFlags(obj->window_)));
+	return scope.Close(Nan::New<Number>(SDL_GetWindowFlags(obj->window_)));
 }
 
-Handle<Value> sdl::WindowWrapper::GetGammaRamp(const Arguments& args) {
+NAN_METHOD(sdl::WindowWrapper::GetGammaRamp) {
 	HandleScope scope;
 
 	WindowWrapper* obj = ObjectWrap::Unwrap<WindowWrapper>(args.This());
@@ -171,56 +171,56 @@ Handle<Value> sdl::WindowWrapper::GetGammaRamp(const Arguments& args) {
 	Handle<Array> jsGreenArr = Array::New(256);
 	Handle<Array> jsBlueArr = Array::New(256);
 	for(int i = 0; i < 256; i++) {
-		jsRedArr->Set(i, Number::New(redArr[i]));
-		jsGreenArr->Set(i, Number::New(greenArr[i]));
-		jsBlueArr->Set(i, Number::New(blueArr[i]));
+		Nan::Set(jsRedArr, i, Nan::New<Number>(redArr[i]));
+		Nan::Set(jsGreenArr, i, Nan::New<Number>(greenArr[i]));
+		Nan::Set(jsBlueArr, i, Nan::New<Number>(blueArr[i]));
 	}
 
-	ret->Set(0, jsRedArr);
-	ret->Set(1, jsGreenArr);
-	ret->Set(2, jsBlueArr);
+	Nan::Set(ret, 0, jsRedArr);
+	Nan::Set(ret, 1, jsGreenArr);
+	Nan::Set(ret, 2, jsBlueArr);
 	return scope.Close(ret);
 }
 
-Handle<Value> sdl::WindowWrapper::GetGrab(const Arguments& args) {
+NAN_METHOD(sdl::WindowWrapper::GetGrab) {
 	HandleScope scope;
 
 	WindowWrapper* obj = ObjectWrap::Unwrap<WindowWrapper>(args.This());
-	return scope.Close(Boolean::New(SDL_GetWindowGrab(obj->window_)));
+	return scope.Close(Nan::New<Boolean>(SDL_GetWindowGrab(obj->window_)));
 }
 
-Handle<Value> sdl::WindowWrapper::GetWindowID(const Arguments& args) {
+NAN_METHOD(sdl::WindowWrapper::GetWindowID) {
 	HandleScope scope;
 
 	WindowWrapper* obj = ObjectWrap::Unwrap<WindowWrapper>(args.This());
-	return scope.Close(Number::New(SDL_GetWindowID(obj->window_)));
+	return scope.Close(Nan::New<Number>(SDL_GetWindowID(obj->window_)));
 }
 
-Handle<Value> sdl::WindowWrapper::GetMaximumSize(const Arguments& args) {
+NAN_METHOD(sdl::WindowWrapper::GetMaximumSize) {
 	HandleScope scope;
 
 	WindowWrapper* obj = ObjectWrap::Unwrap<WindowWrapper>(args.This());
 	int w, h;
 	SDL_GetWindowMaximumSize(obj->window_, &w, &h);
 	Handle<Array> ret = Array::New(2);
-	ret->Set(0, Number::New(w));
-	ret->Set(1, Number::New(h));
+	Nan::Set(ret, 0, Nan::New<Number>(w));
+	Nan::Set(ret, 1, Nan::New<Number>(h));
 	return scope.Close(ret);
 }
 
-Handle<Value> sdl::WindowWrapper::GetMinimumSize(const Arguments& args) {
+NAN_METHOD(sdl::WindowWrapper::GetMinimumSize) {
 	HandleScope scope;
 
 	WindowWrapper* obj = ObjectWrap::Unwrap<WindowWrapper>(args.This());
 	int w, h;
 	SDL_GetWindowMinimumSize(obj->window_, &w, &h);
 	Handle<Array> ret = Array::New(2);
-	ret->Set(0, Number::New(w));
-	ret->Set(1, Number::New(h));
+	Nan::Set(ret, 0, Nan::New<Number>(w));
+	Nan::Set(ret, 1, Nan::New<Number>(h));
 	return scope.Close(ret);
 }
 
-Handle<Value> sdl::WindowWrapper::GetPixelFormat(const Arguments& args) {
+NAN_METHOD(sdl::WindowWrapper::GetPixelFormat) {
 	HandleScope scope;
 
 	WindowWrapper* obj = ObjectWrap::Unwrap<WindowWrapper>(args.This());
@@ -229,10 +229,10 @@ Handle<Value> sdl::WindowWrapper::GetPixelFormat(const Arguments& args) {
 		return ThrowSDLException("Window->GetPixelFormat");
 	}
 
-	return scope.Close(Number::New(ret));
+	return scope.Close(Nan::New<Number>(ret));
 }
 
-Handle<Value> sdl::WindowWrapper::GetPosition(const Arguments& args) {
+NAN_METHOD(sdl::WindowWrapper::GetPosition) {
 	HandleScope scope;
 
 	WindowWrapper* obj = ObjectWrap::Unwrap<WindowWrapper>(args.This());
@@ -240,12 +240,12 @@ Handle<Value> sdl::WindowWrapper::GetPosition(const Arguments& args) {
 	SDL_GetWindowPosition(obj->window_, &x, &y);
 
 	Handle<Array> ret = Array::New(2);
-	ret->Set(1, Number::New(x));
-	ret->Set(2, Number::New(y));
+	Nan::Set(ret, 1, Nan::New<Number>(x));
+	Nan::Set(ret, 2, Nan::New<Number>(y));
 	return scope.Close(ret);
 }
 
-Handle<Value> sdl::WindowWrapper::GetSize(const Arguments& args) {
+NAN_METHOD(sdl::WindowWrapper::GetSize) {
 	HandleScope scope;
 
 	WindowWrapper* obj = ObjectWrap::Unwrap<WindowWrapper>(args.This());
@@ -253,12 +253,12 @@ Handle<Value> sdl::WindowWrapper::GetSize(const Arguments& args) {
 	SDL_GetWindowSize(obj->window_, &w, &h);
 
 	Handle<Array> ret = Array::New(2);
-	ret->Set(1, Number::New(w));
-	ret->Set(2, Number::New(h));
+	Nan::Set(ret, 1, Nan::New<Number>(w));
+	Nan::Set(ret, 2, Nan::New<Number>(h));
 	return scope.Close(ret);
 }
 
-Handle<Value> sdl::WindowWrapper::GetSurface(const Arguments& args) {
+NAN_METHOD(sdl::WindowWrapper::GetSurface) {
 	HandleScope scope;
 
 	WindowWrapper* obj = ObjectWrap::Unwrap<WindowWrapper>(args.This());
@@ -267,20 +267,20 @@ Handle<Value> sdl::WindowWrapper::GetSurface(const Arguments& args) {
 		return ThrowSDLException("Window->GetSurface");
 	}
 
-	Handle<Object> ret = Object::New();
+	Handle<Object> ret = Nan::New<Object>();
 	SurfaceWrapper* wrap = new SurfaceWrapper(ret);
 	wrap->surface_ = surf;
 	return scope.Close(ret);
 }
 
-Handle<Value> sdl::WindowWrapper::GetTitle(const Arguments& args) {
+NAN_METHOD(sdl::WindowWrapper::GetTitle) {
 	HandleScope scope;
 
 	WindowWrapper* obj = ObjectWrap::Unwrap<WindowWrapper>(args.This());
-	return scope.Close(String::New(SDL_GetWindowTitle(obj->window_)));
+	return scope.Close(Nan::New<String>(SDL_GetWindowTitle(obj->window_)));
 }
 
-Handle<Value> sdl::WindowWrapper::Hide(const Arguments& args) {
+NAN_METHOD(sdl::WindowWrapper::Hide) {
 	HandleScope scope;
 
 	WindowWrapper* obj = ObjectWrap::Unwrap<WindowWrapper>(args.This());
@@ -288,7 +288,7 @@ Handle<Value> sdl::WindowWrapper::Hide(const Arguments& args) {
 	return Undefined();
 }
 
-Handle<Value> sdl::WindowWrapper::Show(const Arguments& args) {
+NAN_METHOD(sdl::WindowWrapper::Show) {
 	HandleScope scope;
 
 	WindowWrapper* obj = ObjectWrap::Unwrap<WindowWrapper>(args.This());
@@ -296,7 +296,7 @@ Handle<Value> sdl::WindowWrapper::Show(const Arguments& args) {
 	return Undefined();
 }
 
-Handle<Value> sdl::WindowWrapper::Maximize(const Arguments& args) {
+NAN_METHOD(sdl::WindowWrapper::Maximize) {
 	HandleScope scope;
 
 	WindowWrapper* obj = ObjectWrap::Unwrap<WindowWrapper>(args.This());
@@ -304,7 +304,7 @@ Handle<Value> sdl::WindowWrapper::Maximize(const Arguments& args) {
 	return Undefined();
 }
 
-Handle<Value> sdl::WindowWrapper::Minimize(const Arguments& args) {
+NAN_METHOD(sdl::WindowWrapper::Minimize) {
 	HandleScope scope;
 
 	WindowWrapper* obj = ObjectWrap::Unwrap<WindowWrapper>(args.This());
@@ -312,7 +312,7 @@ Handle<Value> sdl::WindowWrapper::Minimize(const Arguments& args) {
 	return Undefined();
 }
 
-Handle<Value> sdl::WindowWrapper::Raise(const Arguments& args) {
+NAN_METHOD(sdl::WindowWrapper::Raise) {
 	HandleScope scope;
 
 	WindowWrapper* obj = ObjectWrap::Unwrap<WindowWrapper>(args.This());
@@ -320,7 +320,7 @@ Handle<Value> sdl::WindowWrapper::Raise(const Arguments& args) {
 	return Undefined();
 }
 
-Handle<Value> sdl::WindowWrapper::Restore(const Arguments& args) {
+NAN_METHOD(sdl::WindowWrapper::Restore) {
 	HandleScope scope;
 
 	WindowWrapper* obj = ObjectWrap::Unwrap<WindowWrapper>(args.This());
@@ -328,7 +328,7 @@ Handle<Value> sdl::WindowWrapper::Restore(const Arguments& args) {
 	return Undefined();
 }
 
-Handle<Value> sdl::WindowWrapper::SetBordered(const Arguments& args) {
+NAN_METHOD(sdl::WindowWrapper::SetBordered) {
 	HandleScope scope;
 
 	WindowWrapper* obj = ObjectWrap::Unwrap<WindowWrapper>(args.This());
@@ -337,7 +337,7 @@ Handle<Value> sdl::WindowWrapper::SetBordered(const Arguments& args) {
 	return Undefined();
 }
 
-Handle<Value> sdl::WindowWrapper::SetBrightness(const Arguments& args) {
+NAN_METHOD(sdl::WindowWrapper::SetBrightness) {
 	HandleScope scope;
 
 	WindowWrapper* obj = ObjectWrap::Unwrap<WindowWrapper>(args.This());
@@ -353,12 +353,12 @@ Handle<Value> sdl::WindowWrapper::SetBrightness(const Arguments& args) {
 	return Undefined();
 }
 
-Handle<Value> sdl::WindowWrapper::SetDisplayMode(const Arguments& args) {
+NAN_METHOD(sdl::WindowWrapper::SetDisplayMode) {
 	HandleScope scope;
 
 	WindowWrapper* obj = ObjectWrap::Unwrap<WindowWrapper>(args.This());
 	if(args[0]->IsUndefined()) {
-		return ThrowException(Exception::TypeError(String::New("Invalid arguments: Expected SetDisplayMode(DisplayMode)")));
+		return ThrowException(Exception::TypeError(Nan::New<String>("Invalid arguments: Expected SetDisplayMode(DisplayMode)")));
 	}
 	SDL_DisplayMode* mode = UnwrapDisplayMode(args[0]);
 	int err = SDL_SetWindowDisplayMode(obj->window_, mode);
@@ -368,12 +368,12 @@ Handle<Value> sdl::WindowWrapper::SetDisplayMode(const Arguments& args) {
 	return Undefined();
 }
 
-Handle<Value> sdl::WindowWrapper::SetFullscreen(const Arguments& args) {
+NAN_METHOD(sdl::WindowWrapper::SetFullscreen) {
 	HandleScope scope;
 
 	WindowWrapper* obj = ObjectWrap::Unwrap<WindowWrapper>(args.This());
 	if(args[0]->IsUndefined()) {
-		return ThrowException(Exception::TypeError(String::New("Invalid arguments: Expected SetFullscreen(Number)")));
+		return ThrowException(Exception::TypeError(Nan::New<String>("Invalid arguments: Expected SetFullscreen(Number)")));
 	}
 	int fullscreen = args[0]->Int32Value();
 	int err = SDL_SetWindowFullscreen(obj->window_, fullscreen);
@@ -383,15 +383,15 @@ Handle<Value> sdl::WindowWrapper::SetFullscreen(const Arguments& args) {
 	return Undefined();
 }
 
-Handle<Value> sdl::WindowWrapper::SetGammaRamp(const Arguments& args) {
+NAN_METHOD(sdl::WindowWrapper::SetGammaRamp) {
 	HandleScope scope;
 
 	WindowWrapper* obj = ObjectWrap::Unwrap<WindowWrapper>(args.This());
 	if(args.Length() < 3 ) {
-		return ThrowException(Exception::TypeError(String::New("Invalid arguments: Expected SetGammaRamp(Array, Array, Array)")));
+		return ThrowException(Exception::TypeError(Nan::New<String>("Invalid arguments: Expected SetGammaRamp(Array, Array, Array)")));
 	}
 	if(!args[0]->IsArray() || !args[1]->IsArray() || !args[2]->IsArray()) {
-		return ThrowException(Exception::TypeError(String::New("Invalid arguments: Expected SetGammaRamp(Array, Array, Array)")));
+		return ThrowException(Exception::TypeError(Nan::New<String>("Invalid arguments: Expected SetGammaRamp(Array, Array, Array)")));
 	}
 
 	Handle<Array> red = Handle<Array>::Cast(args[0]);
@@ -413,24 +413,24 @@ Handle<Value> sdl::WindowWrapper::SetGammaRamp(const Arguments& args) {
 	return Undefined();
 }
 
-Handle<Value> sdl::WindowWrapper::SetGrab(const Arguments& args) {
+NAN_METHOD(sdl::WindowWrapper::SetGrab) {
 	HandleScope scope;
 
 	WindowWrapper* obj = ObjectWrap::Unwrap<WindowWrapper>(args.This());
 	if(args.Length() < 1) {
-		return ThrowException(Exception::TypeError(String::New("Invalid arguments: Expected SetGrab(Boolean)")));
+		return ThrowException(Exception::TypeError(Nan::New<String>("Invalid arguments: Expected SetGrab(Boolean)")));
 	}
 	bool grab = args[0]->ToBoolean()->BooleanValue();
 	SDL_SetWindowGrab(obj->window_, grab ? SDL_TRUE : SDL_FALSE);
 	return Undefined();
 }
 
-Handle<Value> sdl::WindowWrapper::SetIcon(const Arguments& args) {
+NAN_METHOD(sdl::WindowWrapper::SetIcon) {
 	HandleScope scope;
 
 	WindowWrapper* obj = ObjectWrap::Unwrap<WindowWrapper>(args.This());
 	if(args.Length() < 1) {
-		return ThrowException(Exception::TypeError(String::New("Invalid arguments: Expected SetIcon(Surface)")));
+		return ThrowException(Exception::TypeError(Nan::New<String>("Invalid arguments: Expected SetIcon(Surface)")));
 	}
 	SurfaceWrapper* wrap = ObjectWrap::Unwrap<SurfaceWrapper>(Handle<Object>::Cast(args[0]));
 	SDL_SetWindowIcon(obj->window_, wrap->surface_);
@@ -438,12 +438,12 @@ Handle<Value> sdl::WindowWrapper::SetIcon(const Arguments& args) {
 	return Undefined();
 }
 
-Handle<Value> sdl::WindowWrapper::SetMaximumSize(const Arguments& args) {
+NAN_METHOD(sdl::WindowWrapper::SetMaximumSize) {
 	HandleScope scope;
 
 	WindowWrapper* obj = ObjectWrap::Unwrap<WindowWrapper>(args.This());
 	if(args.Length() < 2) {
-		return ThrowException(Exception::TypeError(String::New("Invalid arguments: Expected SetMaximumSize(Number, Number)")));
+		return ThrowException(Exception::TypeError(Nan::New<String>("Invalid arguments: Expected SetMaximumSize(Number, Number)")));
 	}
 	int max_w = args[0]->Int32Value();
 	int max_h = args[0]->Int32Value();
@@ -451,12 +451,12 @@ Handle<Value> sdl::WindowWrapper::SetMaximumSize(const Arguments& args) {
 	return Undefined();
 }
 
-Handle<Value> sdl::WindowWrapper::SetMinimumSize(const Arguments& args) {
+NAN_METHOD(sdl::WindowWrapper::SetMinimumSize) {
 	HandleScope scope;
 
 	WindowWrapper* obj = ObjectWrap::Unwrap<WindowWrapper>(args.This());
 	if(args.Length() < 2) {
-		return ThrowException(Exception::TypeError(String::New("Invalid arguments: Expected SetMinimumSize(Number, Number)")));
+		return ThrowException(Exception::TypeError(Nan::New<String>("Invalid arguments: Expected SetMinimumSize(Number, Number)")));
 	}
 	int min_w = args[0]->Int32Value();
 	int min_h = args[0]->Int32Value();
@@ -464,12 +464,12 @@ Handle<Value> sdl::WindowWrapper::SetMinimumSize(const Arguments& args) {
 	return Undefined();
 }
 
-Handle<Value> sdl::WindowWrapper::SetPosition(const Arguments& args) {
+NAN_METHOD(sdl::WindowWrapper::SetPosition) {
 	HandleScope scope;
 
 	WindowWrapper* obj = ObjectWrap::Unwrap<WindowWrapper>(args.This());
 	if(args.Length() < 2) {
-		return ThrowException(Exception::TypeError(String::New("Invalid arguments: Expected SetPosition(Number, Number)")));
+		return ThrowException(Exception::TypeError(Nan::New<String>("Invalid arguments: Expected SetPosition(Number, Number)")));
 	}
 	int x = args[0]->Int32Value();
 	int y = args[0]->Int32Value();
@@ -477,12 +477,12 @@ Handle<Value> sdl::WindowWrapper::SetPosition(const Arguments& args) {
 	return Undefined();
 }
 
-Handle<Value> sdl::WindowWrapper::SetSize(const Arguments& args) {
+NAN_METHOD(sdl::WindowWrapper::SetSize) {
 	HandleScope scope;
 
 	WindowWrapper* obj = ObjectWrap::Unwrap<WindowWrapper>(args.This());
 	if(args.Length() < 2) {
-		return ThrowException(Exception::TypeError(String::New("Invalid arguments: Expected SetSize(Number, Number)")));
+		return ThrowException(Exception::TypeError(Nan::New<String>("Invalid arguments: Expected SetSize(Number, Number)")));
 	}
 	int w = args[0]->Int32Value();
 	int h = args[0]->Int32Value();
@@ -490,19 +490,19 @@ Handle<Value> sdl::WindowWrapper::SetSize(const Arguments& args) {
 	return Undefined();
 }
 
-Handle<Value> sdl::WindowWrapper::SetTitle(const Arguments& args) {
+NAN_METHOD(sdl::WindowWrapper::SetTitle) {
 	HandleScope scope;
 
 	WindowWrapper* obj = ObjectWrap::Unwrap<WindowWrapper>(args.This());
 	if(args.Length() < 1) {
-		return ThrowException(Exception::TypeError(String::New("Invalid arguments: Expected SetTitle(String)")));
+		return ThrowException(Exception::TypeError(Nan::New<String>("Invalid arguments: Expected SetTitle(String)")));
 	}
 	String::Utf8Value title(args[0]);
 	SDL_SetWindowTitle(obj->window_, *title);
 	return Undefined();
 }
 
-Handle<Value> sdl::WindowWrapper::UpdateWindowSurface(const Arguments& args) {
+NAN_METHOD(sdl::WindowWrapper::UpdateWindowSurface) {
 	HandleScope scope;
 
 	WindowWrapper* obj = ObjectWrap::Unwrap<WindowWrapper>(args.This());
@@ -513,12 +513,12 @@ Handle<Value> sdl::WindowWrapper::UpdateWindowSurface(const Arguments& args) {
 	return Undefined();
 }
 
-Handle<Value> sdl::WindowWrapper::UpdateWindowSurfaceRects(const Arguments& args) {
+NAN_METHOD(sdl::WindowWrapper::UpdateWindowSurfaceRects) {
 	HandleScope scope;
 
 	WindowWrapper* obj = ObjectWrap::Unwrap<WindowWrapper>(args.This());
 	if(args.Length() < 1) {
-		return ThrowException(Exception::TypeError(String::New("Invalid arguments: Expected UpdateWindowSurfaceRects(Array)")));
+		return ThrowException(Exception::TypeError(Nan::New<String>("Invalid arguments: Expected UpdateWindowSurfaceRects(Array)")));
 	}
 
 	Handle<Array> arr = Handle<Array>::Cast(args[0]);
@@ -537,7 +537,7 @@ Handle<Value> sdl::WindowWrapper::UpdateWindowSurfaceRects(const Arguments& args
 	return Undefined();
 }
 
-Handle<Value> sdl::WindowWrapper::Swap(const Arguments& args) {
+NAN_METHOD(sdl::WindowWrapper::Swap) {
 	HandleScope scope;
 
 	WindowWrapper* obj = ObjectWrap::Unwrap<WindowWrapper>(args.This());

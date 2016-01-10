@@ -18,38 +18,38 @@ namespace sdl {
 			~FontWrapper();
 
 			static void Init(v8::Handle<v8::Object> exports);
-			static v8::Handle<v8::Value> New(const v8::Arguments& args);
+			static NAN_METHOD(New);
 
-			static v8::Handle<v8::Value> RenderTextSolid(const v8::Arguments& args);
-			static v8::Handle<v8::Value> RenderUTF8Solid(const v8::Arguments& args);
-			static v8::Handle<v8::Value> RenderUnicodeSolid(const v8::Arguments& args);
-			static v8::Handle<v8::Value> RenderGlyphSolid(const v8::Arguments& args);
+			static NAN_METHOD(RenderTextSolid);
+			static NAN_METHOD(RenderUTF8Solid);
+			static NAN_METHOD(RenderUnicodeSolid);
+			static NAN_METHOD(RenderGlyphSolid);
 
-			static v8::Handle<v8::Value> RenderTextShaded(const v8::Arguments& args);
-			static v8::Handle<v8::Value> RenderUTF8Shaded(const v8::Arguments& args);
-			static v8::Handle<v8::Value> RenderUnicodeShaded(const v8::Arguments& args);
-			static v8::Handle<v8::Value> RenderGlyphShaded(const v8::Arguments& args);
+			static NAN_METHOD(RenderTextShaded);
+			static NAN_METHOD(RenderUTF8Shaded);
+			static NAN_METHOD(RenderUnicodeShaded);
+			static NAN_METHOD(RenderGlyphShaded);
 
-			static v8::Handle<v8::Value> RenderTextBlended(const v8::Arguments& args);
-			static v8::Handle<v8::Value> RenderUTF8Blended(const v8::Arguments& args);
-			static v8::Handle<v8::Value> RenderUnicodeBlended(const v8::Arguments& args);
-			static v8::Handle<v8::Value> RenderGlyphBlended(const v8::Arguments& args);
+			static NAN_METHOD(RenderTextBlended);
+			static NAN_METHOD(RenderUTF8Blended);
+			static NAN_METHOD(RenderUnicodeBlended);
+			static NAN_METHOD(RenderGlyphBlended);
 
 			TTF_Font* font_;
 		};
 
 		void Initialize(v8::Handle<v8::Object> exports);
 
-		v8::Handle<v8::Value> Init(const v8::Arguments& args);
-		v8::Handle<v8::Value> WasInit(const v8::Arguments& args);
-		v8::Handle<v8::Value> Quit(const v8::Arguments& args);
+		NAN_METHOD(Init);
+		NAN_METHOD(WasInit);
+		NAN_METHOD(Quit);
 
-		// v8::Handle<v8::Value> SetError(const v8::Arguments& args);
-		v8::Handle<v8::Value> GetError(const v8::Arguments& args);
+		// NAN_METHOD(SetError);
+		NAN_METHOD(GetError);
 
-		// v8::Handle<v8::Value> OpenFont(const v8::Arguments& args);
-		// v8::Handle<v8::Value> OpenFontIndex(const v8::Arguments& args);
-		// v8::Handle<v8::Value> CloseFont(const v8::Arguments& args);
+		// NAN_METHOD(OpenFont);
+		// NAN_METHOD(OpenFontIndex);
+		// NAN_METHOD(CloseFont);
 	}
 }
 

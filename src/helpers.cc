@@ -1,4 +1,5 @@
 #include <v8.h>
+#include <nan.h>
 #include <node.h>
 #include <node_buffer.h>
 #include "SDL.h"
@@ -14,92 +15,95 @@ namespace sdl {
 
     // Helper for formatting error exceptions
   Handle<Value> ThrowSDLException(const char* name) {
-    return ThrowException(MakeSDLException(name));
+    v8::Isolate* isolate  = v8::Isolate::New();
+    v8::Local<v8::Value> exception = MakeSDLException(name);
+    return isolate->ThrowException(exception);
+    // return v8::Isolate::ThrowException();
   }
 
   Local<Value> MakeSDLException(const char* name) {
     return Exception::Error(String::Concat(
-      String::Concat(String::New(name), String::New(": ")),
-      String::New(SDL_GetError())
+      String::Concat(Nan::New<String>(name).ToLocalChecked(), Nan::New<String>(": ").ToLocalChecked()),
+      Nan::New<String>(SDL_GetError()).ToLocalChecked()
       ));
   }
 
-  char* BufferData(Buffer *b) {
-    return Buffer::Data(b->handle_);
-  }
+  // char* BufferData(Nan::MaybeLocal<v8::Object> *b) {
+  //   return Buffer::Data(b->handle_);
+  // }
 
-  size_t BufferLength(Buffer *b) {
-    return Buffer::Length(b->handle_);
-  }
+  // size_t BufferLength(Nan::MaybeLocal<v8::Object> *b) {
+  //   return Buffer::Length(b->handle_);
+  // }
 
-  char* BufferData(Local<Object> buf_obj) {
-    return Buffer::Data(buf_obj);
-  }
+  // char* BufferData(Local<Object> buf_obj) {
+  //   return Buffer::Data(buf_obj);
+  // }
 
-  size_t BufferLength(Local<Object> buf_obj) {
-    return Buffer::Length(buf_obj);
-  }
+  // size_t BufferLength(Local<Object> buf_obj) {
+  //   return Buffer::Length(buf_obj);
+  // }
 
   Local<Object> SDLEventToJavascriptObject(const SDL_Event& event) {
-    Local<Object> evt = Object::New();
+    Local<Object> evt = Nan::New<Object>();
 
     switch (event.type) {
       case SDL_KEYDOWN:
       case SDL_KEYUP:
-        evt->Set(String::New("type"), String::New(event.type == SDL_KEYDOWN ? "KEYDOWN" : "KEYUP"));
-        evt->Set(String::New("scancode"), Number::New(event.key.keysym.scancode));
-        evt->Set(String::New("sym"), Number::New(event.key.keysym.sym));
-        evt->Set(String::New("mod"), Number::New(event.key.keysym.mod));
-        evt->Set(String::New("repeat"), Boolean::New(event.key.repeat > 0 ? true : false));
+        Nan::Set(evt, Nan::New<String>("type").ToLocalChecked(), Nan::New<String>(event.type == SDL_KEYDOWN ? "KEYDOWN" : "KEYUP").ToLocalChecked());
+        Nan::Set(evt, Nan::New<String>("scancode").ToLocalChecked(), Nan::New<Number>(event.key.keysym.scancode));
+        Nan::Set(evt, Nan::New<String>("sym").ToLocalChecked(), Nan::New<Number>(event.key.keysym.sym));
+        Nan::Set(evt, Nan::New<String>("mod").ToLocalChecked(), Nan::New<Number>(event.key.keysym.mod));
+        Nan::Set(evt, Nan::New<String>("repeat").ToLocalChecked(), Nan::New<Boolean>(event.key.repeat > 0 ? true : false));
       break;
       case SDL_MOUSEMOTION:
-        evt->Set(String::New("type"), String::New("MOUSEMOTION"));
-        evt->Set(String::New("state"), Number::New(event.motion.state));
-        evt->Set(String::New("which"), Number::New(event.motion.which));
-        evt->Set(String::New("x"), Number::New(event.motion.x));
-        evt->Set(String::New("y"), Number::New(event.motion.y));
-        evt->Set(String::New("xrel"), Number::New(event.motion.xrel));
-        evt->Set(String::New("yrel"), Number::New(event.motion.yrel));
+        Nan::Set(evt, Nan::New<String>("type").ToLocalChecked(), Nan::New<String>("MOUSEMOTION").ToLocalChecked());
+        Nan::Set(evt, Nan::New<String>("state").ToLocalChecked(), Nan::New<Number>(event.motion.state));
+        Nan::Set(evt, Nan::New<String>("which").ToLocalChecked(), Nan::New<Number>(event.motion.which));
+        Nan::Set(evt, Nan::New<String>("x").ToLocalChecked(), Nan::New<Number>(event.motion.x));
+        Nan::Set(evt, Nan::New<String>("y").ToLocalChecked(), Nan::New<Number>(event.motion.y));
+        Nan::Set(evt, Nan::New<String>("xrel").ToLocalChecked(), Nan::New<Number>(event.motion.xrel));
+        Nan::Set(evt, Nan::New<String>("yrel").ToLocalChecked(), Nan::New<Number>(event.motion.yrel));
       break;
       case SDL_MOUSEBUTTONDOWN:
       case SDL_MOUSEBUTTONUP:
-        evt->Set(String::New("type"), String::New(event.type == SDL_MOUSEBUTTONDOWN ? "MOUSEBUTTONDOWN" : "MOUSEBUTTONUP"));
-        evt->Set(String::New("button"), Number::New(event.button.button));
-        evt->Set(String::New("which"), Number::New(event.button.which));
-        evt->Set(String::New("x"), Number::New(event.button.x));
-        evt->Set(String::New("y"), Number::New(event.button.y));
+        Nan::Set(evt, Nan::New<String>("type").ToLocalChecked(), Nan::New<String>(event.type == SDL_MOUSEBUTTONDOWN ? "MOUSEBUTTONDOWN" : "MOUSEBUTTONUP").ToLocalChecked());
+        Nan::Set(evt, Nan::New<String>("button").ToLocalChecked(), Nan::New<Number>(event.button.button));
+        Nan::Set(evt, Nan::New<String>("which").ToLocalChecked(), Nan::New<Number>(event.button.which));
+        Nan::Set(evt, Nan::New<String>("x").ToLocalChecked(), Nan::New<Number>(event.button.x));
+        Nan::Set(evt, Nan::New<String>("y").ToLocalChecked(), Nan::New<Number>(event.button.y));
       break;
       case SDL_JOYAXISMOTION:
-        evt->Set(String::New("type"), String::New("JOYAXISMOTION"));
-        evt->Set(String::New("which"), Number::New(event.jaxis.which));
-        evt->Set(String::New("axis"), Number::New(event.jaxis.axis));
-        evt->Set(String::New("value"), Number::New(event.jaxis.value));
+        Nan::Set(evt, Nan::New<String>("type").ToLocalChecked(), Nan::New<String>("JOYAXISMOTION").ToLocalChecked());
+        Nan::Set(evt, Nan::New<String>("which").ToLocalChecked(), Nan::New<Number>(event.jaxis.which));
+        Nan::Set(evt, Nan::New<String>("axis").ToLocalChecked(), Nan::New<Number>(event.jaxis.axis));
+        Nan::Set(evt, Nan::New<String>("value").ToLocalChecked(), Nan::New<Number>(event.jaxis.value));
       break;
       case SDL_JOYBALLMOTION:
-        evt->Set(String::New("type"), String::New("JOYBALLMOTION"));
-        evt->Set(String::New("which"), Number::New(event.jball.which));
-        evt->Set(String::New("ball"), Number::New(event.jball.ball));
-        evt->Set(String::New("xrel"), Number::New(event.jball.xrel));
-        evt->Set(String::New("yrel"), Number::New(event.jball.yrel));
+        Nan::Set(evt, Nan::New<String>("type").ToLocalChecked(), Nan::New<String>("JOYBALLMOTION").ToLocalChecked());
+        Nan::Set(evt, Nan::New<String>("which").ToLocalChecked(), Nan::New<Number>(event.jball.which));
+        Nan::Set(evt, Nan::New<String>("ball").ToLocalChecked(), Nan::New<Number>(event.jball.ball));
+        Nan::Set(evt, Nan::New<String>("xrel").ToLocalChecked(), Nan::New<Number>(event.jball.xrel));
+        Nan::Set(evt, Nan::New<String>("yrel").ToLocalChecked(), Nan::New<Number>(event.jball.yrel));
       break;
       case SDL_JOYHATMOTION:
-        evt->Set(String::New("type"), String::New("JOYHATMOTION"));
-        evt->Set(String::New("which"), Number::New(event.jhat.which));
-        evt->Set(String::New("hat"), Number::New(event.jhat.hat));
-        evt->Set(String::New("value"), Number::New(event.jhat.value));
+        Nan::Set(evt, Nan::New<String>("type").ToLocalChecked(), Nan::New<String>("JOYHATMOTION").ToLocalChecked());
+        Nan::Set(evt, Nan::New<String>("which").ToLocalChecked(), Nan::New<Number>(event.jhat.which));
+        Nan::Set(evt, Nan::New<String>("hat").ToLocalChecked(), Nan::New<Number>(event.jhat.hat));
+        Nan::Set(evt, Nan::New<String>("value").ToLocalChecked(), Nan::New<Number>(event.jhat.value));
       break;
       case SDL_JOYBUTTONDOWN:
       case SDL_JOYBUTTONUP:
-        evt->Set(String::New("type"), String::New(event.type == SDL_JOYBUTTONDOWN ? "JOYBUTTONDOWN" : "JOYBUTTONUP"));
-        evt->Set(String::New("which"), Number::New(event.jbutton.which));
-        evt->Set(String::New("button"), Number::New(event.jbutton.button));
+        Nan::Set(evt, Nan::New<String>("type").ToLocalChecked(), Nan::New<String>(event.type == SDL_JOYBUTTONDOWN ? "JOYBUTTONDOWN" : "JOYBUTTONUP").ToLocalChecked());
+        Nan::Set(evt, Nan::New<String>("which").ToLocalChecked(), Nan::New<Number>(event.jbutton.which));
+        Nan::Set(evt, Nan::New<String>("button").ToLocalChecked(), Nan::New<Number>(event.jbutton.button));
       break;
       case SDL_QUIT:
-        evt->Set(String::New("type"), String::New("QUIT"));
+        Nan::Set(evt, Nan::New<String>("type").ToLocalChecked(), Nan::New<String>("QUIT").ToLocalChecked());
       break;
       default:
-        evt->Set(String::New("type"), String::New("UNKNOWN"));
-        evt->Set(String::New("typeCode"), Number::New(event.type));
+        Nan::Set(evt, Nan::New<String>("type").ToLocalChecked(), Nan::New<String>("UNKNOWN").ToLocalChecked());
+        Nan::Set(evt, Nan::New<String>("typeCode").ToLocalChecked(), Nan::New<Number>(event.type));
       break;
     }
 
@@ -107,11 +111,11 @@ namespace sdl {
   }
 
   Local<Object> SDLDisplayModeToJavascriptObject(const SDL_DisplayMode& mode) {
-    Local<Object> jsMode = Object::New();
-    jsMode->Set(String::New("format"), Number::New(mode.format));
-    jsMode->Set(String::New("w"), Number::New(mode.w));
-    jsMode->Set(String::New("h"), Number::New(mode.h));
-    jsMode->Set(String::New("refreshRate"), Number::New(mode.refresh_rate));
+    Local<Object> jsMode = Nan::New<Object>();
+    Nan::Set(jsMode, Nan::New<String>("format").ToLocalChecked(), Nan::New<Number>(mode.format));
+    Nan::Set(jsMode, Nan::New<String>("w").ToLocalChecked(), Nan::New<Number>(mode.w));
+    Nan::Set(jsMode, Nan::New<String>("h").ToLocalChecked(), Nan::New<Number>(mode.h));
+    Nan::Set(jsMode, Nan::New<String>("refreshRate").ToLocalChecked(), Nan::New<Number>(mode.refresh_rate));
     return jsMode;
   }
 

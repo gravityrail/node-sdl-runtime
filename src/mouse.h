@@ -22,31 +22,31 @@ namespace sdl {
 		~CursorWrapper();
 
 		static void Init(v8::Handle<v8::Object> exports);
-		static v8::Handle<v8::Value> New(const v8::Arguments& args);
-		static v8::Handle<v8::Value> NewSystem(const v8::Arguments& args);
+		static NAN_METHOD(New);
+		static NAN_METHOD(NewSystem);
 
-		static v8::Handle<v8::Value> FreeCursor(const v8::Arguments& args);
-		static v8::Handle<v8::Value> SetCursor(const v8::Arguments& args);
+		static NAN_METHOD(FreeCursor);
+		static NAN_METHOD(SetCursor);
 
 		SDL_Cursor* cursor_;
 	};
 
-	// v8::Handle<v8::Value> CreateCursor(const v8::Arguments& args);
-	// v8::Handle<v8::Value> CreateSystemCursor(const v8::Arguments& args);
+	// NAN_METHOD(CreateCursor);
+	// NAN_METHOD(CreateSystemCursor);
 
-	v8::Handle<v8::Value> ShowCursor(const v8::Arguments& args);
-	v8::Handle<v8::Value> GetCursor(const v8::Arguments& args);
-	v8::Handle<v8::Value> GetDefaultCursor(const v8::Arguments& args);
-	v8::Handle<v8::Value> GetMouseFocus(const v8::Arguments& args);
-	v8::Handle<v8::Value> GetMouseState(const v8::Arguments& args);
-	v8::Handle<v8::Value> GetRelativeMouseMode(const v8::Arguments& args);
-	v8::Handle<v8::Value> GetRelativeMouseState(const v8::Arguments& args);
+	NAN_METHOD(ShowCursor);
+	NAN_METHOD(GetCursor);
+	NAN_METHOD(GetDefaultCursor);
+	NAN_METHOD(GetMouseFocus);
+	NAN_METHOD(GetMouseState);
+	NAN_METHOD(GetRelativeMouseMode);
+	NAN_METHOD(GetRelativeMouseState);
 
-	v8::Handle<v8::Value> SetRelativeMouseMode(const v8::Arguments& args);
+	NAN_METHOD(SetRelativeMouseMode);
 
-	v8::Handle<v8::Value> WarpMouseInWindow(const v8::Arguments& args);
+	NAN_METHOD(WarpMouseInWindow);
 
-	v8::Handle<v8::Value> ButtonMacroWrapper(const v8::Arguments& args);
+	NAN_METHOD(ButtonMacroWrapper);
 }
 
 #endif

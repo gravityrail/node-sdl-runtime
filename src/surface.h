@@ -17,44 +17,44 @@ namespace sdl {
 	    ~SurfaceWrapper();
 
 	    static void Init(v8::Handle<v8::Object> exports);
-	    static v8::Handle<v8::Value> New(const v8::Arguments& args);
+	    static NAN_METHOD(New);
 
-	    static v8::Handle<v8::Value> LoadBMP(const v8::Arguments& args);
-	    static v8::Handle<v8::Value> LoadBMPRW(const v8::Arguments& args);
-	    static v8::Handle<v8::Value> SaveBMP(const v8::Arguments& args);
-	    static v8::Handle<v8::Value> SaveBMPRW(const v8::Arguments& args);
+	    static NAN_METHOD(LoadBMP);
+	    static NAN_METHOD(LoadBMPRW);
+	    static NAN_METHOD(SaveBMP);
+	    static NAN_METHOD(SaveBMPRW);
 
-	    static v8::Handle<v8::Value> BlitScaled(const v8::Arguments& args);
-	    static v8::Handle<v8::Value> BlitSurface(const v8::Arguments& args);
-	    static v8::Handle<v8::Value> LowerBlit(const v8::Arguments& args);
-	    static v8::Handle<v8::Value> LowerBlitScaled(const v8::Arguments& args);
-	    static v8::Handle<v8::Value> ConvertSurface(const v8::Arguments& args);
-	    static v8::Handle<v8::Value> ConvertSurfaceFormat(const v8::Arguments& args);
+	    static NAN_METHOD(BlitScaled);
+	    static NAN_METHOD(BlitSurface);
+	    static NAN_METHOD(LowerBlit);
+	    static NAN_METHOD(LowerBlitScaled);
+	    static NAN_METHOD(ConvertSurface);
+	    static NAN_METHOD(ConvertSurfaceFormat);
 
-	    static v8::Handle<v8::Value> FillRect(const v8::Arguments& args);
-	    static v8::Handle<v8::Value> FillRects(const v8::Arguments& args);
+	    static NAN_METHOD(FillRect);
+	    static NAN_METHOD(FillRects);
 
-	    static v8::Handle<v8::Value> GetClipRect(const v8::Arguments& args);
-	    static v8::Handle<v8::Value> GetColorKey(const v8::Arguments& args);
-	    static v8::Handle<v8::Value> GetAlphaMod(const v8::Arguments& args);
-	    static v8::Handle<v8::Value> GetBlendMode(const v8::Arguments& args);
-	    static v8::Handle<v8::Value> GetColorMod(const v8::Arguments& args);
-	    static v8::Handle<v8::Value> GetWidth(const v8::Arguments& args);
-	    static v8::Handle<v8::Value> GetHeight(const v8::Arguments& args);
-	    static v8::Handle<v8::Value> GetPitch(const v8::Arguments& args);
-	    static v8::Handle<v8::Value> GetPixelFormat(const v8::Arguments& args);
+	    static NAN_METHOD(GetClipRect);
+	    static NAN_METHOD(GetColorKey);
+	    static NAN_METHOD(GetAlphaMod);
+	    static NAN_METHOD(GetBlendMode);
+	    static NAN_METHOD(GetColorMod);
+	    static NAN_METHOD(GetWidth);
+	    static NAN_METHOD(GetHeight);
+	    static NAN_METHOD(GetPitch);
+	    static NAN_METHOD(GetPixelFormat);
 
-	    static v8::Handle<v8::Value> SetClipRect(const v8::Arguments& args);
-	    static v8::Handle<v8::Value> SetColorKey(const v8::Arguments& args);
-	    static v8::Handle<v8::Value> SetAlphaMod(const v8::Arguments& args);
-	    static v8::Handle<v8::Value> SetBlendMode(const v8::Arguments& args);
-	    static v8::Handle<v8::Value> SetColorMod(const v8::Arguments& args);
-	    static v8::Handle<v8::Value> SetPalette(const v8::Arguments& args);
-	    static v8::Handle<v8::Value> SetRLE(const v8::Arguments& args);
+	    static NAN_METHOD(SetClipRect);
+	    static NAN_METHOD(SetColorKey);
+	    static NAN_METHOD(SetAlphaMod);
+	    static NAN_METHOD(SetBlendMode);
+	    static NAN_METHOD(SetColorMod);
+	    static NAN_METHOD(SetPalette);
+	    static NAN_METHOD(SetRLE);
 
-	    static v8::Handle<v8::Value> Lock(const v8::Arguments& args);
-	    static v8::Handle<v8::Value> Unlock(const v8::Arguments& args);
-	    static v8::Handle<v8::Value> MustLock(const v8::Arguments& args);
+	    static NAN_METHOD(Lock);
+	    static NAN_METHOD(Unlock);
+	    static NAN_METHOD(MustLock);
 
 		SDL_Surface* surface_;
 	};

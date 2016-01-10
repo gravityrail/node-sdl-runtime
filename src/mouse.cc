@@ -24,33 +24,33 @@ void sdl::mouse::Init(Handle<Object> exports) {
 
 	NODE_SET_METHOD(exports, "button", ButtonMacroWrapper);
 
-	Handle<Object> SYSTEM_CURSOR = Object::New();
-	exports->Set(String::NewSymbol("SYSTEM_CURSOR"), SYSTEM_CURSOR);
-	SYSTEM_CURSOR->Set(String::NewSymbol("ARROW"), Number::New(SDL_SYSTEM_CURSOR_ARROW));
-	SYSTEM_CURSOR->Set(String::NewSymbol("IBEAM"), Number::New(SDL_SYSTEM_CURSOR_IBEAM));
-	SYSTEM_CURSOR->Set(String::NewSymbol("WAIT"), Number::New(SDL_SYSTEM_CURSOR_WAIT));
-	SYSTEM_CURSOR->Set(String::NewSymbol("CROSSHAIR"), Number::New(SDL_SYSTEM_CURSOR_CROSSHAIR));
-	SYSTEM_CURSOR->Set(String::NewSymbol("WAITARROW"), Number::New(SDL_SYSTEM_CURSOR_WAITARROW));
-	SYSTEM_CURSOR->Set(String::NewSymbol("SIZENWSE"), Number::New(SDL_SYSTEM_CURSOR_SIZENWSE));
-	SYSTEM_CURSOR->Set(String::NewSymbol("SIZENESW"), Number::New(SDL_SYSTEM_CURSOR_SIZENESW));
-	SYSTEM_CURSOR->Set(String::NewSymbol("SIZEWE"), Number::New(SDL_SYSTEM_CURSOR_SIZEWE));
-	SYSTEM_CURSOR->Set(String::NewSymbol("SIZENS"), Number::New(SDL_SYSTEM_CURSOR_SIZENS));
-	SYSTEM_CURSOR->Set(String::NewSymbol("SIZEALL"), Number::New(SDL_SYSTEM_CURSOR_SIZEALL));
-	SYSTEM_CURSOR->Set(String::NewSymbol("NO"), Number::New(SDL_SYSTEM_CURSOR_NO));
-	SYSTEM_CURSOR->Set(String::NewSymbol("HAND"), Number::New(SDL_SYSTEM_CURSOR_HAND));
+	Handle<Object> SYSTEM_CURSOR = Nan::New<Object>();
+	Nan::Set(exports, Nan::New<String>("SYSTEM_CURSOR"), SYSTEM_CURSOR);
+	Nan::Set(SYSTEM_CURSOR, Nan::New<String>("ARROW"), Nan::New<Number>(SDL_SYSTEM_CURSOR_ARROW));
+	Nan::Set(SYSTEM_CURSOR, Nan::New<String>("IBEAM"), Nan::New<Number>(SDL_SYSTEM_CURSOR_IBEAM));
+	Nan::Set(SYSTEM_CURSOR, Nan::New<String>("WAIT"), Nan::New<Number>(SDL_SYSTEM_CURSOR_WAIT));
+	Nan::Set(SYSTEM_CURSOR, Nan::New<String>("CROSSHAIR"), Nan::New<Number>(SDL_SYSTEM_CURSOR_CROSSHAIR));
+	Nan::Set(SYSTEM_CURSOR, Nan::New<String>("WAITARROW"), Nan::New<Number>(SDL_SYSTEM_CURSOR_WAITARROW));
+	Nan::Set(SYSTEM_CURSOR, Nan::New<String>("SIZENWSE"), Nan::New<Number>(SDL_SYSTEM_CURSOR_SIZENWSE));
+	Nan::Set(SYSTEM_CURSOR, Nan::New<String>("SIZENESW"), Nan::New<Number>(SDL_SYSTEM_CURSOR_SIZENESW));
+	Nan::Set(SYSTEM_CURSOR, Nan::New<String>("SIZEWE"), Nan::New<Number>(SDL_SYSTEM_CURSOR_SIZEWE));
+	Nan::Set(SYSTEM_CURSOR, Nan::New<String>("SIZENS"), Nan::New<Number>(SDL_SYSTEM_CURSOR_SIZENS));
+	Nan::Set(SYSTEM_CURSOR, Nan::New<String>("SIZEALL"), Nan::New<Number>(SDL_SYSTEM_CURSOR_SIZEALL));
+	Nan::Set(SYSTEM_CURSOR, Nan::New<String>("NO"), Nan::New<Number>(SDL_SYSTEM_CURSOR_NO));
+	Nan::Set(SYSTEM_CURSOR, Nan::New<String>("HAND"), Nan::New<Number>(SDL_SYSTEM_CURSOR_HAND));
 
-	Handle<Object> BUTTON = Object::New();
-	exports->Set(String::NewSymbol("BUTTON"), BUTTON);
-	BUTTON->Set(String::NewSymbol("LEFT"), Number::New(SDL_BUTTON_LEFT));
-	BUTTON->Set(String::NewSymbol("MIDDLE"), Number::New(SDL_BUTTON_MIDDLE));
-	BUTTON->Set(String::NewSymbol("RIGHT"), Number::New(SDL_BUTTON_RIGHT));
-	BUTTON->Set(String::NewSymbol("X1"), Number::New(SDL_BUTTON_X1));
-	BUTTON->Set(String::NewSymbol("X2"), Number::New(SDL_BUTTON_X2));
-	BUTTON->Set(String::NewSymbol("LMASK"), Number::New(SDL_BUTTON_LMASK));
-	BUTTON->Set(String::NewSymbol("MMASK"), Number::New(SDL_BUTTON_MMASK));
-	BUTTON->Set(String::NewSymbol("RMASK"), Number::New(SDL_BUTTON_RMASK));
-	BUTTON->Set(String::NewSymbol("X1MASK"), Number::New(SDL_BUTTON_X1MASK));
-	BUTTON->Set(String::NewSymbol("X2MASK"), Number::New(SDL_BUTTON_X2MASK));
+	Handle<Object> BUTTON = Nan::New<Object>();
+	Nan::Set(exports, Nan::New<String>("BUTTON"), BUTTON);
+	Nan::Set(BUTTON, Nan::New<String>("LEFT"), Nan::New<Number>(SDL_BUTTON_LEFT));
+	Nan::Set(BUTTON, Nan::New<String>("MIDDLE"), Nan::New<Number>(SDL_BUTTON_MIDDLE));
+	Nan::Set(BUTTON, Nan::New<String>("RIGHT"), Nan::New<Number>(SDL_BUTTON_RIGHT));
+	Nan::Set(BUTTON, Nan::New<String>("X1"), Nan::New<Number>(SDL_BUTTON_X1));
+	Nan::Set(BUTTON, Nan::New<String>("X2"), Nan::New<Number>(SDL_BUTTON_X2));
+	Nan::Set(BUTTON, Nan::New<String>("LMASK"), Nan::New<Number>(SDL_BUTTON_LMASK));
+	Nan::Set(BUTTON, Nan::New<String>("MMASK"), Nan::New<Number>(SDL_BUTTON_MMASK));
+	Nan::Set(BUTTON, Nan::New<String>("RMASK"), Nan::New<Number>(SDL_BUTTON_RMASK));
+	Nan::Set(BUTTON, Nan::New<String>("X1MASK"), Nan::New<Number>(SDL_BUTTON_X1MASK));
+	Nan::Set(BUTTON, Nan::New<String>("X2MASK"), Nan::New<Number>(SDL_BUTTON_X2MASK));
 }
 
 Persistent<FunctionTemplate> sdl::CursorWrapper::wrap_template_;
@@ -72,37 +72,37 @@ void sdl::CursorWrapper::Init(Handle<Object> exports) {
 	wrap_template_ = Persistent<FunctionTemplate>::New(tpl);
 
 	wrap_template_->InstanceTemplate()->SetInternalFieldCount(1);
-	wrap_template_->SetClassName(String::NewSymbol("CursorWrapper"));
+	wrap_template_->SetClassName(Nan::New<String>("CursorWrapper"));
 
 	NODE_SET_PROTOTYPE_METHOD(wrap_template_, "free", FreeCursor);
 	NODE_SET_PROTOTYPE_METHOD(wrap_template_, "set", SetCursor);
 
-	exports->Set(String::NewSymbol("Cursor"), wrap_template_->GetFunction());
+	Nan::Set(exports, Nan::New<String>("Cursor"), wrap_template_->GetFunction());
 
 	// System cursor wrapper.
 	tpl = FunctionTemplate::New(NewSystem);
 	wrap_template_system_ = Persistent<FunctionTemplate>::New(tpl);
 
 	wrap_template_system_->InstanceTemplate()->SetInternalFieldCount(1);
-	wrap_template_system_->SetClassName(String::NewSymbol("SystemCursorWrapper"));
+	wrap_template_system_->SetClassName(Nan::New<String>("SystemCursorWrapper"));
 
 	NODE_SET_PROTOTYPE_METHOD(wrap_template_system_, "free", FreeCursor);
 	NODE_SET_PROTOTYPE_METHOD(wrap_template_system_, "set", SetCursor);
 
-	exports->Set(String::NewSymbol("SystemCursor"), wrap_template_system_->GetFunction());
+	Nan::Set(exports, Nan::New<String>("SystemCursor"), wrap_template_system_->GetFunction());
 }
 
-Handle<Value> sdl::CursorWrapper::New(const Arguments& args) {
+NAN_METHOD(sdl::CursorWrapper::New) {
 	if(!args.IsConstructCall()) {
 		return ThrowException(Exception::TypeError(
-			String::New("A new Cursor must be created with the new operator.")));
+			Nan::New<String>("A new Cursor must be created with the new operator.")));
 	}
 
 	HandleScope scope;
 
 	if(args.Length() < 3) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: Expected CreateColorCursor(Surface, Number, Number)")));
+			Nan::New<String>("Invalid arguments: Expected CreateColorCursor(Surface, Number, Number)")));
 	}
 
 	SurfaceWrapper* surface = ObjectWrap::Unwrap<SurfaceWrapper>(Handle<Object>::Cast(args[0]));
@@ -119,17 +119,17 @@ Handle<Value> sdl::CursorWrapper::New(const Arguments& args) {
 
 	return args.This();
 }
-Handle<Value> sdl::CursorWrapper::NewSystem(const Arguments& args) {
+NAN_METHOD(sdl::CursorWrapper::NewSystem) {
 	if(!args.IsConstructCall()) {
 		return ThrowException(Exception::TypeError(
-			String::New("A new Cursor must be created with the new operator.")));
+			Nan::New<String>("A new Cursor must be created with the new operator.")));
 	}
 
 	HandleScope scope;
 
 	if(args.Length() < 1) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: Expected CreateColorCursor(Number)")));
+			Nan::New<String>("Invalid arguments: Expected CreateColorCursor(Number)")));
 	}
 
 	SDL_SystemCursor id = static_cast<SDL_SystemCursor>(args[0]->Int32Value());
@@ -147,12 +147,12 @@ Handle<Value> sdl::CursorWrapper::NewSystem(const Arguments& args) {
 
 // TODO: Implement this function. See:
 //       http://wiki.libsdl.org/SDL_CreateCursor?highlight=%28\bCategoryMouse\b%29|%28CategoryEnum%29|%28CategoryStruct%29
-// Handle<Value> sdl::CreateCursor(const Arguments& args) {
+// NAN_METHOD(sdl::CreateCursor) {
 // 	HandleScope scope;
 
 // 	return Undefined();
 // }
-Handle<Value> sdl::CursorWrapper::FreeCursor(const Arguments& args) {
+NAN_METHOD(sdl::CursorWrapper::FreeCursor) {
 	HandleScope scope;
 
 	CursorWrapper* wrap = ObjectWrap::Unwrap<CursorWrapper>(args.This());
@@ -161,7 +161,7 @@ Handle<Value> sdl::CursorWrapper::FreeCursor(const Arguments& args) {
 
 	return Undefined();
 }
-Handle<Value> sdl::CursorWrapper::SetCursor(const Arguments& args) {
+NAN_METHOD(sdl::CursorWrapper::SetCursor) {
 	HandleScope scope;
 
 	CursorWrapper* wrap = ObjectWrap::Unwrap<CursorWrapper>(args.This());
@@ -170,12 +170,12 @@ Handle<Value> sdl::CursorWrapper::SetCursor(const Arguments& args) {
 	return Undefined();
 }
 
-Handle<Value> sdl::ShowCursor(const Arguments& args) {
+NAN_METHOD(sdl::ShowCursor) {
 	HandleScope scope;
 
 	if(args.Length() < 1) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: Expected Cursor.show(Number)")));
+			Nan::New<String>("Invalid arguments: Expected Cursor.show(Number)")));
 	}
 
 	int toggle = args[0]->Int32Value();
@@ -184,9 +184,9 @@ Handle<Value> sdl::ShowCursor(const Arguments& args) {
 		return ThrowSDLException(__func__);
 	}
 
-	return scope.Close(Number::New(err));
+	return scope.Close(Nan::New<Number>(err));
 }
-Handle<Value> sdl::GetCursor(const Arguments& args) {
+NAN_METHOD(sdl::GetCursor) {
 	HandleScope scope;
 
 	SDL_Cursor* cursor = SDL_GetCursor();
@@ -194,13 +194,13 @@ Handle<Value> sdl::GetCursor(const Arguments& args) {
 		return Null();
 	}
 
-	Handle<Object> toWrap = Object::New();
+	Handle<Object> toWrap = Nan::New<Object>();
 	CursorWrapper* wrap = new CursorWrapper(toWrap);
 	wrap->cursor_ = cursor;
 
 	return scope.Close(toWrap);
 }
-Handle<Value> sdl::GetDefaultCursor(const Arguments& args) {
+NAN_METHOD(sdl::GetDefaultCursor) {
 	HandleScope scope;
 
 	SDL_Cursor* cursor = SDL_GetDefaultCursor();
@@ -208,7 +208,7 @@ Handle<Value> sdl::GetDefaultCursor(const Arguments& args) {
 		return ThrowSDLException(__func__);
 	}
 
-	Handle<Object> toWrap = Object::New();
+	Handle<Object> toWrap = Nan::New<Object>();
 	CursorWrapper* wrap = new CursorWrapper(toWrap);
 	wrap->cursor_ = cursor;
 
@@ -216,7 +216,7 @@ Handle<Value> sdl::GetDefaultCursor(const Arguments& args) {
 
 	return Undefined();
 }
-Handle<Value> sdl::GetMouseFocus(const Arguments& args) {
+NAN_METHOD(sdl::GetMouseFocus) {
 	HandleScope scope;
 
 	SDL_Window* window = SDL_GetMouseFocus();
@@ -224,52 +224,52 @@ Handle<Value> sdl::GetMouseFocus(const Arguments& args) {
 		return ThrowSDLException(__func__);
 	}
 
-	Handle<Object> toWrap = Object::New();
+	Handle<Object> toWrap = Nan::New<Object>();
 	WindowWrapper* wrap = new WindowWrapper(toWrap);
 	wrap->window_ = window;
 
 	return scope.Close(toWrap);
 }
-Handle<Value> sdl::GetMouseState(const Arguments& args) {
+NAN_METHOD(sdl::GetMouseState) {
 	HandleScope scope;
 
 	int x, y;
 	uint32_t mask = SDL_GetMouseState(&x, &y);
 
 	Handle<Array> ret = Array::New(3);
-	ret->Set(0, Number::New(x));
-	ret->Set(1, Number::New(y));
-	ret->Set(2, Number::New(mask));
+	Nan::Set(ret, 0, Nan::New<Number>(x));
+	Nan::Set(ret, 1, Nan::New<Number>(y));
+	Nan::Set(ret, 2, Nan::New<Number>(mask));
 
 	return scope.Close(ret);
 }
-Handle<Value> sdl::GetRelativeMouseMode(const Arguments& args) {
+NAN_METHOD(sdl::GetRelativeMouseMode) {
 	HandleScope scope;
 
 	SDL_bool ret = SDL_GetRelativeMouseMode();
 
-	return scope.Close(Boolean::New(ret ? true : false));
+	return scope.Close(Nan::New<Boolean>(ret ? true : false));
 }
-Handle<Value> sdl::GetRelativeMouseState(const Arguments& args) {
+NAN_METHOD(sdl::GetRelativeMouseState) {
 	HandleScope scope;
 
 	int x, y;
 	uint32_t mask = SDL_GetRelativeMouseState(&x, &y);
 
 	Handle<Array> ret = Array::New(3);
-	ret->Set(0, Number::New(x));
-	ret->Set(1, Number::New(y));
-	ret->Set(2, Number::New(mask));
+	Nan::Set(ret, 0, Nan::New<Number>(x));
+	Nan::Set(ret, 1, Nan::New<Number>(y));
+	Nan::Set(ret, 2, Nan::New<Number>(mask));
 
 	return scope.Close(ret);
 }
 
-Handle<Value> sdl::SetRelativeMouseMode(const Arguments& args) {
+NAN_METHOD(sdl::SetRelativeMouseMode) {
 	HandleScope scope;
 
 	if(args.Length() < 1) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: Expected SetRelativeMouseMode(Boolean)")));
+			Nan::New<String>("Invalid arguments: Expected SetRelativeMouseMode(Boolean)")));
 	}
 
 	bool enabled = args[0]->BooleanValue();
@@ -281,12 +281,12 @@ Handle<Value> sdl::SetRelativeMouseMode(const Arguments& args) {
 	return Undefined();
 }
 
-Handle<Value> sdl::WarpMouseInWindow(const Arguments& args) {
+NAN_METHOD(sdl::WarpMouseInWindow) {
 	HandleScope scope;
 
 	if(args.Length() < 3) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: Expected WarpMouseInWindow(Window, Number, Number)")));
+			Nan::New<String>("Invalid arguments: Expected WarpMouseInWindow(Window, Number, Number)")));
 	}
 
 	WindowWrapper* window = ObjectWrap::Unwrap<WindowWrapper>(Handle<Object>::Cast(args[0]));
@@ -297,16 +297,16 @@ Handle<Value> sdl::WarpMouseInWindow(const Arguments& args) {
 	return Undefined();
 }
 
-Handle<Value> sdl::ButtonMacroWrapper(const Arguments& args) {
+NAN_METHOD(sdl::ButtonMacroWrapper) {
 	HandleScope scope;
 
 	if(args.Length() < 1) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: Expected button(Number)")));
+			Nan::New<String>("Invalid arguments: Expected button(Number)")));
 	}
 
 	int button = args[0]->Int32Value();
 	int ret = SDL_BUTTON(button);
 
-	return scope.Close(Number::New(ret));
+	return scope.Close(Nan::New<Number>(ret));
 }

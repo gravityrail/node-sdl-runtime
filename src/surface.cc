@@ -27,7 +27,7 @@ void sdl::SurfaceWrapper::Init(Handle<Object> exports) {
 	wrap_template_ = Persistent<FunctionTemplate>::New(tpl);
 
 	wrap_template_->InstanceTemplate()->SetInternalFieldCount(1);
-	wrap_template_->SetClassName(String::NewSymbol("SurfaceWrapper"));
+	wrap_template_->SetClassName(Nan::New<String>("SurfaceWrapper"));
 
 	NODE_SET_PROTOTYPE_METHOD(wrap_template_, "loadBMP", LoadBMP);
 	NODE_SET_PROTOTYPE_METHOD(wrap_template_, "loadBMPRW", LoadBMPRW);
@@ -66,12 +66,12 @@ void sdl::SurfaceWrapper::Init(Handle<Object> exports) {
 	NODE_SET_PROTOTYPE_METHOD(wrap_template_, "unlock", Unlock);
 	NODE_SET_PROTOTYPE_METHOD(wrap_template_, "mustLock", MustLock);
 
-	exports->Set(String::NewSymbol("Surface"), wrap_template_->GetFunction());
+	Nan::Set(exports, Nan::New<String>("Surface"), wrap_template_->GetFunction());
 }
-Handle<Value> sdl::SurfaceWrapper::New(const Arguments& args) {
+NAN_METHOD(sdl::SurfaceWrapper::New) {
 	if(!args.IsConstructCall()) {
 		return ThrowException(Exception::TypeError(
-			String::New("Use the new operator to create instances of a Surface.")));
+			Nan::New<String>("Use the new operator to create instances of a Surface.")));
 	}
 
 	HandleScope scope;
@@ -84,7 +84,7 @@ Handle<Value> sdl::SurfaceWrapper::New(const Arguments& args) {
 	else {
 		if(args.Length() < 2) {
 			return ThrowException(Exception::TypeError(
-				String::New("Invalid arguments: expected new sdl.Surface(Number, Number)")));
+				Nan::New<String>("Invalid arguments: expected new sdl.Surface(Number, Number)")));
 		}
 
 		int flags = 0;
@@ -115,12 +115,12 @@ Handle<Value> sdl::SurfaceWrapper::New(const Arguments& args) {
 	}
 }
 
-Handle<Value> sdl::SurfaceWrapper::LoadBMP(const Arguments& args) {
+NAN_METHOD(sdl::SurfaceWrapper::LoadBMP) {
 	HandleScope scope;
 
 	if(args.Length() < 1) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: expected loadBMP(String)")));
+			Nan::New<String>("Invalid arguments: expected loadBMP(String)")));
 	}
 
 	String::Utf8Value file(args[0]);
@@ -131,22 +131,22 @@ Handle<Value> sdl::SurfaceWrapper::LoadBMP(const Arguments& args) {
 
 	SurfaceWrapper* obj = new SurfaceWrapper();
 	obj->surface_ = surface;
-	Handle<Object> ret = Object::New();
+	Handle<Object> ret = Nan::New<Object>();
 	obj->Wrap(ret);
 
 	return scope.Close(ret);
 }
-Handle<Value> sdl::SurfaceWrapper::LoadBMPRW(const Arguments& args) {
+NAN_METHOD(sdl::SurfaceWrapper::LoadBMPRW) {
 	// TODO: Implement LoadBMPRW.
 	return ThrowException(Exception::TypeError(
-		String::New("LoadBMPRW is not implemented yet.")));
+		Nan::New<String>("LoadBMPRW is not implemented yet.")));
 }
-Handle<Value> sdl::SurfaceWrapper::SaveBMP(const Arguments& args) {
+NAN_METHOD(sdl::SurfaceWrapper::SaveBMP) {
 	HandleScope scope;
 
 	if(args.Length() < 2) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: expected saveBMP(Surface, String)")));
+			Nan::New<String>("Invalid arguments: expected saveBMP(Surface, String)")));
 	}
 
 	SurfaceWrapper* wrap = ObjectWrap::Unwrap<SurfaceWrapper>(Handle<Object>::Cast(args[0]));
@@ -158,18 +158,18 @@ Handle<Value> sdl::SurfaceWrapper::SaveBMP(const Arguments& args) {
 
 	return Undefined();
 }
-Handle<Value> sdl::SurfaceWrapper::SaveBMPRW(const Arguments& args) {
+NAN_METHOD(sdl::SurfaceWrapper::SaveBMPRW) {
 	// TODO Implement SaveBMPRW.
 	return ThrowException(Exception::TypeError(
-		String::New("SaveBMPRW is not implemented yet.")));
+		Nan::New<String>("SaveBMPRW is not implemented yet.")));
 }
 
-Handle<Value> sdl::SurfaceWrapper::BlitScaled(const Arguments& args) {
+NAN_METHOD(sdl::SurfaceWrapper::BlitScaled) {
 	HandleScope scope;
 
 	if(args.Length() < 1) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: expected blitScaled(Surface, Rect[, Rect])")));
+			Nan::New<String>("Invalid arguments: expected blitScaled(Surface, Rect[, Rect])")));
 	}
 
 	SurfaceWrapper* obj = ObjectWrap::Unwrap<SurfaceWrapper>(Handle<Object>::Cast(args.This()));
@@ -186,12 +186,12 @@ Handle<Value> sdl::SurfaceWrapper::BlitScaled(const Arguments& args) {
 
 	return Undefined();
 }
-Handle<Value> sdl::SurfaceWrapper::BlitSurface(const Arguments& args) {
+NAN_METHOD(sdl::SurfaceWrapper::BlitSurface) {
 	HandleScope scope;
 
 	if(args.Length() < 2) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: expected blitSurface(Surface, Rect[, Rect])")));
+			Nan::New<String>("Invalid arguments: expected blitSurface(Surface, Rect[, Rect])")));
 	}
 
 	SurfaceWrapper* obj = ObjectWrap::Unwrap<SurfaceWrapper>(Handle<Object>::Cast(args.This()));
@@ -205,12 +205,12 @@ Handle<Value> sdl::SurfaceWrapper::BlitSurface(const Arguments& args) {
 
 	return Undefined();
 }
-Handle<Value> sdl::SurfaceWrapper::LowerBlit(const Arguments& args) {
+NAN_METHOD(sdl::SurfaceWrapper::LowerBlit) {
 	HandleScope scope;
 
 	if(args.Length() < 2) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: expected lowerBlit(Surface, Rect[, Rect])")));
+			Nan::New<String>("Invalid arguments: expected lowerBlit(Surface, Rect[, Rect])")));
 	}
 
 	SurfaceWrapper* obj = ObjectWrap::Unwrap<SurfaceWrapper>(Handle<Object>::Cast(args.This()));
@@ -224,12 +224,12 @@ Handle<Value> sdl::SurfaceWrapper::LowerBlit(const Arguments& args) {
 
 	return Undefined();
 }
-Handle<Value> sdl::SurfaceWrapper::LowerBlitScaled(const Arguments& args) {
+NAN_METHOD(sdl::SurfaceWrapper::LowerBlitScaled) {
 	HandleScope scope;
 
 	if(args.Length() < 1) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: expected lowerBlitScaled(Surface, Rect[, Rect])")));
+			Nan::New<String>("Invalid arguments: expected lowerBlitScaled(Surface, Rect[, Rect])")));
 	}
 
 	SurfaceWrapper* obj = ObjectWrap::Unwrap<SurfaceWrapper>(Handle<Object>::Cast(args.This()));
@@ -246,12 +246,12 @@ Handle<Value> sdl::SurfaceWrapper::LowerBlitScaled(const Arguments& args) {
 
 	return Undefined();
 }
-Handle<Value> sdl::SurfaceWrapper::ConvertSurface(const Arguments& args) {
+NAN_METHOD(sdl::SurfaceWrapper::ConvertSurface) {
 	HandleScope scope;
 
 	if(args.Length() < 1) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: expected convertSurface(PixelFormat)")));
+			Nan::New<String>("Invalid arguments: expected convertSurface(PixelFormat)")));
 	}
 
 	SurfaceWrapper* self = ObjectWrap::Unwrap<SurfaceWrapper>(Handle<Object>::Cast(args.This()));
@@ -263,16 +263,16 @@ Handle<Value> sdl::SurfaceWrapper::ConvertSurface(const Arguments& args) {
 
 	SurfaceWrapper* obj = new SurfaceWrapper();
 	obj->surface_ = ret;
-	Handle<Object> objRet = Object::New();
+	Handle<Object> objRet = Nan::New<Object>();
 	obj->Wrap(objRet);
 	return scope.Close(objRet);
 }
-Handle<Value> sdl::SurfaceWrapper::ConvertSurfaceFormat(const Arguments& args) {
+NAN_METHOD(sdl::SurfaceWrapper::ConvertSurfaceFormat) {
 	HandleScope scope;
 
 	if(args.Length() < 1) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: expected convertSurfaceFormat(Number)")));
+			Nan::New<String>("Invalid arguments: expected convertSurfaceFormat(Number)")));
 	}
 
 	SurfaceWrapper* self = ObjectWrap::Unwrap<SurfaceWrapper>(Handle<Object>::Cast(args.This()));
@@ -284,17 +284,17 @@ Handle<Value> sdl::SurfaceWrapper::ConvertSurfaceFormat(const Arguments& args) {
 
 	SurfaceWrapper* obj = new SurfaceWrapper();
 	obj->surface_ = ret;
-	Handle<Object> objRet = Object::New();
+	Handle<Object> objRet = Nan::New<Object>();
 	obj->Wrap(objRet);
 	return scope.Close(objRet);
 }
 
-Handle<Value> sdl::SurfaceWrapper::FillRect(const Arguments& args) {
+NAN_METHOD(sdl::SurfaceWrapper::FillRect) {
 	HandleScope scope;
 
 	if(args.Length() < 1) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: expected fillRect(Number[, Rect])")));
+			Nan::New<String>("Invalid arguments: expected fillRect(Number[, Rect])")));
 	}
 
 	Handle<Object> handleObj = Handle<Object>::Cast(args.This());
@@ -308,12 +308,12 @@ Handle<Value> sdl::SurfaceWrapper::FillRect(const Arguments& args) {
 
 	return Undefined();
 }
-Handle<Value> sdl::SurfaceWrapper::FillRects(const Arguments& args) {
+NAN_METHOD(sdl::SurfaceWrapper::FillRects) {
 	HandleScope scope;
 
 	if(args.Length() < 2) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: expected fillRect(Number, Array)")));
+			Nan::New<String>("Invalid arguments: expected fillRect(Number, Array)")));
 	}
 
 	SurfaceWrapper* self = ObjectWrap::Unwrap<SurfaceWrapper>(Handle<Object>::Cast(args.This()));
@@ -334,7 +334,7 @@ Handle<Value> sdl::SurfaceWrapper::FillRects(const Arguments& args) {
 	return Undefined();
 }
 
-Handle<Value> sdl::SurfaceWrapper::GetClipRect(const Arguments& args) {
+NAN_METHOD(sdl::SurfaceWrapper::GetClipRect) {
 	HandleScope scope;
 
 	SurfaceWrapper* self = ObjectWrap::Unwrap<SurfaceWrapper>(Handle<Object>::Cast(args.This()));
@@ -345,7 +345,7 @@ Handle<Value> sdl::SurfaceWrapper::GetClipRect(const Arguments& args) {
 
 	return scope.Close(ret);
 }
-Handle<Value> sdl::SurfaceWrapper::GetColorKey(const Arguments& args) {
+NAN_METHOD(sdl::SurfaceWrapper::GetColorKey) {
 	HandleScope scope;
 
 	SurfaceWrapper* self = ObjectWrap::Unwrap<SurfaceWrapper>(Handle<Object>::Cast(args.This()));
@@ -355,9 +355,9 @@ Handle<Value> sdl::SurfaceWrapper::GetColorKey(const Arguments& args) {
 		return ThrowSDLException(__func__);
 	}
 
-	return scope.Close(Number::New(colorKey));
+	return scope.Close(Nan::New<Number>(colorKey));
 }
-Handle<Value> sdl::SurfaceWrapper::GetAlphaMod(const Arguments& args) {
+NAN_METHOD(sdl::SurfaceWrapper::GetAlphaMod) {
 	HandleScope scope;
 
 	SurfaceWrapper* self = ObjectWrap::Unwrap<SurfaceWrapper>(Handle<Object>::Cast(args.This()));
@@ -367,9 +367,9 @@ Handle<Value> sdl::SurfaceWrapper::GetAlphaMod(const Arguments& args) {
 		return ThrowSDLException(__func__);
 	}
 
-	return scope.Close(Number::New(alphaMod));
+	return scope.Close(Nan::New<Number>(alphaMod));
 }
-Handle<Value> sdl::SurfaceWrapper::GetBlendMode(const Arguments& args) {
+NAN_METHOD(sdl::SurfaceWrapper::GetBlendMode) {
 	HandleScope scope;
 
 	SurfaceWrapper* self = ObjectWrap::Unwrap<SurfaceWrapper>(Handle<Object>::Cast(args.This()));
@@ -379,9 +379,9 @@ Handle<Value> sdl::SurfaceWrapper::GetBlendMode(const Arguments& args) {
 		return ThrowSDLException(__func__);
 	}
 
-	return scope.Close(Number::New(mode));
+	return scope.Close(Nan::New<Number>(mode));
 }
-Handle<Value> sdl::SurfaceWrapper::GetColorMod(const Arguments& args) {
+NAN_METHOD(sdl::SurfaceWrapper::GetColorMod) {
 	HandleScope scope;
 
 	SurfaceWrapper* self = ObjectWrap::Unwrap<SurfaceWrapper>(Handle<Object>::Cast(args.This()));
@@ -392,51 +392,51 @@ Handle<Value> sdl::SurfaceWrapper::GetColorMod(const Arguments& args) {
 	}
 
 	Handle<Array> ret = Array::New(3);
-	ret->Set(0, Number::New(r));
-	ret->Set(1, Number::New(g));
-	ret->Set(2, Number::New(b));
+	Nan::Set(ret, 0, Nan::New<Number>(r));
+	Nan::Set(ret, 1, Nan::New<Number>(g));
+	Nan::Set(ret, 2, Nan::New<Number>(b));
 	return scope.Close(ret);
 }
-Handle<Value> sdl::SurfaceWrapper::GetWidth(const Arguments& args) {
+NAN_METHOD(sdl::SurfaceWrapper::GetWidth) {
 	HandleScope scope;
 	SurfaceWrapper* self = ObjectWrap::Unwrap<SurfaceWrapper>(Handle<Object>::Cast(args.This()));
-	return scope.Close(Number::New(self->surface_->w));
+	return scope.Close(Nan::New<Number>(self->surface_->w));
 }
-Handle<Value> sdl::SurfaceWrapper::GetHeight(const Arguments& args) {
+NAN_METHOD(sdl::SurfaceWrapper::GetHeight) {
 	HandleScope scope;
 	SurfaceWrapper* self = ObjectWrap::Unwrap<SurfaceWrapper>(Handle<Object>::Cast(args.This()));
-	return scope.Close(Number::New(self->surface_->h));
+	return scope.Close(Nan::New<Number>(self->surface_->h));
 }
-Handle<Value> sdl::SurfaceWrapper::GetPitch(const Arguments& args) {
+NAN_METHOD(sdl::SurfaceWrapper::GetPitch) {
 	HandleScope scope;
 	SurfaceWrapper* self = ObjectWrap::Unwrap<SurfaceWrapper>(Handle<Object>::Cast(args.This()));
-	return scope.Close(Number::New(self->surface_->pitch));
+	return scope.Close(Nan::New<Number>(self->surface_->pitch));
 }
-Handle<Value> sdl::SurfaceWrapper::GetPixelFormat(const Arguments& args) {
+NAN_METHOD(sdl::SurfaceWrapper::GetPixelFormat) {
 	HandleScope scope;
 	SurfaceWrapper* self = ObjectWrap::Unwrap<SurfaceWrapper>(Handle<Object>::Cast(args.This()));
 	return scope.Close(WrapPixelFormat(self->surface_->format));
 }
 
-Handle<Value> sdl::SurfaceWrapper::SetClipRect(const Arguments& args) {
+NAN_METHOD(sdl::SurfaceWrapper::SetClipRect) {
 	HandleScope scope;
 
 	if(args.Length() < 1) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: expected setClipRect(Rect)")));
+			Nan::New<String>("Invalid arguments: expected setClipRect(Rect)")));
 	}
 	SurfaceWrapper* self = ObjectWrap::Unwrap<SurfaceWrapper>(Handle<Object>::Cast(args.This()));
 	RectWrapper* clip = ObjectWrap::Unwrap<RectWrapper>(Handle<Object>::Cast(args[0]));
 	SDL_bool ret = SDL_SetClipRect(self->surface_, clip->wrapped);
 
-	return scope.Close(Boolean::New(ret));
+	return scope.Close(Nan::New<Boolean>(ret));
 }
-Handle<Value> sdl::SurfaceWrapper::SetColorKey(const Arguments& args) {
+NAN_METHOD(sdl::SurfaceWrapper::SetColorKey) {
 	HandleScope scope;
 
 	if(args.Length() < 2) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: expected setColorKey(Boolean, Number)")));
+			Nan::New<String>("Invalid arguments: expected setColorKey(Boolean, Number)")));
 	}
 	SurfaceWrapper* self = ObjectWrap::Unwrap<SurfaceWrapper>(Handle<Object>::Cast(args.This()));
 	int flag = args[0]->BooleanValue() ? 1 : 0;
@@ -448,12 +448,12 @@ Handle<Value> sdl::SurfaceWrapper::SetColorKey(const Arguments& args) {
 
 	return Undefined();
 }
-Handle<Value> sdl::SurfaceWrapper::SetAlphaMod(const Arguments& args) {
+NAN_METHOD(sdl::SurfaceWrapper::SetAlphaMod) {
 	HandleScope scope;
 
 	if(args.Length() < 1) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: expected setAlphaMod(Number)")));
+			Nan::New<String>("Invalid arguments: expected setAlphaMod(Number)")));
 	}
 	SurfaceWrapper* self = ObjectWrap::Unwrap<SurfaceWrapper>(Handle<Object>::Cast(args.This()));
 	uint8_t alpha = static_cast<uint8_t>(args[0]->Int32Value());
@@ -464,12 +464,12 @@ Handle<Value> sdl::SurfaceWrapper::SetAlphaMod(const Arguments& args) {
 
 	return Undefined();
 }
-Handle<Value> sdl::SurfaceWrapper::SetBlendMode(const Arguments& args) {
+NAN_METHOD(sdl::SurfaceWrapper::SetBlendMode) {
 	HandleScope scope;
 
 	if(args.Length() < 1) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: expected setBlendMode(Number)")));
+			Nan::New<String>("Invalid arguments: expected setBlendMode(Number)")));
 	}
 	SurfaceWrapper* self = ObjectWrap::Unwrap<SurfaceWrapper>(Handle<Object>::Cast(args.This()));
 	SDL_BlendMode mode = static_cast<SDL_BlendMode>(args[0]->Int32Value());
@@ -480,12 +480,12 @@ Handle<Value> sdl::SurfaceWrapper::SetBlendMode(const Arguments& args) {
 
 	return Undefined();
 }
-Handle<Value> sdl::SurfaceWrapper::SetColorMod(const Arguments& args) {
+NAN_METHOD(sdl::SurfaceWrapper::SetColorMod) {
 	HandleScope scope;
 
 	if(args.Length() < 3) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: expected setColorMod(Number, Number, Number)")));
+			Nan::New<String>("Invalid arguments: expected setColorMod(Number, Number, Number)")));
 	}
 	SurfaceWrapper* self = ObjectWrap::Unwrap<SurfaceWrapper>(Handle<Object>::Cast(args.This()));
 	uint8_t r = static_cast<uint8_t>(args[0]->Int32Value());
@@ -498,12 +498,12 @@ Handle<Value> sdl::SurfaceWrapper::SetColorMod(const Arguments& args) {
 
 	return Undefined();
 }
-Handle<Value> sdl::SurfaceWrapper::SetPalette(const Arguments& args) {
+NAN_METHOD(sdl::SurfaceWrapper::SetPalette) {
 	HandleScope scope;
 
 	if(args.Length() < 1) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: expected setPalette(Palette)")));
+			Nan::New<String>("Invalid arguments: expected setPalette(Palette)")));
 	}
 	SurfaceWrapper* self = ObjectWrap::Unwrap<SurfaceWrapper>(Handle<Object>::Cast(args.This()));
 	SDL_Palette* palette = UnwrapPalette(Handle<Object>::Cast(args[0]));
@@ -514,12 +514,12 @@ Handle<Value> sdl::SurfaceWrapper::SetPalette(const Arguments& args) {
 
 	return Undefined();
 }
-Handle<Value> sdl::SurfaceWrapper::SetRLE(const Arguments& args) {
+NAN_METHOD(sdl::SurfaceWrapper::SetRLE) {
 	HandleScope scope;
 
 	if(args.Length() < 1) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: expected setRLE(Number)")));
+			Nan::New<String>("Invalid arguments: expected setRLE(Number)")));
 	}
 	SurfaceWrapper* self = ObjectWrap::Unwrap<SurfaceWrapper>(Handle<Object>::Cast(args.This()));
 	int flags = args[0]->Int32Value();
@@ -531,7 +531,7 @@ Handle<Value> sdl::SurfaceWrapper::SetRLE(const Arguments& args) {
 	return Undefined();
 }
 
-Handle<Value> sdl::SurfaceWrapper::Lock(const Arguments& args) {
+NAN_METHOD(sdl::SurfaceWrapper::Lock) {
 	HandleScope scope;
 
 	SurfaceWrapper* self = ObjectWrap::Unwrap<SurfaceWrapper>(Handle<Object>::Cast(args.This()));
@@ -542,7 +542,7 @@ Handle<Value> sdl::SurfaceWrapper::Lock(const Arguments& args) {
 
 	return Undefined();
 }
-Handle<Value> sdl::SurfaceWrapper::Unlock(const Arguments& args) {
+NAN_METHOD(sdl::SurfaceWrapper::Unlock) {
 	HandleScope scope;
 
 	SurfaceWrapper* self = ObjectWrap::Unwrap<SurfaceWrapper>(Handle<Object>::Cast(args.This()));
@@ -550,9 +550,9 @@ Handle<Value> sdl::SurfaceWrapper::Unlock(const Arguments& args) {
 
 	return Undefined();
 }
-Handle<Value> sdl::SurfaceWrapper::MustLock(const Arguments& args) {
+NAN_METHOD(sdl::SurfaceWrapper::MustLock) {
 	HandleScope scope;
 
 	SurfaceWrapper* self = ObjectWrap::Unwrap<SurfaceWrapper>(Handle<Object>::Cast(args.This()));
-	return scope.Close(Boolean::New(SDL_MUSTLOCK(self->surface_)));
+	return scope.Close(Nan::New<Boolean>(SDL_MUSTLOCK(self->surface_)));
 }

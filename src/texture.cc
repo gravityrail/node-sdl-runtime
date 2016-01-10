@@ -34,7 +34,7 @@ void sdl::TextureWrapper::Init(Handle<Object> exports) {
 	texture_wrap_template_ = Persistent<FunctionTemplate>::New(tpl);
 
 	texture_wrap_template_->InstanceTemplate()->SetInternalFieldCount(1);
-	texture_wrap_template_->SetClassName(String::NewSymbol("TextureWrapper"));
+	texture_wrap_template_->SetClassName(Nan::New<String>("TextureWrapper"));
 
 	NODE_SET_PROTOTYPE_METHOD(texture_wrap_template_, "getAlphaMod", GetAlphaMod);
 	NODE_SET_PROTOTYPE_METHOD(texture_wrap_template_, "getBlendMode", GetBlendMode);
@@ -53,14 +53,14 @@ void sdl::TextureWrapper::Init(Handle<Object> exports) {
 
 	NODE_SET_PROTOTYPE_METHOD(texture_wrap_template_, "update", Update);
 
-	exports->Set(String::NewSymbol("Texture"), texture_wrap_template_->GetFunction());
+	Nan::Set(exports, Nan::New<String>("Texture"), texture_wrap_template_->GetFunction());
 }
 
-Handle<Value> sdl::TextureWrapper::New(const Arguments& args) {
+NAN_METHOD(sdl::TextureWrapper::New) {
 	// std::cout << "Texture::New - Checking for constructor call." << std::endl;
 	if(!args.IsConstructCall()) {
 		return ThrowException(Exception::TypeError(
-			String::New("Use the new operator to create instances of a Texture.")));
+			Nan::New<String>("Use the new operator to create instances of a Texture.")));
 	}
 
 	HandleScope scope;
@@ -88,7 +88,7 @@ Handle<Value> sdl::TextureWrapper::New(const Arguments& args) {
 	}
 	else {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: expecting new sdl.Texture(Renderer, Surface) or new sdl.Texture(Renderer, Number, Number, Number, Number)")));
+			Nan::New<String>("Invalid arguments: expecting new sdl.Texture(Renderer, Surface) or new sdl.Texture(Renderer, Number, Number, Number, Number)")));
 	}
 	if(NULL == tex) {
 		return ThrowSDLException(__func__);
@@ -105,7 +105,7 @@ Handle<Value> sdl::TextureWrapper::New(const Arguments& args) {
 	return args.This();
 }
 
-Handle<Value> sdl::TextureWrapper::GetAlphaMod(const Arguments& args) {
+NAN_METHOD(sdl::TextureWrapper::GetAlphaMod) {
 	HandleScope scope;
 
 	uint8_t alpha;
@@ -115,9 +115,9 @@ Handle<Value> sdl::TextureWrapper::GetAlphaMod(const Arguments& args) {
 		return ThrowSDLException(__func__);
 	}
 
-	return scope.Close(Number::New(alpha));
+	return scope.Close(Nan::New<Number>(alpha));
 }
-Handle<Value> sdl::TextureWrapper::GetBlendMode(const Arguments& args) {
+NAN_METHOD(sdl::TextureWrapper::GetBlendMode) {
 	HandleScope scope;
 
 	SDL_BlendMode mode;
@@ -127,9 +127,9 @@ Handle<Value> sdl::TextureWrapper::GetBlendMode(const Arguments& args) {
 		return ThrowSDLException(__func__);
 	}
 
-	return scope.Close(Number::New(mode));
+	return scope.Close(Nan::New<Number>(mode));
 }
-Handle<Value> sdl::TextureWrapper::GetColorMod(const Arguments& args) {
+NAN_METHOD(sdl::TextureWrapper::GetColorMod) {
 	HandleScope scope;
 
 	uint8_t r, g, b;
@@ -139,14 +139,14 @@ Handle<Value> sdl::TextureWrapper::GetColorMod(const Arguments& args) {
 		return ThrowSDLException(__func__);
 	}
 
-	Handle<Object> ret = Object::New();
-	ret->Set(String::NewSymbol("r"), Number::New(r));
-	ret->Set(String::NewSymbol("g"), Number::New(g));
-	ret->Set(String::NewSymbol("b"), Number::New(b));
+	Handle<Object> ret = Nan::New<Object>();
+	Nan::Set(ret, Nan::New<String>("r"), Nan::New<Number>(r));
+	Nan::Set(ret, Nan::New<String>("g"), Nan::New<Number>(g));
+	Nan::Set(ret, Nan::New<String>("b"), Nan::New<Number>(b));
 
 	return scope.Close(ret);
 }
-Handle<Value> sdl::TextureWrapper::GetFormat(const Arguments& args) {
+NAN_METHOD(sdl::TextureWrapper::GetFormat) {
 	HandleScope scope;
 
 	uint32_t format;
@@ -156,9 +156,9 @@ Handle<Value> sdl::TextureWrapper::GetFormat(const Arguments& args) {
 		return ThrowSDLException(__func__);
 	}
 
-	return scope.Close(Number::New(format));
+	return scope.Close(Nan::New<Number>(format));
 }
-Handle<Value> sdl::TextureWrapper::GetSize(const Arguments& args) {
+NAN_METHOD(sdl::TextureWrapper::GetSize) {
 	HandleScope scope;
 
 	int access;
@@ -168,9 +168,9 @@ Handle<Value> sdl::TextureWrapper::GetSize(const Arguments& args) {
 		return ThrowSDLException(__func__);
 	}
 
-	return scope.Close(Number::New(access));
+	return scope.Close(Nan::New<Number>(access));
 }
-Handle<Value> sdl::TextureWrapper::GetWidth(const Arguments& args) {
+NAN_METHOD(sdl::TextureWrapper::GetWidth) {
 	HandleScope scope;
 
 	int width;
@@ -180,9 +180,9 @@ Handle<Value> sdl::TextureWrapper::GetWidth(const Arguments& args) {
 		return ThrowSDLException(__func__);
 	}
 
-	return scope.Close(Number::New(width));
+	return scope.Close(Nan::New<Number>(width));
 }
-Handle<Value> sdl::TextureWrapper::GetHeight(const Arguments& args) {
+NAN_METHOD(sdl::TextureWrapper::GetHeight) {
 	HandleScope scope;
 
 	int height;
@@ -192,15 +192,15 @@ Handle<Value> sdl::TextureWrapper::GetHeight(const Arguments& args) {
 		return ThrowSDLException(__func__);
 	}
 
-	return scope.Close(Number::New(height));
+	return scope.Close(Nan::New<Number>(height));
 }
 
-Handle<Value> sdl::TextureWrapper::SetAlphaMod(const Arguments& args) {
+NAN_METHOD(sdl::TextureWrapper::SetAlphaMod) {
 	HandleScope scope;
 
 	if(args.Length() < 1) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: Expected texture.setAlphaMod(Number)")));
+			Nan::New<String>("Invalid arguments: Expected texture.setAlphaMod(Number)")));
 	}
 
 	TextureWrapper* tex = ObjectWrap::Unwrap<TextureWrapper>(args.This());
@@ -211,12 +211,12 @@ Handle<Value> sdl::TextureWrapper::SetAlphaMod(const Arguments& args) {
 
 	return Undefined();
 }
-Handle<Value> sdl::TextureWrapper::SetBlendMode(const Arguments& args) {
+NAN_METHOD(sdl::TextureWrapper::SetBlendMode) {
 	HandleScope scope;
 
 	if(args.Length() < 1) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: Expected texture.setBlendMode(Number)")));
+			Nan::New<String>("Invalid arguments: Expected texture.setBlendMode(Number)")));
 	}
 
 	TextureWrapper* tex = ObjectWrap::Unwrap<TextureWrapper>(args.This());
@@ -227,12 +227,12 @@ Handle<Value> sdl::TextureWrapper::SetBlendMode(const Arguments& args) {
 
 	return Undefined();
 }
-Handle<Value> sdl::TextureWrapper::SetColorMod(const Arguments& args) {
+NAN_METHOD(sdl::TextureWrapper::SetColorMod) {
 	HandleScope scope;
 
 	if(args.Length() < 3) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: Expected texture.setColorMod(Number, Number, Number)")));
+			Nan::New<String>("Invalid arguments: Expected texture.setColorMod(Number, Number, Number)")));
 	}
 
 	TextureWrapper* tex = ObjectWrap::Unwrap<TextureWrapper>(args.This());
@@ -247,7 +247,7 @@ Handle<Value> sdl::TextureWrapper::SetColorMod(const Arguments& args) {
 	return Undefined();
 }
 
-// Handle<Value> sdl::TextureWrapper::Lock(const Arguments& args) {
+// NAN_METHOD(sdl::TextureWrapper::Lock) {
 // 	HandleScope scope;
 
 // 	TextureWrapper* tex = ObjectWrap::Unwrap<TextureWrapper>(args.This());
@@ -258,7 +258,7 @@ Handle<Value> sdl::TextureWrapper::SetColorMod(const Arguments& args) {
 
 // 	return Undefined();
 // }
-// Handle<Value> sdl::TextureWrapper::Unlock(const Arguments& args) {
+// NAN_METHOD(sdl::TextureWrapper::Unlock) {
 // 	HandleScope scope;
 
 // 	TextureWrapper* tex = ObjectWrap::Unwrap<TextureWrapper>(args.This());
@@ -270,23 +270,23 @@ Handle<Value> sdl::TextureWrapper::SetColorMod(const Arguments& args) {
 // 	return Undefined();
 // }
 
-Handle<Value> sdl::TextureWrapper::Update(const Arguments& args) {
+NAN_METHOD(sdl::TextureWrapper::Update) {
 	HandleScope scope;
 
 	if(!args[0]->IsObject()) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: First argument to texture.update must be an Object.")));
+			Nan::New<String>("Invalid arguments: First argument to texture.update must be an Object.")));
 	}
 
 	TextureWrapper* texture = ObjectWrap::Unwrap<TextureWrapper>(Handle<Object>::Cast(args.This()));
 	if(NULL == texture) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: Failed to unwrap this argument to a SurfaceWrapper. (is this not an sdl.Texture?)")));
+			Nan::New<String>("Invalid arguments: Failed to unwrap this argument to a SurfaceWrapper. (is this not an sdl.Texture?)")));
 	}
 	SurfaceWrapper* surface = ObjectWrap::Unwrap<SurfaceWrapper>(Handle<Object>::Cast(args[0]));
 	if(NULL == surface) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: Failed to unwrap first argument to a SurfaceWrapper. (did you not pass in an sdl.Surface?)")));
+			Nan::New<String>("Invalid arguments: Failed to unwrap first argument to a SurfaceWrapper. (did you not pass in an sdl.Surface?)")));
 	}
 	RectWrapper* rect = args[1]->IsUndefined() ? NULL : ObjectWrap::Unwrap<RectWrapper>(Handle<Object>::Cast(args[1]));
 	int err = SDL_UpdateTexture(texture->texture_, rect == NULL ? NULL : rect->wrapped, surface->surface_->pixels, surface->surface_->pitch);

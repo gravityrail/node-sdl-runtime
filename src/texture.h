@@ -18,26 +18,26 @@ namespace sdl {
 		~TextureWrapper();
 
 		static void Init(v8::Handle<v8::Object> exports);
-		static v8::Handle<v8::Value> New(const v8::Arguments& args);
-		static v8::Handle<v8::Value> NewFromSurface(const v8::Arguments& args);
+		static NAN_METHOD(New);
+		static NAN_METHOD(NewFromSurface);
 
-		static v8::Handle<v8::Value> GetAlphaMod(const v8::Arguments& args);
-		static v8::Handle<v8::Value> GetBlendMode(const v8::Arguments& args);
-		static v8::Handle<v8::Value> GetColorMod(const v8::Arguments& args);
-		static v8::Handle<v8::Value> GetFormat(const v8::Arguments& args);
-		static v8::Handle<v8::Value> GetSize(const v8::Arguments& args);
-		static v8::Handle<v8::Value> GetWidth(const v8::Arguments& args);
-		static v8::Handle<v8::Value> GetHeight(const v8::Arguments& args);
+		static NAN_METHOD(GetAlphaMod);
+		static NAN_METHOD(GetBlendMode);
+		static NAN_METHOD(GetColorMod);
+		static NAN_METHOD(GetFormat);
+		static NAN_METHOD(GetSize);
+		static NAN_METHOD(GetWidth);
+		static NAN_METHOD(GetHeight);
 
-		static v8::Handle<v8::Value> SetAlphaMod(const v8::Arguments& args);
-		static v8::Handle<v8::Value> SetBlendMode(const v8::Arguments& args);
-		static v8::Handle<v8::Value> SetColorMod(const v8::Arguments& args);
+		static NAN_METHOD(SetAlphaMod);
+		static NAN_METHOD(SetBlendMode);
+		static NAN_METHOD(SetColorMod);
 
 		// TODO: Implement for streaming to a texture.
-		// static v8::Handle<v8::Value> Lock(const v8::Arguments& args);
-		// static v8::Handle<v8::Value> Unlock(const v8::Arguments& args);
+		// static NAN_METHOD(Lock);
+		// static NAN_METHOD(Unlock);
 
-		static v8::Handle<v8::Value> Update(const v8::Arguments& args);
+		static NAN_METHOD(Update);
 
 		SDL_Texture* texture_;
 	};

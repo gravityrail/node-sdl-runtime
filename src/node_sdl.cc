@@ -101,208 +101,196 @@ init(Handle<Object> target)
   sdl::controller::Init(target);
 
   // Initialization and Shutdown.
-  NODE_SET_METHOD(target, "init", sdl::Init);
-  NODE_SET_METHOD(target, "initSubSystem", sdl::InitSubSystem);
-  NODE_SET_METHOD(target, "wasInit", sdl::WasInit);
-  NODE_SET_METHOD(target, "quit", sdl::Quit);
-  NODE_SET_METHOD(target, "quitSubSystem", sdl::QuitSubSystem);
+  Nan::SetMethod(target, "init", sdl::Init);
+  Nan::SetMethod(target, "initSubSystem", sdl::InitSubSystem);
+  Nan::SetMethod(target, "wasInit", sdl::WasInit);
+  Nan::SetMethod(target, "quit", sdl::Quit);
+  Nan::SetMethod(target, "quitSubSystem", sdl::QuitSubSystem);
 
   // Display and Window Management.
 
-  NODE_SET_METHOD(target, "clearError", sdl::ClearError);
-  NODE_SET_METHOD(target, "getError", sdl::GetError);
-  NODE_SET_METHOD(target, "setError", sdl::SetError);
+  Nan::SetMethod(target, "clearError", sdl::ClearError);
+  Nan::SetMethod(target, "getError", sdl::GetError);
+  Nan::SetMethod(target, "setError", sdl::SetError);
 
-  NODE_SET_METHOD(target, "mapRGB", sdl::MapRGB);
-  NODE_SET_METHOD(target, "mapRGBA", sdl::MapRGBA);
-  NODE_SET_METHOD(target, "getRGB", sdl::GetRGB);
-  NODE_SET_METHOD(target, "getRGBA", sdl::GetRGBA);
+  Nan::SetMethod(target, "mapRGB", sdl::MapRGB);
+  Nan::SetMethod(target, "mapRGBA", sdl::MapRGBA);
+  Nan::SetMethod(target, "getRGB", sdl::GetRGB);
+  Nan::SetMethod(target, "getRGBA", sdl::GetRGBA);
 
-  NODE_SET_METHOD(target, "AddHintCallback", sdl::AddHintCallback);
-  NODE_SET_METHOD(target, "getHint", sdl::GetHint);
-  NODE_SET_METHOD(target, "setHint", sdl::SetHint);
-  NODE_SET_METHOD(target, "setHintWithPriority", sdl::SetHintWithPriority);
+  Nan::SetMethod(target, "AddHintCallback", sdl::AddHintCallback);
+  Nan::SetMethod(target, "getHint", sdl::GetHint);
+  Nan::SetMethod(target, "setHint", sdl::SetHint);
+  Nan::SetMethod(target, "setHintWithPriority", sdl::SetHintWithPriority);
 
-  NODE_SET_METHOD(target, "compiledVersion", sdl::CompiledVersion);
-  NODE_SET_METHOD(target, "compiledRevision", sdl::CompiledRevision);
-  NODE_SET_METHOD(target, "getRevision", sdl::GetRevision);
-  NODE_SET_METHOD(target, "getRevisionNumber", sdl::GetRevisionNumber);
-  NODE_SET_METHOD(target, "getVersion", sdl::GetVersion);
+  Nan::SetMethod(target, "compiledVersion", sdl::CompiledVersion);
+  Nan::SetMethod(target, "compiledRevision", sdl::CompiledRevision);
+  Nan::SetMethod(target, "getRevision", sdl::GetRevision);
+  Nan::SetMethod(target, "getRevisionNumber", sdl::GetRevisionNumber);
+  Nan::SetMethod(target, "getVersion", sdl::GetVersion);
 
-  NODE_SET_METHOD(target, "getClipboardText", sdl::GetClipboardText);
-  NODE_SET_METHOD(target, "hasClipboardText", sdl::HasClipboardText);
-  NODE_SET_METHOD(target, "setClipboardText", sdl::SetClipboardText);
+  Nan::SetMethod(target, "getClipboardText", sdl::GetClipboardText);
+  Nan::SetMethod(target, "hasClipboardText", sdl::HasClipboardText);
+  Nan::SetMethod(target, "setClipboardText", sdl::SetClipboardText);
 
-  Local<Object> INIT = Object::New();
-  target->Set(String::New("INIT"), INIT);
-  INIT->Set(String::New("TIMER"), Number::New(SDL_INIT_TIMER));
-  INIT->Set(String::New("AUDIO"), Number::New(SDL_INIT_AUDIO));
-  INIT->Set(String::New("VIDEO"), Number::New(SDL_INIT_VIDEO));
-  INIT->Set(String::New("JOYSTICK"), Number::New(SDL_INIT_JOYSTICK));
-  INIT->Set(String::New("HAPTIC"), Number::New(SDL_INIT_HAPTIC));
-  INIT->Set(String::New("GAMECONTROLLER"), Number::New(SDL_INIT_GAMECONTROLLER));
-  INIT->Set(String::New("EVENTS"), Number::New(SDL_INIT_EVENTS));
-  INIT->Set(String::New("EVERYTHING"), Number::New(SDL_INIT_EVERYTHING));
-  INIT->Set(String::New("NOPARACHUTE"), Number::New(SDL_INIT_NOPARACHUTE));
+  Local<Object> INIT = Nan::New<Object>();
+  Nan::Set(target, Nan::New<String>("INIT").ToLocalChecked(), INIT);
+  Nan::Set(INIT, Nan::New<String>("TIMER").ToLocalChecked(), Nan::New<Number>(SDL_INIT_TIMER));
+  Nan::Set(INIT, Nan::New<String>("AUDIO").ToLocalChecked(), Nan::New<Number>(SDL_INIT_AUDIO));
+  Nan::Set(INIT, Nan::New<String>("VIDEO").ToLocalChecked(), Nan::New<Number>(SDL_INIT_VIDEO));
+  Nan::Set(INIT, Nan::New<String>("JOYSTICK").ToLocalChecked(), Nan::New<Number>(SDL_INIT_JOYSTICK));
+  Nan::Set(INIT, Nan::New<String>("HAPTIC").ToLocalChecked(), Nan::New<Number>(SDL_INIT_HAPTIC));
+  Nan::Set(INIT, Nan::New<String>("GAMECONTROLLER").ToLocalChecked(), Nan::New<Number>(SDL_INIT_GAMECONTROLLER));
+  Nan::Set(INIT, Nan::New<String>("EVENTS").ToLocalChecked(), Nan::New<Number>(SDL_INIT_EVENTS));
+  Nan::Set(INIT, Nan::New<String>("EVERYTHING").ToLocalChecked(), Nan::New<Number>(SDL_INIT_EVERYTHING));
+  Nan::Set(INIT, Nan::New<String>("NOPARACHUTE").ToLocalChecked(), Nan::New<Number>(SDL_INIT_NOPARACHUTE));
 
-  Local<Object> EVENT = Object::New();
-  target->Set(String::New("EVENT"), EVENT);
-  EVENT->Set(String::New("DOLLARGESTURE"), Number::New(SDL_DOLLARGESTURE));
-  EVENT->Set(String::New("DROPFILE"), Number::New(SDL_DROPFILE));
-  EVENT->Set(String::New("FINGERMOTION"), Number::New(SDL_FINGERMOTION));
-  EVENT->Set(String::New("FINGERUP"), Number::New(SDL_FINGERUP));
-  EVENT->Set(String::New("KEYDOWN"), Number::New(SDL_KEYDOWN));
-  EVENT->Set(String::New("KEYUP"), Number::New(SDL_KEYUP));
-  EVENT->Set(String::New("JOYAXISMOTION"), Number::New(SDL_JOYAXISMOTION));
-  EVENT->Set(String::New("JOYBALLMOTION"), Number::New(SDL_JOYBALLMOTION));
-  EVENT->Set(String::New("JOYHATMOTION"), Number::New(SDL_JOYHATMOTION));
-  EVENT->Set(String::New("JOYBUTTONDOWN"), Number::New(SDL_JOYBUTTONDOWN));
-  EVENT->Set(String::New("JOYBUTTONUP"), Number::New(SDL_JOYBUTTONUP));
-  EVENT->Set(String::New("MOUSEMOTION"), Number::New(SDL_MOUSEMOTION));
-  EVENT->Set(String::New("MOUSEBUTTONDOWN"), Number::New(SDL_MOUSEBUTTONDOWN));
-  EVENT->Set(String::New("MOUSEBUTTONUP"), Number::New(SDL_MOUSEBUTTONUP));
-  EVENT->Set(String::New("MOUSEWHEEL"), Number::New(SDL_MOUSEWHEEL));
-  EVENT->Set(String::New("MULTIGESTURE"), Number::New(SDL_MULTIGESTURE));
-  EVENT->Set(String::New("QUIT"), Number::New(SDL_QUIT));
-  EVENT->Set(String::New("SYSWMEVENT"), Number::New(SDL_SYSWMEVENT));
-  EVENT->Set(String::New("TEXTEDITING"), Number::New(SDL_TEXTEDITING));
-  EVENT->Set(String::New("TEXTINPUT"), Number::New(SDL_TEXTINPUT));
-  EVENT->Set(String::New("USEREVENT"), Number::New(SDL_USEREVENT));
-  EVENT->Set(String::New("WINDOWEVENT"), Number::New(SDL_WINDOWEVENT));
+  Local<Object> EVENT = Nan::New<Object>();
+  Nan::Set(target, Nan::New<String>("EVENT").ToLocalChecked(), EVENT);
+  Nan::Set(EVENT, Nan::New<String>("DOLLARGESTURE").ToLocalChecked(), Nan::New<Number>(SDL_DOLLARGESTURE));
+  Nan::Set(EVENT, Nan::New<String>("DROPFILE").ToLocalChecked(), Nan::New<Number>(SDL_DROPFILE));
+  Nan::Set(EVENT, Nan::New<String>("FINGERMOTION").ToLocalChecked(), Nan::New<Number>(SDL_FINGERMOTION));
+  Nan::Set(EVENT, Nan::New<String>("FINGERUP").ToLocalChecked(), Nan::New<Number>(SDL_FINGERUP));
+  Nan::Set(EVENT, Nan::New<String>("KEYDOWN").ToLocalChecked(), Nan::New<Number>(SDL_KEYDOWN));
+  Nan::Set(EVENT, Nan::New<String>("KEYUP").ToLocalChecked(), Nan::New<Number>(SDL_KEYUP));
+  Nan::Set(EVENT, Nan::New<String>("JOYAXISMOTION").ToLocalChecked(), Nan::New<Number>(SDL_JOYAXISMOTION));
+  Nan::Set(EVENT, Nan::New<String>("JOYBALLMOTION").ToLocalChecked(), Nan::New<Number>(SDL_JOYBALLMOTION));
+  Nan::Set(EVENT, Nan::New<String>("JOYHATMOTION").ToLocalChecked(), Nan::New<Number>(SDL_JOYHATMOTION));
+  Nan::Set(EVENT, Nan::New<String>("JOYBUTTONDOWN").ToLocalChecked(), Nan::New<Number>(SDL_JOYBUTTONDOWN));
+  Nan::Set(EVENT, Nan::New<String>("JOYBUTTONUP").ToLocalChecked(), Nan::New<Number>(SDL_JOYBUTTONUP));
+  Nan::Set(EVENT, Nan::New<String>("MOUSEMOTION").ToLocalChecked(), Nan::New<Number>(SDL_MOUSEMOTION));
+  Nan::Set(EVENT, Nan::New<String>("MOUSEBUTTONDOWN").ToLocalChecked(), Nan::New<Number>(SDL_MOUSEBUTTONDOWN));
+  Nan::Set(EVENT, Nan::New<String>("MOUSEBUTTONUP").ToLocalChecked(), Nan::New<Number>(SDL_MOUSEBUTTONUP));
+  Nan::Set(EVENT, Nan::New<String>("MOUSEWHEEL").ToLocalChecked(), Nan::New<Number>(SDL_MOUSEWHEEL));
+  Nan::Set(EVENT, Nan::New<String>("MULTIGESTURE").ToLocalChecked(), Nan::New<Number>(SDL_MULTIGESTURE));
+  Nan::Set(EVENT, Nan::New<String>("QUIT").ToLocalChecked(), Nan::New<Number>(SDL_QUIT));
+  Nan::Set(EVENT, Nan::New<String>("SYSWMEVENT").ToLocalChecked(), Nan::New<Number>(SDL_SYSWMEVENT));
+  Nan::Set(EVENT, Nan::New<String>("TEXTEDITING").ToLocalChecked(), Nan::New<Number>(SDL_TEXTEDITING));
+  Nan::Set(EVENT, Nan::New<String>("TEXTINPUT").ToLocalChecked(), Nan::New<Number>(SDL_TEXTINPUT));
+  Nan::Set(EVENT, Nan::New<String>("USEREVENT").ToLocalChecked(), Nan::New<Number>(SDL_USEREVENT));
+  Nan::Set(EVENT, Nan::New<String>("WINDOWEVENT").ToLocalChecked(), Nan::New<Number>(SDL_WINDOWEVENT));
 
   // SDL Enumerations start:
 
-  Local<Object> AUDIOFORMAT = Object::New();
-  target->Set(String::New("AUDIOFORMAT"), AUDIOFORMAT);
-  AUDIOFORMAT->Set(String::New("MASK_BITSIZE"), Number::New(SDL_AUDIO_MASK_BITSIZE));
-  AUDIOFORMAT->Set(String::New("MASK_DATATYPE"), Number::New(SDL_AUDIO_MASK_DATATYPE));
-  AUDIOFORMAT->Set(String::New("MASK_ENDIAN"), Number::New(SDL_AUDIO_MASK_ENDIAN));
-  AUDIOFORMAT->Set(String::New("MASK_SIGNED"), Number::New(SDL_AUDIO_MASK_SIGNED));
+  Local<Object> AUDIOFORMAT = Nan::New<Object>();
+  Nan::Set(target, Nan::New<String>("AUDIOFORMAT").ToLocalChecked(), AUDIOFORMAT);
+  Nan::Set(AUDIOFORMAT, Nan::New<String>("MASK_BITSIZE").ToLocalChecked(), Nan::New<Number>(SDL_AUDIO_MASK_BITSIZE));
+  Nan::Set(AUDIOFORMAT, Nan::New<String>("MASK_DATATYPE").ToLocalChecked(), Nan::New<Number>(SDL_AUDIO_MASK_DATATYPE));
+  Nan::Set(AUDIOFORMAT, Nan::New<String>("MASK_ENDIAN").ToLocalChecked(), Nan::New<Number>(SDL_AUDIO_MASK_ENDIAN));
+  Nan::Set(AUDIOFORMAT, Nan::New<String>("MASK_SIGNED").ToLocalChecked(), Nan::New<Number>(SDL_AUDIO_MASK_SIGNED));
 
-  Local<Object> TEXTUREACCESS = Object::New();
-  target->Set(String::New("TEXTUREACCESS"), TEXTUREACCESS);
-  TEXTUREACCESS->Set(String::New("STATIC"), Number::New(SDL_TEXTUREACCESS_STATIC));
-  TEXTUREACCESS->Set(String::New("STREAMING"), Number::New(SDL_TEXTUREACCESS_STREAMING));
+  Local<Object> TEXTUREACCESS = Nan::New<Object>();
+  Nan::Set(target, Nan::New<String>("TEXTUREACCESS").ToLocalChecked(), TEXTUREACCESS);
+  Nan::Set(TEXTUREACCESS, Nan::New<String>("STATIC").ToLocalChecked(), Nan::New<Number>(SDL_TEXTUREACCESS_STATIC));
+  Nan::Set(TEXTUREACCESS, Nan::New<String>("STREAMING").ToLocalChecked(), Nan::New<Number>(SDL_TEXTUREACCESS_STREAMING));
 
-  Local<Object> IMG = Object::New();
-  target->Set(String::New("IMG"), IMG);
+  Local<Object> IMG = Nan::New<Object>();
+  Nan::Set(target, Nan::New<String>("IMG").ToLocalChecked(), IMG);
 
-  NODE_SET_METHOD(IMG, "load", sdl::IMG::Load);
+  Nan::SetMethod(IMG, "load", sdl::IMG::Load);
 
-  Local<Object> WM = Object::New();
-  target->Set(String::New("WM"), WM);
+  Local<Object> WM = Nan::New<Object>();
+  Nan::Set(target, Nan::New<String>("WM").ToLocalChecked(), WM);
 
-  Local<Object> HINT = Object::New();
-  target->Set(String::New("HINT"), HINT);
-  HINT->Set(String::New("FRAMEBUFFER_ACCELERATION"), String::New(SDL_HINT_FRAMEBUFFER_ACCELERATION));
-  HINT->Set(String::New("IDLE_TIMER_DISABLED"), String::New(SDL_HINT_IDLE_TIMER_DISABLED));
-  HINT->Set(String::New("ORIENTATIONS"), String::New(SDL_HINT_ORIENTATIONS));
-  HINT->Set(String::New("RENDER_DRIVER"), String::New(SDL_HINT_RENDER_DRIVER));
-  HINT->Set(String::New("RENDER_OPENGL_SHADERS"), String::New(SDL_HINT_RENDER_OPENGL_SHADERS));
-  HINT->Set(String::New("SCALE_QUALITY"), String::New(SDL_HINT_RENDER_SCALE_QUALITY));
-  HINT->Set(String::New("RENDER_VSYNC"), String::New(SDL_HINT_RENDER_VSYNC));
-  HINT->Set(String::New("DEFAULT"), Number::New(SDL_HINT_DEFAULT));
-  HINT->Set(String::New("NORMAL"), Number::New(SDL_HINT_NORMAL));
-  HINT->Set(String::New("OVERRIDE"), Number::New(SDL_HINT_OVERRIDE));
+  Local<Object> HINT = Nan::New<Object>();
+  Nan::Set(target, Nan::New<String>("HINT").ToLocalChecked(), HINT);
+  Nan::Set(HINT, Nan::New<String>("FRAMEBUFFER_ACCELERATION").ToLocalChecked(), Nan::New<String>(SDL_HINT_FRAMEBUFFER_ACCELERATION).ToLocalChecked());
+  Nan::Set(HINT, Nan::New<String>("IDLE_TIMER_DISABLED").ToLocalChecked(), Nan::New<String>(SDL_HINT_IDLE_TIMER_DISABLED).ToLocalChecked());
+  Nan::Set(HINT, Nan::New<String>("ORIENTATIONS").ToLocalChecked(), Nan::New<String>(SDL_HINT_ORIENTATIONS).ToLocalChecked());
+  Nan::Set(HINT, Nan::New<String>("RENDER_DRIVER").ToLocalChecked(), Nan::New<String>(SDL_HINT_RENDER_DRIVER).ToLocalChecked());
+  Nan::Set(HINT, Nan::New<String>("RENDER_OPENGL_SHADERS").ToLocalChecked(), Nan::New<String>(SDL_HINT_RENDER_OPENGL_SHADERS).ToLocalChecked());
+  Nan::Set(HINT, Nan::New<String>("SCALE_QUALITY").ToLocalChecked(), Nan::New<String>(SDL_HINT_RENDER_SCALE_QUALITY).ToLocalChecked());
+  Nan::Set(HINT, Nan::New<String>("RENDER_VSYNC").ToLocalChecked(), Nan::New<String>(SDL_HINT_RENDER_VSYNC).ToLocalChecked());
+  Nan::Set(HINT, Nan::New<String>("DEFAULT").ToLocalChecked(), Nan::New<Number>(SDL_HINT_DEFAULT));
+  Nan::Set(HINT, Nan::New<String>("NORMAL").ToLocalChecked(), Nan::New<Number>(SDL_HINT_NORMAL));
+  Nan::Set(HINT, Nan::New<String>("OVERRIDE").ToLocalChecked(), Nan::New<Number>(SDL_HINT_OVERRIDE));
 
-  Local<Object> RENDERER = Object::New();
-  target->Set(String::New("RENDERER"), RENDERER);
-  RENDERER->Set(String::New("SOFTWARE"), Number::New(SDL_RENDERER_SOFTWARE));
-  RENDERER->Set(String::New("ACCELERATED"), Number::New(SDL_RENDERER_ACCELERATED));
-  RENDERER->Set(String::New("PRESENTVSYNC"), Number::New(SDL_RENDERER_PRESENTVSYNC));
-  RENDERER->Set(String::New("TARGETTEXTURE"), Number::New(SDL_RENDERER_TARGETTEXTURE));
+  Local<Object> RENDERER = Nan::New<Object>();
+  Nan::Set(target, Nan::New<String>("RENDERER").ToLocalChecked(), RENDERER);
+  Nan::Set(RENDERER, Nan::New<String>("SOFTWARE").ToLocalChecked(), Nan::New<Number>(SDL_RENDERER_SOFTWARE));
+  Nan::Set(RENDERER, Nan::New<String>("ACCELERATED").ToLocalChecked(), Nan::New<Number>(SDL_RENDERER_ACCELERATED));
+  Nan::Set(RENDERER, Nan::New<String>("PRESENTVSYNC").ToLocalChecked(), Nan::New<Number>(SDL_RENDERER_PRESENTVSYNC));
+  Nan::Set(RENDERER, Nan::New<String>("TARGETTEXTURE").ToLocalChecked(), Nan::New<Number>(SDL_RENDERER_TARGETTEXTURE));
 
-  Local<Object> BLENDMODE = Object::New();
-  target->Set(String::New("BLENDMODE"), BLENDMODE);
-  BLENDMODE->Set(String::New("NONE"), Number::New(SDL_BLENDMODE_NONE));
-  BLENDMODE->Set(String::New("BLEND"), Number::New(SDL_BLENDMODE_BLEND));
-  BLENDMODE->Set(String::New("ADD"), Number::New(SDL_BLENDMODE_ADD));
-  BLENDMODE->Set(String::New("MOD"), Number::New(SDL_BLENDMODE_MOD));
+  Local<Object> BLENDMODE = Nan::New<Object>();
+  Nan::Set(target, Nan::New<String>("BLENDMODE").ToLocalChecked(), BLENDMODE);
+  Nan::Set(BLENDMODE, Nan::New<String>("NONE").ToLocalChecked(), Nan::New<Number>(SDL_BLENDMODE_NONE));
+  Nan::Set(BLENDMODE, Nan::New<String>("BLEND").ToLocalChecked(), Nan::New<Number>(SDL_BLENDMODE_BLEND));
+  Nan::Set(BLENDMODE, Nan::New<String>("ADD").ToLocalChecked(), Nan::New<Number>(SDL_BLENDMODE_ADD));
+  Nan::Set(BLENDMODE, Nan::New<String>("MOD").ToLocalChecked(), Nan::New<Number>(SDL_BLENDMODE_MOD));
 
-  Local<Object> FLIP = Object::New();
-  target->Set(String::New("FLIP"), FLIP);
-  FLIP->Set(String::New("NONE"), Number::New(SDL_FLIP_NONE));
-  FLIP->Set(String::New("HORIZONTAL"), Number::New(SDL_FLIP_HORIZONTAL));
-  FLIP->Set(String::New("VERTICAL"), Number::New(SDL_FLIP_VERTICAL));
+  Local<Object> FLIP = Nan::New<Object>();
+  Nan::Set(target, Nan::New<String>("FLIP").ToLocalChecked(), FLIP);
+  Nan::Set(FLIP, Nan::New<String>("NONE").ToLocalChecked(), Nan::New<Number>(SDL_FLIP_NONE));
+  Nan::Set(FLIP, Nan::New<String>("HORIZONTAL").ToLocalChecked(), Nan::New<Number>(SDL_FLIP_HORIZONTAL));
+  Nan::Set(FLIP, Nan::New<String>("VERTICAL").ToLocalChecked(), Nan::New<Number>(SDL_FLIP_VERTICAL));
 
-  Local<Object> WINDOWPOS = Object::New();
-  target->Set(String::New("WINDOWPOS"), WINDOWPOS);
-  WINDOWPOS->Set(String::NewSymbol("CENTERED"), Number::New(SDL_WINDOWPOS_CENTERED));
-  WINDOWPOS->Set(String::NewSymbol("UNDEFINED"), Number::New(SDL_WINDOWPOS_UNDEFINED));
+  Local<Object> WINDOWPOS = Nan::New<Object>();
+  Nan::Set(target, Nan::New<String>("WINDOWPOS").ToLocalChecked(), WINDOWPOS);
+  Nan::Set(WINDOWPOS, Nan::New<String>("CENTERED").ToLocalChecked(), Nan::New<Number>(SDL_WINDOWPOS_CENTERED));
+  Nan::Set(WINDOWPOS, Nan::New<String>("UNDEFINED").ToLocalChecked(), Nan::New<Number>(SDL_WINDOWPOS_UNDEFINED));
 
-  Local<Object> WINDOW = Object::New();
-  target->Set(String::New("WINDOW"), WINDOW);
-  WINDOW->Set(String::New("FULLSCREEN"), Number::New(SDL_WINDOW_FULLSCREEN));
-  WINDOW->Set(String::New("FULLSCREEN_DESKTOP"), Number::New(SDL_WINDOW_FULLSCREEN_DESKTOP));
-  WINDOW->Set(String::New("OPENGL"), Number::New(SDL_WINDOW_OPENGL));
-  WINDOW->Set(String::New("HIDDEN"), Number::New(SDL_WINDOW_HIDDEN));
-  WINDOW->Set(String::New("BORDERLESS"), Number::New(SDL_WINDOW_BORDERLESS));
-  WINDOW->Set(String::New("RESIZABLE"), Number::New(SDL_WINDOW_RESIZABLE));
-  WINDOW->Set(String::New("MINIMIZED"), Number::New(SDL_WINDOW_MINIMIZED));
-  WINDOW->Set(String::New("MAXIMIZED"), Number::New(SDL_WINDOW_MAXIMIZED));
-  WINDOW->Set(String::New("INPUT_GRABBED"), Number::New(SDL_WINDOW_INPUT_GRABBED));
-  WINDOW->Set(String::New("ALLOW_HIGHDPI"), Number::New(SDL_WINDOW_ALLOW_HIGHDPI));
+  Local<Object> WINDOW = Nan::New<Object>();
+  Nan::Set(target, Nan::New<String>("WINDOW").ToLocalChecked(), WINDOW);
+  Nan::Set(WINDOW, Nan::New<String>("FULLSCREEN").ToLocalChecked(), Nan::New<Number>(SDL_WINDOW_FULLSCREEN));
+  Nan::Set(WINDOW, Nan::New<String>("FULLSCREEN_DESKTOP").ToLocalChecked(), Nan::New<Number>(SDL_WINDOW_FULLSCREEN_DESKTOP));
+  Nan::Set(WINDOW, Nan::New<String>("OPENGL").ToLocalChecked(), Nan::New<Number>(SDL_WINDOW_OPENGL));
+  Nan::Set(WINDOW, Nan::New<String>("HIDDEN").ToLocalChecked(), Nan::New<Number>(SDL_WINDOW_HIDDEN));
+  Nan::Set(WINDOW, Nan::New<String>("BORDERLESS").ToLocalChecked(), Nan::New<Number>(SDL_WINDOW_BORDERLESS));
+  Nan::Set(WINDOW, Nan::New<String>("RESIZABLE").ToLocalChecked(), Nan::New<Number>(SDL_WINDOW_RESIZABLE));
+  Nan::Set(WINDOW, Nan::New<String>("MINIMIZED").ToLocalChecked(), Nan::New<Number>(SDL_WINDOW_MINIMIZED));
+  Nan::Set(WINDOW, Nan::New<String>("MAXIMIZED").ToLocalChecked(), Nan::New<Number>(SDL_WINDOW_MAXIMIZED));
+  Nan::Set(WINDOW, Nan::New<String>("INPUT_GRABBED").ToLocalChecked(), Nan::New<Number>(SDL_WINDOW_INPUT_GRABBED));
+  Nan::Set(WINDOW, Nan::New<String>("ALLOW_HIGHDPI").ToLocalChecked(), Nan::New<Number>(SDL_WINDOW_ALLOW_HIGHDPI));
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////
 // Initialization and Shutdown.
 
-Handle<Value> sdl::Init(const Arguments& args) {
-  HandleScope scope;
+NAN_METHOD(sdl::Init) {
   SDL_SetMainReady();
-  int init = (args[0]->IsUndefined() || !args[0]->IsNumber()) ? SDL_INIT_EVERYTHING : args[0]->Int32Value();
+  int init = (info[0]->IsUndefined() || !info[0]->IsNumber()) ? SDL_INIT_EVERYTHING : info[0]->Int32Value();
   // std::cout << "sdl::Init got: " << init << std::endl;
   if (SDL_Init(init) < 0) {
     return ThrowSDLException(__func__);
   }
-  return Undefined();
 }
 
-Handle<Value> sdl::InitSubSystem(const Arguments& args) {
-  HandleScope scope;
+NAN_METHOD(sdl::InitSubSystem) {
 
-  if (!(args.Length() == 1 && args[0]->IsNumber())) {
-    return ThrowException(Exception::TypeError(String::New("Invalid arguments: Expected InitSubSystem(Number)")));
+  if (!(info.Length() == 1 && info[0]->IsNumber())) {
+    return Nan::ThrowError(Exception::TypeError(Nan::New<String>("Invalid arguments: Expected InitSubSystem(Number)").ToLocalChecked()));
   }
 
-  if (SDL_InitSubSystem(args[0]->Int32Value()) < 0) return ThrowSDLException(__func__);
-
-  return Undefined();
+  if (SDL_InitSubSystem(info[0]->Int32Value()) < 0) return ThrowSDLException(__func__);
 }
 
-Handle<Value> sdl::Quit(const Arguments& args) {
-  HandleScope scope;
+NAN_METHOD(sdl::Quit) {
 
-  if (!(args.Length() == 0)) {
-    return ThrowException(Exception::TypeError(String::New("Invalid arguments: Expected Quit()")));
+  if (!(info.Length() == 0)) {
+    return Nan::ThrowError(Exception::TypeError(Nan::New<String>("Invalid arguments: Expected Quit()").ToLocalChecked()));
   }
 
   SDL_Quit();
-
-  return Undefined();
 }
 
-Handle<Value> sdl::QuitSubSystem(const Arguments& args) {
-  HandleScope scope;
+NAN_METHOD(sdl::QuitSubSystem) {
 
-  if (!(args.Length() == 1 && args[0]->IsNumber())) {
-    return ThrowException(Exception::TypeError(String::New("Invalid arguments: Expected QuitSubSystem(Number)")));
+  if (!(info.Length() == 1 && info[0]->IsNumber())) {
+    return Nan::ThrowError(Exception::TypeError(Nan::New<String>("Invalid arguments: Expected QuitSubSystem(Number)").ToLocalChecked()));
   }
 
-  SDL_QuitSubSystem(args[0]->Int32Value());
-
-  return Undefined();
+  SDL_QuitSubSystem(info[0]->Int32Value());
 }
 
-Handle<Value> sdl::WasInit(const Arguments& args) {
-  HandleScope scope;
+NAN_GETTER(sdl::WasInit) {
 
-  if (!(args.Length() == 1 && args[0]->IsNumber())) {
-    return ThrowException(Exception::TypeError(String::New("Invalid arguments: Expected WasInit(Number)")));
+  if (!(info.Length() == 1 && info[0]->IsNumber())) {
+    return Nan::ThrowError(Exception::TypeError(Nan::New<String>("Invalid arguments: Expected WasInit(Number)").ToLocalChecked()));
   }
 
-  return Number::New(SDL_WasInit(args[0]->Int32Value()));
+  return Nan::New<Number>(SDL_WasInit(info[0]->Int32Value()));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -311,30 +299,26 @@ Handle<Value> sdl::WasInit(const Arguments& args) {
 
 ////////////////////////////////////////////////////////////////////////////////
 // Global SDL functions.
-Handle<Value> sdl::DisableScreenSaver(const Arguments& args) {
+NAN_METHOD(sdl::DisableScreenSaver) {
   SDL_DisableScreenSaver();
-  return Undefined();
 }
-Handle<Value> sdl::EnableScreenSaver(const Arguments& args) {
+NAN_METHOD(sdl::EnableScreenSaver) {
   SDL_EnableScreenSaver();
-  return Undefined();
 }
-Handle<Value> sdl::IsScreenSaverEnabled(const Arguments& args) {
-  HandleScope scope;
+NAN_GETTER(sdl::IsScreenSaverEnabled) {
 
   SDL_bool ret = SDL_IsScreenSaverEnabled();
-  return scope.Close(Boolean::New(ret));
+  return scope.Close(Nan::New<Boolean>(ret));
 }
 
-Handle<Value> sdl::GetClosestDisplayMode(const Arguments& args) {
-  HandleScope scope;
+NAN_GETTER(sdl::GetClosestDisplayMode) {
 
-  if(args.Length() < 2) {
-    return ThrowException(Exception::TypeError(String::New("Invalid arguments: Expected getClosestDisplayMode(Number, DisplayMode)")));
+  if(info.Length() < 2) {
+    return Nan::ThrowError(Exception::TypeError(Nan::New<String>("Invalid arguments: Expected getClosestDisplayMode(Number, DisplayMode)").ToLocalChecked()));
   }
 
-  int index = args[0]->Int32Value();
-  SDL_DisplayMode* mode = UnwrapDisplayMode(Handle<Object>::Cast(args[1]));
+  int index = info[0]->Int32Value();
+  SDL_DisplayMode* mode = UnwrapDisplayMode(Handle<Object>::Cast(info[1]));
   SDL_DisplayMode* closest = new SDL_DisplayMode;
   SDL_DisplayMode* err = SDL_GetClosestDisplayMode(index, mode, closest);
   if(NULL == err) {
@@ -344,14 +328,13 @@ Handle<Value> sdl::GetClosestDisplayMode(const Arguments& args) {
 
   return scope.Close(WrapDisplayMode(closest));
 }
-Handle<Value> sdl::GetCurrentDisplayMode(const Arguments& args) {
-  HandleScope scope;
+NAN_GETTER(sdl::GetCurrentDisplayMode) {
 
-  if(args.Length() < 1) {
-    return ThrowException(Exception::TypeError(String::New("Invalid arguments: Expected getCurrentDisplayMode(Number)")));
+  if(info.Length() < 1) {
+    return Nan::ThrowError(Exception::TypeError(Nan::New<String>("Invalid arguments: Expected getCurrentDisplayMode(Number)").ToLocalChecked()));
   }
 
-  int index = args[0]->Int32Value();
+  int index = info[0]->Int32Value();
   SDL_DisplayMode* current = new SDL_DisplayMode;
   int err = SDL_GetCurrentDisplayMode(index, current);
   if(err < 0) {
@@ -361,24 +344,22 @@ Handle<Value> sdl::GetCurrentDisplayMode(const Arguments& args) {
 
   return scope.Close(WrapDisplayMode(current));
 }
-Handle<Value> sdl::GetCurrentVideoDriver(const Arguments& args) {
-  HandleScope scope;
+NAN_GETTER(sdl::GetCurrentVideoDriver) {
 
   const char* ret = SDL_GetCurrentVideoDriver();
   if(NULL == ret) {
     return ThrowSDLException(__func__);
   }
 
-  return scope.Close(String::New(ret));
+  return scope.Close(Nan::New<String>(ret));
 }
-Handle<Value> sdl::GetDesktopDisplayMode(const Arguments& args) {
-  HandleScope scope;
+NAN_GETTER(sdl::GetDesktopDisplayMode) {
 
-  if(args.Length() < 1) {
-    return ThrowException(Exception::TypeError(String::New("Invalid arguments: Expected getCurrentDisplayMode(Number)")));
+  if(info.Length() < 1) {
+    return Nan::ThrowError(Exception::TypeError(Nan::New<String>("Invalid arguments: Expected getCurrentDisplayMode(Number)").ToLocalChecked()));
   }
 
-  int index = args[0]->Int32Value();
+  int index = info[0]->Int32Value();
   SDL_DisplayMode* current = new SDL_DisplayMode;
   int err = SDL_GetDesktopDisplayMode(index, current);
   if(err < 0) {
@@ -388,14 +369,13 @@ Handle<Value> sdl::GetDesktopDisplayMode(const Arguments& args) {
 
   return scope.Close(WrapDisplayMode(current));
 }
-Handle<Value> sdl::GetDisplayBounds(const Arguments& args) {
-  HandleScope scope;
+NAN_GETTER(sdl::GetDisplayBounds) {
 
-  if(args.Length() < 1) {
-    return ThrowException(Exception::TypeError(String::New("Invalid arguments: Expected getDisplayBounds(Number)")));
+  if(info.Length() < 1) {
+    return Nan::ThrowError(Exception::TypeError(Nan::New<String>("Invalid arguments: Expected getDisplayBounds(Number)").ToLocalChecked()));
   }
 
-  int index = args[0]->Int32Value();
+  int index = info[0]->Int32Value();
   SDL_Rect* bounds = new SDL_Rect;
   int err = SDL_GetDisplayBounds(index, bounds);
   if(err < 0) {
@@ -406,21 +386,20 @@ Handle<Value> sdl::GetDisplayBounds(const Arguments& args) {
   NEW_WRAPPED(bounds, RectWrapper, ret);
 //   Handle<Value> argv[] = {External::New(bounds)};
 //   Handle<Object> ret = RectWrapper::wrap_template_->GetFunction()->NewInstance(1, argv);
-//   Handle<Object> ret = Object::New();
+//   Handle<Object> ret = Nan::New<Object>();
 //   RectWrapper* wrap = new RectWrapper(ret);
 //   wrap->wrapped = bounds;
 
   return scope.Close(ret);
 }
-Handle<Value> sdl::GetDisplayMode(const Arguments& args) {
-  HandleScope scope;
+NAN_GETTER(sdl::GetDisplayMode) {
 
-  if(args.Length() < 2) {
-    return ThrowException(Exception::TypeError(String::New("Invalid arguments: Expected getDisplayMode(Number, Number)")));
+  if(info.Length() < 2) {
+    return Nan::ThrowError(Exception::TypeError(Nan::New<String>("Invalid arguments: Expected getDisplayMode(Number, Number)").ToLocalChecked()));
   }
 
-  int displayIndex = args[0]->Int32Value();
-  int modeIndex = args[1]->Int32Value();
+  int displayIndex = info[0]->Int32Value();
+  int modeIndex = info[1]->Int32Value();
   SDL_DisplayMode* mode = new SDL_DisplayMode;
   int err = SDL_GetDisplayMode(displayIndex, modeIndex, mode);
   if(err < 0) {
@@ -430,224 +409,206 @@ Handle<Value> sdl::GetDisplayMode(const Arguments& args) {
 
   return scope.Close(WrapDisplayMode(mode));
 }
-Handle<Value> sdl::GetDisplayName(const Arguments& args) {
-  HandleScope scope;
+NAN_GETTER(sdl::GetDisplayName) {
 
-  if(args.Length() < 0) {
-    return ThrowException(Exception::TypeError(String::New("Invalid arguments: expected getDisplayName(Number)")));
+  if(info.Length() < 0) {
+    return Nan::ThrowError(Exception::TypeError(Nan::New<String>("Invalid arguments: expected getDisplayName(Number)").ToLocalChecked()));
   }
 
-  int index = args[0]->Int32Value();
+  int index = info[0]->Int32Value();
   const char* ret = SDL_GetDisplayName(index);
   if(NULL == ret) {
     return ThrowSDLException(__func__);
   }
 
-  return scope.Close(String::New(ret));
+  return scope.Close(Nan::New<String>(ret));
 }
-Handle<Value> sdl::GetNumDisplayModes(const Arguments& args) {
-  HandleScope scope;
+NAN_GETTER(sdl::GetNumDisplayModes) {
 
-  if(args.Length() < 0) {
-    return ThrowException(Exception::TypeError(String::New("Invalid arguments: expected getNumDisplayModes(Number)")));
+  if(info.Length() < 0) {
+    return Nan::ThrowError(Exception::TypeError(Nan::New<String>("Invalid arguments: expected getNumDisplayModes(Number)").ToLocalChecked()));
   }
 
-  int index = args[0]->Int32Value();
+  int index = info[0]->Int32Value();
   int ret = SDL_GetNumDisplayModes(index);
   if(ret < 0) {
     return ThrowSDLException(__func__);
   }
 
-  return scope.Close(Number::New(ret));
+  return scope.Close(Nan::New<Number>(ret));
 }
-Handle<Value> sdl::GetNumVideoDisplays(const Arguments& args) {
-  HandleScope scope;
+NAN_GETTER(sdl::GetNumVideoDisplays) {
 
   int num = SDL_GetNumVideoDisplays();
   if(num < 0) {
     return ThrowSDLException(__func__);
   }
-  return scope.Close(Number::New(num));
+  return scope.Close(Nan::New<Number>(num));
 }
-Handle<Value> sdl::GetNumVideoDrivers(const Arguments& args) {
-  HandleScope scope;
+NAN_GETTER(sdl::GetNumVideoDrivers) {
 
   int num = SDL_GetNumVideoDrivers();
   if(num < 0) {
     return ThrowSDLException(__func__);
   }
-  return scope.Close(Number::New(num));
+  return scope.Close(Nan::New<Number>(num));
 }
-Handle<Value> sdl::GetVideoDriver(const Arguments& args) {
-  HandleScope scope;
+NAN_GETTER(sdl::GetVideoDriver) {
 
-  if(args.Length() < 1) {
-    return ThrowException(Exception::TypeError(String::New("Invalid arguments: expected getVideoDriver(Number)")));
+  if(info.Length() < 1) {
+    return Nan::ThrowError(Exception::TypeError(Nan::New<String>("Invalid arguments: expected getVideoDriver(Number)").ToLocalChecked()));
   }
 
-  int index = args[0]->Int32Value();
+  int index = info[0]->Int32Value();
   const char* driver = SDL_GetVideoDriver(index);
   if(NULL == driver) {
     return ThrowSDLException(__func__);
   }
-  return scope.Close(String::New(driver));
+  return scope.Close(Nan::New<String>(driver));
 }
 
-// Handle<Value> sdl::ShowMessageBox(const Arguments& args) {
+// NAN_GETTER(sdl::ShowMessageBox) {
 
 // }
-Handle<Value> sdl::ShowSimpleMessageBox(const Arguments& args) {
-  HandleScope scope;
+NAN_METHOD(sdl::ShowSimpleMessageBox) {
 
-  if(args.Length() < 3) {
-    return ThrowException(Exception::TypeError(String::New("Invalid arguments: expected showSimpleMessageBox(Number, String, String, [Window])")));
+  if(info.Length() < 3) {
+    return Nan::ThrowError(Exception::TypeError(Nan::New<String>("Invalid arguments: expected showSimpleMessageBox(Number, String, String, [Window])").ToLocalChecked()));
   }
-  else if(args.Length() < 4) {
-    int flags = args[0]->Int32Value();
-    String::Utf8Value title(args[1]);
-    String::Utf8Value message(args[2]);
+  else if(info.Length() < 4) {
+    int flags = info[0]->Int32Value();
+    String::Utf8Value title(info[1]);
+    String::Utf8Value message(info[2]);
     int err = SDL_ShowSimpleMessageBox(flags, *title, *message, NULL);
     if(err < 0) {
       return ThrowSDLException(__func__);
     }
   }
   else {
-    int flags = args[0]->Int32Value();
-    String::Utf8Value title(args[1]);
-    String::Utf8Value message(args[2]);
-    WindowWrapper* window = node::ObjectWrap::Unwrap<WindowWrapper>(Handle<Object>::Cast(args[3]));
+    int flags = info[0]->Int32Value();
+    String::Utf8Value title(info[1]);
+    String::Utf8Value message(info[2]);
+    WindowWrapper* window = node::ObjectWrap::Unwrap<WindowWrapper>(Handle<Object>::Cast(info[3]));
     int err = SDL_ShowSimpleMessageBox(flags, *title, *message, window->window_);
     if(err < 0) {
       return ThrowSDLException(__func__);
     }
   }
 
-  return Undefined();
+  return Nan::Undefined();
 }
 
-Handle<Value> sdl::VideoInit(const Arguments& args) {
-  HandleScope scope;
+NAN_GETTER(sdl::VideoInit) {
 
-  const char* driver = args[0]->IsUndefined() ? NULL : *(String::Utf8Value(args[0]));
+  const char* driver = info[0]->IsUndefined() ? NULL : *(String::Utf8Value(info[0]));
   int err = SDL_VideoInit(driver);
   if(err < 0) {
     return ThrowSDLException(__func__);
   }
-  return scope.Close(String::New(driver));
+  return scope.Close(Nan::New<String>(driver));
 }
-Handle<Value> sdl::VideoQuit(const Arguments& args) {
+
+NAN_METHOD(sdl::VideoQuit) {
   SDL_VideoQuit();
-  return Undefined();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-Handle<Value> sdl::ClearError(const Arguments& args) {
-  HandleScope scope;
+NAN_METHOD(sdl::ClearError) {
 
-  if (!(args.Length() == 0)) {
-    return ThrowException(Exception::TypeError(String::New("Invalid arguments: Expected ClearError()")));
+  if (!(info.Length() == 0)) {
+    return Nan::ThrowError(Exception::TypeError(Nan::New<String>("Invalid arguments: Expected ClearError()").ToLocalChecked()));
   }
 
   SDL_ClearError();
-
-  return Undefined();
 }
 
-Handle<Value> sdl::GetError(const Arguments& args) {
-  HandleScope scope;
+NAN_GETTER(sdl::GetError) {
 
-  if (!(args.Length() == 0)) {
-    return ThrowException(Exception::TypeError(String::New("Invalid arguments: Expected GetError()")));
+  if (!(info.Length() == 0)) {
+    return Nan::ThrowError(Exception::TypeError(Nan::New<String>("Invalid arguments: Expected GetError()").ToLocalChecked()));
   }
 
-  return String::New(SDL_GetError());
+  return Nan::New<String>(SDL_GetError());
 }
 
-Handle<Value> sdl::SetError(const Arguments& args) {
-  HandleScope scope;
+NAN_SETTER(sdl::SetError) {
 
-  if (!(args.Length() == 1 && args[0]->IsString())) {
-    return ThrowException(Exception::TypeError(String::New("Invalid arguments: Expected SetError(String)")));
+  if (!(info.Length() == 1 && info[0]->IsString())) {
+    return Nan::ThrowError(Exception::TypeError(Nan::New<String>("Invalid arguments: Expected SetError(String)").ToLocalChecked()));
   }
 
-  String::Utf8Value message(args[1]);
+  String::Utf8Value message(info[1]);
 
   SDL_SetError(*message);
-
-  return Undefined();
 }
 
-Handle<Value> sdl::MapRGB(const Arguments& args) {
-  HandleScope scope;
+NAN_GETTER(sdl::MapRGB) {
 
-  if (!(args.Length() == 4 && args[0]->IsObject() && args[1]->IsNumber() && args[2]->IsNumber() && args[3]->IsNumber())) {
-    return ThrowException(Exception::TypeError(String::New("Invalid arguments: Expected MapRGB(PixelFormat, Number, Number, Number)")));
+  if (!(info.Length() == 4 && info[0]->IsObject() && info[1]->IsNumber() && info[2]->IsNumber() && info[3]->IsNumber())) {
+    return Nan::ThrowError(Exception::TypeError(Nan::New<String>("Invalid arguments: Expected MapRGB(PixelFormat, Number, Number, Number)").ToLocalChecked()));
   }
 
-  SDL_PixelFormat* fmt = UnwrapPixelFormat(args[0]->ToObject());
-  int r = args[1]->Int32Value();
-  int g = args[2]->Int32Value();
-  int b = args[3]->Int32Value();
+  SDL_PixelFormat* fmt = UnwrapPixelFormat(info[0]->ToObject());
+  int r = info[1]->Int32Value();
+  int g = info[2]->Int32Value();
+  int b = info[3]->Int32Value();
 
-  return Number::New(SDL_MapRGB(fmt, r, g, b));
+  return Nan::New<Number>(SDL_MapRGB(fmt, r, g, b));
 }
 
-Handle<Value> sdl::MapRGBA(const Arguments& args) {
-  HandleScope scope;
+NAN_GETTER(sdl::MapRGBA) {
 
-  if (!(args.Length() == 5 && args[0]->IsObject() && args[1]->IsNumber() && args[2]->IsNumber() && args[3]->IsNumber() && args[4]->IsNumber())) {
-    return ThrowException(Exception::TypeError(String::New("Invalid arguments: Expected MapRGBA(PixelFormat, Number, Number, Number, Number)")));
+  if (!(info.Length() == 5 && info[0]->IsObject() && info[1]->IsNumber() && info[2]->IsNumber() && info[3]->IsNumber() && info[4]->IsNumber())) {
+    return Nan::ThrowError(Exception::TypeError(Nan::New<String>("Invalid arguments: Expected MapRGBA(PixelFormat, Number, Number, Number, Number)").ToLocalChecked()));
   }
 
-  SDL_PixelFormat* fmt = UnwrapPixelFormat(args[0]->ToObject());
-  int r = args[1]->Int32Value();
-  int g = args[2]->Int32Value();
-  int b = args[3]->Int32Value();
-  int a = args[4]->Int32Value();
+  SDL_PixelFormat* fmt = UnwrapPixelFormat(info[0]->ToObject());
+  int r = info[1]->Int32Value();
+  int g = info[2]->Int32Value();
+  int b = info[3]->Int32Value();
+  int a = info[4]->Int32Value();
 
-  return Number::New(SDL_MapRGBA(fmt, r, g, b, a));
+  return Nan::New<Number>(SDL_MapRGBA(fmt, r, g, b, a));
 }
 
-Handle<Value> sdl::GetRGB(const Arguments& args) {
-  HandleScope scope;
+NAN_GETTER(sdl::GetRGB) {
 
-  if (!(args.Length() == 2 && args[0]->IsNumber() && args[1]->IsObject())) {
-    return ThrowException(Exception::TypeError(String::New("Invalid arguments: Expected GetRGB(Number, PixelFormat)")));
+  if (!(info.Length() == 2 && info[0]->IsNumber() && info[1]->IsObject())) {
+    return Nan::ThrowError(Exception::TypeError(Nan::New<String>("Invalid arguments: Expected GetRGB(Number, PixelFormat)").ToLocalChecked()));
   }
 
-  int pixel = args[0]->Int32Value();
-  SDL_PixelFormat* fmt = UnwrapPixelFormat(args[1]->ToObject());
+  int pixel = info[0]->Int32Value();
+  SDL_PixelFormat* fmt = UnwrapPixelFormat(info[1]->ToObject());
   ::Uint8 r, g, b;
 
   SDL_GetRGB(pixel, fmt, &r, &g, &b);
 
-  Local<Object> rgb = Object::New();
-  rgb->Set(String::New("r"), Number::New(r));
-  rgb->Set(String::New("g"), Number::New(g));
-  rgb->Set(String::New("b"), Number::New(b));
+  Local<Object> rgb = Nan::New<Object>();
+  Nan::Set(rgb, Nan::New<String>("r").ToLocalChecked(), Nan::New<Number>(r));
+  Nan::Set(rgb, Nan::New<String>("g").ToLocalChecked(), Nan::New<Number>(g));
+  Nan::Set(rgb, Nan::New<String>("b").ToLocalChecked(), Nan::New<Number>(b));
 
   return scope.Close(rgb);
 }
 
-Handle<Value> sdl::GetRGBA(const Arguments& args) {
-  HandleScope scope;
+NAN_GETTER(sdl::GetRGBA) {
 
-  if (!(args.Length() == 2 && args[0]->IsNumber() && args[1]->IsObject())) {
-    return ThrowException(Exception::TypeError(String::New("Invalid arguments: Expected GetRGBA(Number, PixelFormat)")));
+  if (!(info.Length() == 2 && info[0]->IsNumber() && info[1]->IsObject())) {
+    return Nan::ThrowError(Exception::TypeError(Nan::New<String>("Invalid arguments: Expected GetRGBA(Number, PixelFormat)").ToLocalChecked()));
   }
 
-  int pixel = args[0]->Int32Value();
-  SDL_PixelFormat* fmt = UnwrapPixelFormat(args[1]->ToObject());
+  int pixel = info[0]->Int32Value();
+  SDL_PixelFormat* fmt = UnwrapPixelFormat(info[1]->ToObject());
   ::Uint8 r, g, b, a;
 
   SDL_GetRGBA(pixel, fmt, &r, &g, &b, &a);
 
-  Local<Object> rgba = Object::New();
-  rgba->Set(String::New("r"), Number::New(r));
-  rgba->Set(String::New("g"), Number::New(g));
-  rgba->Set(String::New("b"), Number::New(b));
-  rgba->Set(String::New("a"), Number::New(a));
+  Local<Object> rgba = Nan::New<Object>();
+  Nan::Set(rgba, Nan::New<String>("r").ToLocalChecked(), Nan::New<Number>(r));
+  Nan::Set(rgba, Nan::New<String>("g").ToLocalChecked(), Nan::New<Number>(g));
+  Nan::Set(rgba, Nan::New<String>("b").ToLocalChecked(), Nan::New<Number>(b));
+  Nan::Set(rgba, Nan::New<String>("a").ToLocalChecked(), Nan::New<Number>(a));
 
   return scope.Close(rgba);
 }
@@ -655,13 +616,12 @@ Handle<Value> sdl::GetRGBA(const Arguments& args) {
 ////////////////////////////////////////////////////////////////////////////////
 // SDL Hint Handling.
 static void HintCallbackHandler(void *userData, const char *name, const char *oldValue, const char *newValue) {
-  HandleScope scope;
 
   Persistent<Function> callback = *static_cast<Persistent<Function>*>(userData);
 
-  Local<Value> nodeName = String::New(name);
-  Local<Value> nodeOldValue = String::New(oldValue);
-  Local<Value> nodeNewValue = String::New(newValue);
+  Local<Value> nodeName = Nan::New<String>(name);
+  Local<Value> nodeOldValue = Nan::New<String>(oldValue);
+  Local<Value> nodeNewValue = Nan::New<String>(newValue);
 
   Local<Value> argv[3] = {nodeName, nodeOldValue, nodeNewValue};
   Local<Value> retValue = callback->Call(Context::GetCurrent()->Global(), 3, argv);
@@ -672,20 +632,17 @@ static void HintCallbackHandler(void *userData, const char *name, const char *ol
   }
 }
 
-Handle<Value> sdl::AddHintCallback(const Arguments& args) {
-  HandleScope scope;
+NAN_METHOD(sdl::AddHintCallback) {
 
-  if(args.Length() < 2) {
-    return ThrowException(Exception::TypeError(
-      String::New("Invalid arguments: Expected AddHintCallback(String, Function)")));
+  if(info.Length() < 2) {
+    return Nan::ThrowError(Exception::TypeError(
+      Nan::New<String>("Invalid arguments: Expected AddHintCallback(String, Function)").ToLocalChecked()));
   }
 
-  String::Utf8Value name(args[0]);
-  Handle<Function> callback = Handle<Function>::Cast(args[1]);
+  String::Utf8Value name(info[0]);
+  Handle<Function> callback = Handle<Function>::Cast(info[1]);
   Persistent<Function> userData = Persistent<Function>::New(callback);
   SDL_AddHintCallback(*name, HintCallbackHandler, static_cast<void*>(&userData));
-
-  return Undefined();
 }
 // TODO: Implement a way to call SDL_ClearHints safely. Currently, because we store a Persistent
 //       in the userData slot, this would leak memory due to those functions never being cleaned
@@ -693,160 +650,146 @@ Handle<Value> sdl::AddHintCallback(const Arguments& args) {
 // TODO: Also implement a wrapper around SDL_DelHintCallback. (need to return a token or something
 //       when adding a callback, because it's likely most callbacks will be anonymous so we won't
 //       have the exact same Persistent address)
-// Handle<Value> ClearHints(const Arguments& args) {
-//   HandleScope scope;
-//   return Undefined();
+// NAN_METHOD(ClearHints) {
+//
+//   return Nan::Undefined();
 // }
-Handle<Value> sdl::GetHint(const Arguments& args) {
-  HandleScope scope;
+NAN_GETTER(sdl::GetHint) {
 
-  if(args.Length() < 1) {
-    return ThrowException(Exception::TypeError(
-      String::New("Invalid arguments: Expected GetHint(String)")));
+  if(info.Length() < 1) {
+    return Nan::ThrowError(Exception::TypeError(
+      Nan::New<String>("Invalid arguments: Expected GetHint(String)").ToLocalChecked()));
   }
 
-  String::Utf8Value name(args[0]);
+  String::Utf8Value name(info[0]);
   const char *value = SDL_GetHint(*name);
   if(NULL == value) {
-    return Undefined();
+    return Nan::Undefined();
   }
 
-  return scope.Close(String::New(value));
+  return scope.Close(Nan::New<String>(value));
 }
-Handle<Value> sdl::SetHint(const Arguments& args) {
-  HandleScope scope;
+NAN_SETTER(sdl::SetHint) {
 
-  if(args.Length() < 2) {
-    return ThrowException(Exception::TypeError(
-      String::New("Invalid arguments: Expected SetHint(String, String)")));
+  if(info.Length() < 2) {
+    return Nan::ThrowError(Exception::TypeError(
+      Nan::New<String>("Invalid arguments: Expected SetHint(String, String)").ToLocalChecked()));
   }
 
-  String::Utf8Value name(args[0]);
-  String::Utf8Value value(args[1]);
+  String::Utf8Value name(info[0]);
+  String::Utf8Value value(info[1]);
   int err = SDL_SetHint(*name, *value);
   if(err < 0) {
     return ThrowSDLException(__func__);
   }
 
-  return Undefined();
+  return Nan::Undefined();
 }
-Handle<Value> sdl::SetHintWithPriority(const Arguments& args) {
-  HandleScope scope;
+NAN_SETTER(sdl::SetHintWithPriority) {
 
-  if(args.Length() < 3) {
-    return ThrowException(Exception::TypeError(
-      String::New("Invalid arguments: Excpected SetHintWithPriority(String, String, Number)")));
+  if(info.Length() < 3) {
+    return Nan::ThrowError(Exception::TypeError(
+      Nan::New<String>("Invalid arguments: Excpected SetHintWithPriority(String, String, Number)").ToLocalChecked()));
   }
 
-  String::Utf8Value name(args[0]);
-  String::Utf8Value value(args[1]);
-  SDL_HintPriority priority = static_cast<SDL_HintPriority>(args[2]->Int32Value());
+  String::Utf8Value name(info[0]);
+  String::Utf8Value value(info[1]);
+  SDL_HintPriority priority = static_cast<SDL_HintPriority>(info[2]->Int32Value());
   SDL_bool ret = SDL_SetHintWithPriority(*name, *value, priority);
 
-  return scope.Close(Boolean::New(ret ? true : false));
+  return scope.Close(Nan::New<Boolean>(ret ? true : false));
 }
 
-Handle<Value> sdl::CompiledVersion(const Arguments& args) {
-  HandleScope scope;
+NAN_GETTER(sdl::CompiledVersion) {
 
   SDL_version version;
   SDL_VERSION(&version);
 
-  Handle<Object> ret = Object::New();
-  ret->Set(String::New("major"), Number::New(version.major));
-  ret->Set(String::New("minor"), Number::New(version.minor));
-  ret->Set(String::New("patch"), Number::New(version.patch));
+  Handle<Object> ret = Nan::New<Object>();
+  Nan::Set(ret, Nan::New<String>("major").ToLocalChecked(), Nan::New<Number>(version.major));
+  Nan::Set(ret, Nan::New<String>("minor").ToLocalChecked(), Nan::New<Number>(version.minor));
+  Nan::Set(ret, Nan::New<String>("patch").ToLocalChecked(), Nan::New<Number>(version.patch));
 
   return scope.Close(ret);
 }
-Handle<Value> sdl::CompiledRevision(const Arguments& args) {
-  HandleScope scope;
+NAN_GETTER(sdl::CompiledRevision) {
 
-  Handle<String> ret = String::New(SDL_REVISION);
+  Handle<String> ret = Nan::New<String>(SDL_REVISION);
 
   return scope.Close(ret);
 }
-Handle<Value> sdl::GetRevision(const Arguments& args) {
-  HandleScope scope;
+NAN_GETTER(sdl::GetRevision) {
 
   const char *revision = SDL_GetRevision();
-  Handle<String> ret = String::New(revision);
+  Handle<String> ret = Nan::New<String>(revision);
 
   return scope.Close(ret);
 }
-Handle<Value> sdl::GetRevisionNumber(const Arguments& args) {
-  HandleScope scope;
+NAN_GETTER(sdl::GetRevisionNumber) {
 
   int revision = SDL_GetRevisionNumber();
-  Handle<Value> ret = Number::New(revision);
+  Handle<Value> ret = Nan::New<Number>(revision);
 
   return scope.Close(ret);
 }
-Handle<Value> sdl::GetVersion(const Arguments& args) {
-  HandleScope scope;
+NAN_GETTER(sdl::GetVersion) {
 
   SDL_version version;
   SDL_GetVersion(&version);
 
-  Handle<Object> ret = Object::New();
-  ret->Set(String::New("major"), Number::New(version.major));
-  ret->Set(String::New("minor"), Number::New(version.minor));
-  ret->Set(String::New("patch"), Number::New(version.patch));
+  Handle<Object> ret = Nan::New<Object>();
+  Nan::Set(ret, Nan::New<String>("major").ToLocalChecked(), Nan::New<Number>(version.major));
+  Nan::Set(ret, Nan::New<String>("minor").ToLocalChecked(), Nan::New<Number>(version.minor));
+  Nan::Set(ret, Nan::New<String>("patch").ToLocalChecked(), Nan::New<Number>(version.patch));
 
   return scope.Close(ret);
 }
 
-Handle<Value> sdl::GetClipboardText(const Arguments& args) {
-  HandleScope scope;
+NAN_GETTER(sdl::GetClipboardText) {
 
   char *text = SDL_GetClipboardText();
   if(NULL == text) {
     return ThrowSDLException(__func__);
   }
 
-  return scope.Close(String::New(text));
+  return scope.Close(Nan::New<String>(text));
 }
-Handle<Value> sdl::HasClipboardText(const Arguments& args) {
-  HandleScope scope;
+NAN_GETTER(sdl::HasClipboardText) {
 
   SDL_bool has = SDL_HasClipboardText();
 
-  return scope.Close(Boolean::New(has ? true : false));
+  return scope.Close(Nan::New<Boolean>(has ? true : false));
 }
-Handle<Value> sdl::SetClipboardText(const Arguments& args) {
-  HandleScope scope;
+NAN_SETTER(sdl::SetClipboardText) {
 
-  if(args.Length() < 1) {
-    return ThrowException(Exception::TypeError(
-      String::New("Invalid arguments: Expected SetClipboardText(String)")));
+  if(info.Length() < 1) {
+    return Nan::ThrowError(Exception::TypeError(
+      Nan::New<String>("Invalid arguments: Expected SetClipboardText(String)")));
   }
 
-  String::Utf8Value text(args[0]);
+  String::Utf8Value text(info[0]);
   int err = SDL_SetClipboardText(*text);
   if(err < 0) {
     return ThrowSDLException(__func__);
   }
-
-  return Undefined();
 }
 
 
 // TODO: make an async version so this can be used in loops or parallel load images
-Handle<Value> sdl::IMG::Load(const Arguments& args) {
-  HandleScope scope;
+NAN_GETTER(sdl::IMG::Load) {
 
-  if (!(args.Length() == 1 && args[0]->IsString())) {
-    return ThrowException(Exception::TypeError(String::New("Invalid arguments: Expected IMG::Load(String)")));
+  if (!(info.Length() == 1 && info[0]->IsString())) {
+    return Nan::ThrowError(Exception::TypeError(Nan::New<String>("Invalid arguments: Expected IMG::Load(String)")));
   }
 
-  String::Utf8Value file(args[0]);
+  String::Utf8Value file(info[0]);
 
   SDL_Surface *image;
   image=IMG_Load(*file);
   if(!image) {
-    return ThrowException(Exception::Error(String::Concat(
-      String::New("IMG::Load: "),
-      String::New(IMG_GetError())
+    return Nan::ThrowError(Exception::Error(String::Concat(
+      Nan::New<String>("IMG::Load: "),
+      Nan::New<String>(IMG_GetError())
     )));
   }
 

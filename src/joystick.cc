@@ -39,7 +39,7 @@ void sdl::JoystickWrapper::Init(Handle<Object> exports) {
 	wrap_template_ = Persistent<FunctionTemplate>::New(tpl);
 
 	wrap_template_->InstanceTemplate()->SetInternalFieldCount(1);
-	wrap_template_->SetClassName(String::NewSymbol("JoystickWrapper"));
+	wrap_template_->SetClassName(Nan::New<String>("JoystickWrapper"));
 
 	NODE_SET_PROTOTYPE_METHOD(wrap_template_, "getAttached", GetAttached);
 	NODE_SET_PROTOTYPE_METHOD(wrap_template_, "getAxis", GetAxis);
@@ -53,19 +53,19 @@ void sdl::JoystickWrapper::Init(Handle<Object> exports) {
 	NODE_SET_PROTOTYPE_METHOD(wrap_template_, "getNumBalls", GetNumBalls);
 	NODE_SET_PROTOTYPE_METHOD(wrap_template_, "getNumHats", GetNumHats);
 
-	exports->Set(String::NewSymbol("Joystick"), wrap_template_->GetFunction());
+	Nan::Set(exports, Nan::New<String>("Joystick"), wrap_template_->GetFunction());
 }
-Handle<Value> sdl::JoystickWrapper::New(const Arguments& args) {
+NAN_METHOD(sdl::JoystickWrapper::New) {
 	if(!args.IsConstructCall()) {
 		return ThrowException(Exception::TypeError(
-			String::New("Must create an sdl.Joystick with the new operator.")));
+			Nan::New<String>("Must create an sdl.Joystick with the new operator.")));
 	}
 
 	HandleScope scope;
 
 	if(args.Length() < 1) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: Expected new sdl.Joystick(Number)")));
+			Nan::New<String>("Invalid arguments: Expected new sdl.Joystick(Number)")));
 	}
 
 	if(args[0]->IsExternal()) {
@@ -94,20 +94,20 @@ Handle<Value> sdl::JoystickWrapper::New(const Arguments& args) {
 	return args.This();
 }
 
-Handle<Value> sdl::JoystickWrapper::GetAttached(const Arguments& args) {
+NAN_METHOD(sdl::JoystickWrapper::GetAttached) {
 	HandleScope scope;
 
 	JoystickWrapper* wrap = ObjectWrap::Unwrap<JoystickWrapper>(Handle<Object>::Cast(args.This()));
 	SDL_bool attached = SDL_JoystickGetAttached(wrap->joystick_);
 
-	return scope.Close(Boolean::New(attached ? true : false));
+	return scope.Close(Nan::New<Boolean>(attached ? true : false));
 }
-Handle<Value> sdl::JoystickWrapper::GetAxis(const Arguments& args) {
+NAN_METHOD(sdl::JoystickWrapper::GetAxis) {
 	HandleScope scope;
 
 	if(args.Length() < 1) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: Expected GetAxis(Number)")));
+			Nan::New<String>("Invalid arguments: Expected GetAxis(Number)")));
 	}
 
 	JoystickWrapper* wrap = ObjectWrap::Unwrap<JoystickWrapper>(Handle<Object>::Cast(args.This()));
@@ -117,14 +117,14 @@ Handle<Value> sdl::JoystickWrapper::GetAxis(const Arguments& args) {
 		return ThrowSDLException(__func__);
 	}
 
-	return scope.Close(Number::New(position));
+	return scope.Close(Nan::New<Number>(position));
 }
-Handle<Value> sdl::JoystickWrapper::GetBall(const Arguments& args) {
+NAN_METHOD(sdl::JoystickWrapper::GetBall) {
 	HandleScope scope;
 
 	if(args.Length() < 1) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: Expected GetBall(Number)")));
+			Nan::New<String>("Invalid arguments: Expected GetBall(Number)")));
 	}
 
 	JoystickWrapper* wrap = ObjectWrap::Unwrap<JoystickWrapper>(Handle<Object>::Cast(args.This()));
@@ -135,27 +135,27 @@ Handle<Value> sdl::JoystickWrapper::GetBall(const Arguments& args) {
 		return ThrowSDLException(__func__);
 	}
 
-	Handle<Object> ret = Object::New();
-	ret->Set(String::NewSymbol("dx"), Number::New(dx));
-	ret->Set(String::NewSymbol("dy"), Number::New(dy));
+	Handle<Object> ret = Nan::New<Object>();
+	Nan::Set(ret, Nan::New<String>("dx"), Nan::New<Number>(dx));
+	Nan::Set(ret, Nan::New<String>("dy"), Nan::New<Number>(dy));
 
 	return scope.Close(ret);
 }
-Handle<Value> sdl::JoystickWrapper::GetButton(const Arguments& args) {
+NAN_METHOD(sdl::JoystickWrapper::GetButton) {
 	HandleScope scope;
 
 	if(args.Length() < 1) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: Expected GetButton(Number)")));
+			Nan::New<String>("Invalid arguments: Expected GetButton(Number)")));
 	}
 
 	JoystickWrapper* wrap = ObjectWrap::Unwrap<JoystickWrapper>(Handle<Object>::Cast(args.This()));
 	int button = args[0]->Int32Value();
 	uint8_t ret = SDL_JoystickGetButton(wrap->joystick_, button);
 
-	return scope.Close(Boolean::New(ret == 1 ? true : false));
+	return scope.Close(Nan::New<Boolean>(ret == 1 ? true : false));
 }
-Handle<Value> sdl::JoystickWrapper::GetGUID(const Arguments& args) {
+NAN_METHOD(sdl::JoystickWrapper::GetGUID) {
 	HandleScope scope;
 
 	JoystickWrapper* wrap = ObjectWrap::Unwrap<JoystickWrapper>(Handle<Object>::Cast(args.This()));
@@ -164,27 +164,27 @@ Handle<Value> sdl::JoystickWrapper::GetGUID(const Arguments& args) {
 	// SDL_JoystickGUID is defined as a struct holding a single array of 16 elements.
 	Handle<Array> ret = Array::New(16);
 	for(int i = 0; i < 16; i++) {
-		ret->Set(i, Number::New(guid.data[i]));
+		Nan::Set(ret, i, Nan::New<Number>(guid.data[i]));
 	}
 
 	return scope.Close(ret);
 }
-Handle<Value> sdl::JoystickWrapper::GetHat(const Arguments& args) {
+NAN_METHOD(sdl::JoystickWrapper::GetHat) {
 	HandleScope scope;
 
 	if(args.Length() < 1) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: Expected GetHat(Number)")));
+			Nan::New<String>("Invalid arguments: Expected GetHat(Number)")));
 	}
 
 	JoystickWrapper* wrap = ObjectWrap::Unwrap<JoystickWrapper>(Handle<Object>::Cast(args.This()));
 	int hat = args[0]->Int32Value();
 	uint8_t ret = SDL_JoystickGetHat(wrap->joystick_, hat);
 
-	return scope.Close(Number::New(ret));
+	return scope.Close(Nan::New<Number>(ret));
 }
 
-Handle<Value> sdl::JoystickWrapper::GetName(const Arguments& args) {
+NAN_METHOD(sdl::JoystickWrapper::GetName) {
 	HandleScope scope;
 
 	JoystickWrapper* wrap = ObjectWrap::Unwrap<JoystickWrapper>(Handle<Object>::Cast(args.This()));
@@ -193,9 +193,9 @@ Handle<Value> sdl::JoystickWrapper::GetName(const Arguments& args) {
 		return ThrowSDLException(__func__);
 	}
 
-	return scope.Close(String::New(name));
+	return scope.Close(Nan::New<String>(name));
 }
-Handle<Value> sdl::JoystickWrapper::GetNumAxes(const Arguments& args) {
+NAN_METHOD(sdl::JoystickWrapper::GetNumAxes) {
 	HandleScope scope;
 
 	JoystickWrapper* wrap = ObjectWrap::Unwrap<JoystickWrapper>(Handle<Object>::Cast(args.This()));
@@ -204,9 +204,9 @@ Handle<Value> sdl::JoystickWrapper::GetNumAxes(const Arguments& args) {
 		return ThrowSDLException(__func__);
 	}
 
-	return scope.Close(Number::New(axes));
+	return scope.Close(Nan::New<Number>(axes));
 }
-Handle<Value> sdl::JoystickWrapper::GetNumButtons(const Arguments& args) {
+NAN_METHOD(sdl::JoystickWrapper::GetNumButtons) {
 	HandleScope scope;
 
 	JoystickWrapper* wrap = ObjectWrap::Unwrap<JoystickWrapper>(Handle<Object>::Cast(args.This()));
@@ -215,9 +215,9 @@ Handle<Value> sdl::JoystickWrapper::GetNumButtons(const Arguments& args) {
 		return ThrowSDLException(__func__);
 	}
 
-	return scope.Close(Number::New(buttons));
+	return scope.Close(Nan::New<Number>(buttons));
 }
-Handle<Value> sdl::JoystickWrapper::GetNumBalls(const Arguments& args) {
+NAN_METHOD(sdl::JoystickWrapper::GetNumBalls) {
 	HandleScope scope;
 
 	JoystickWrapper* wrap = ObjectWrap::Unwrap<JoystickWrapper>(Handle<Object>::Cast(args.This()));
@@ -226,9 +226,9 @@ Handle<Value> sdl::JoystickWrapper::GetNumBalls(const Arguments& args) {
 		return ThrowSDLException(__func__);
 	}
 
-	return scope.Close(Number::New(balls));
+	return scope.Close(Nan::New<Number>(balls));
 }
-Handle<Value> sdl::JoystickWrapper::GetNumHats(const Arguments& args) {
+NAN_METHOD(sdl::JoystickWrapper::GetNumHats) {
 	HandleScope scope;
 
 	JoystickWrapper* wrap = ObjectWrap::Unwrap<JoystickWrapper>(Handle<Object>::Cast(args.This()));
@@ -237,21 +237,21 @@ Handle<Value> sdl::JoystickWrapper::GetNumHats(const Arguments& args) {
 		return ThrowSDLException(__func__);
 	}
 
-	return scope.Close(Number::New(hats));
+	return scope.Close(Nan::New<Number>(hats));
 }
 
-Handle<Value> sdl::NumJoysticks(const Arguments& args) {
+NAN_METHOD(sdl::NumJoysticks) {
 	HandleScope scope;
 
-	return scope.Close(Number::New(SDL_NumJoysticks()));
+	return scope.Close(Nan::New<Number>(SDL_NumJoysticks()));
 }
 
-Handle<Value> sdl::JoystickNameForIndex(const Arguments& args) {
+NAN_METHOD(sdl::JoystickNameForIndex) {
 	HandleScope scope;
 
 	if(args.Length() < 1) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: Expected JoystickNameForIndex(Number)")));
+			Nan::New<String>("Invalid arguments: Expected JoystickNameForIndex(Number)")));
 	}
 
 	int index = args[0]->Int32Value();
@@ -260,15 +260,15 @@ Handle<Value> sdl::JoystickNameForIndex(const Arguments& args) {
 		return ThrowSDLException(__func__);
 	}
 
-	return scope.Close(String::New(name));
+	return scope.Close(Nan::New<String>(name));
 }
 
-Handle<Value> sdl::JoystickGetDeviceGUID(const Arguments& args) {
+NAN_METHOD(sdl::JoystickGetDeviceGUID) {
 	HandleScope scope;
 
 	if(args.Length() < 1) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: Expected JoystickGetDeviceGUID(Number)")));
+			Nan::New<String>("Invalid arguments: Expected JoystickGetDeviceGUID(Number)")));
 	}
 
 	int index = args[0]->Int32Value();
@@ -277,17 +277,17 @@ Handle<Value> sdl::JoystickGetDeviceGUID(const Arguments& args) {
 	// SDL_JoystickGUID is defined as a struct holding a single array of 16 elements.
 	Handle<Array> ret = Array::New(16);
 	for(int i = 0; i < 16; i++) {
-		ret->Set(i, Number::New(guid.data[i]));
+		Nan::Set(ret, i, Nan::New<Number>(guid.data[i]));
 	}
 
 	return scope.Close(ret);
 }
-Handle<Value> sdl::JoystickGetGUIDFromString(const Arguments& args) {
+NAN_METHOD(sdl::JoystickGetGUIDFromString) {
 	HandleScope scope;
 
 	if(args.Length() < 1) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: Expected JoystickGetGUIDFromString(String)")));
+			Nan::New<String>("Invalid arguments: Expected JoystickGetGUIDFromString(String)")));
 	}
 
 	String::Utf8Value pchGuid(args[0]);
@@ -296,17 +296,17 @@ Handle<Value> sdl::JoystickGetGUIDFromString(const Arguments& args) {
 	// SDL_JoystickGUID is defined as a struct holding a single array of 16 uint8_t elements.
 	Handle<Array> ret = Array::New(16);
 	for(int i = 0; i < 16; i++) {
-		ret->Set(i, Number::New(guid.data[i]));
+		Nan::Set(ret, i, Nan::New<Number>(guid.data[i]));
 	}
 
 	return scope.Close(ret);
 }
-Handle<Value> sdl::JoystickGetGUIDString(const Arguments& args) {
+NAN_METHOD(sdl::JoystickGetGUIDString) {
 	HandleScope scope;
 
 	if(args.Length() < 1) {
 		return ThrowException(Exception::TypeError(
-			String::New("Invalid arguments: Expected JoystickGetGUIDString(String)")));
+			Nan::New<String>("Invalid arguments: Expected JoystickGetGUIDString(String)")));
 	}
 
 	Handle<Array> guidArr = Handle<Array>::Cast(args[0]);
@@ -318,10 +318,10 @@ Handle<Value> sdl::JoystickGetGUIDString(const Arguments& args) {
 	char pszGuid[200];
 	SDL_JoystickGetGUIDString(guid, pszGuid, 200);
 
-	return scope.Close(String::New(pszGuid));
+	return scope.Close(Nan::New<String>(pszGuid));
 }
 
-Handle<Value> sdl::JoystickUpdate(const Arguments& args) {
+NAN_METHOD(sdl::JoystickUpdate) {
 	HandleScope scope;
 
 	SDL_JoystickUpdate();
@@ -329,7 +329,7 @@ Handle<Value> sdl::JoystickUpdate(const Arguments& args) {
 	return Undefined();
 }
 
-Handle<Value> sdl::JoystickEventState(const Arguments& args) {
+NAN_METHOD(sdl::JoystickEventState) {
 	HandleScope scope;
 
 	int state;
@@ -337,9 +337,9 @@ Handle<Value> sdl::JoystickEventState(const Arguments& args) {
 		state = SDL_QUERY;
 	} else {
 		if (!(args.Length() == 1 && args[0]->IsBoolean())) {
-			return ThrowException(Exception::TypeError(String::New("Invalid arguments: Expected JoystickEventState([Boolean])")));
+			return ThrowException(Exception::TypeError(Nan::New<String>("Invalid arguments: Expected JoystickEventState([Boolean])")));
 		}
 		state = args[0]->BooleanValue() ? SDL_ENABLE : SDL_IGNORE;
 	}
-	return Boolean::New(SDL_JoystickEventState(state));
+	return Nan::New<Boolean>(SDL_JoystickEventState(state));
 }

@@ -20,28 +20,28 @@ namespace sdl {
 			static v8::Persistent<v8::FunctionTemplate> wrap_template_;
 
 			static void Init(v8::Handle<v8::Object> exports);
-			static v8::Handle<v8::Value> New(const v8::Arguments& args);
+			static NAN_METHOD(New);
 
 			SDL_GLContext context_;
 		};
 
-		v8::Handle<v8::Value> BindTexture(const v8::Arguments& args);
-		v8::Handle<v8::Value> UnbindTexture(const v8::Arguments& args);
+		NAN_METHOD(BindTexture);
+		NAN_METHOD(UnbindTexture);
 
-		v8::Handle<v8::Value> ExtensionSupported(const v8::Arguments& args);
+		NAN_METHOD(ExtensionSupported);
 
-		v8::Handle<v8::Value> LoadLibrary(const v8::Arguments& args);
-		v8::Handle<v8::Value> UnloadLibrary(const v8::Arguments& args);
+		NAN_METHOD(LoadLibrary);
+		NAN_METHOD(UnloadLibrary);
 
-		v8::Handle<v8::Value> SetAttribute(const v8::Arguments& args);
-		v8::Handle<v8::Value> MakeCurrent(const v8::Arguments& args);
-		v8::Handle<v8::Value> SetSwapInterval(const v8::Arguments& args);
+		NAN_METHOD(SetAttribute);
+		NAN_METHOD(MakeCurrent);
+		NAN_METHOD(SetSwapInterval);
 
-		v8::Handle<v8::Value> GetAttribute(const v8::Arguments& args);
-		v8::Handle<v8::Value> GetCurrentContext(const v8::Arguments& args);
-		v8::Handle<v8::Value> GetCurrentWindow(const v8::Arguments& args);
-		v8::Handle<v8::Value> GetDrawableSize(const v8::Arguments& args);
-		v8::Handle<v8::Value> GetSwapInterval(const v8::Arguments& args);
+		NAN_METHOD(GetAttribute);
+		NAN_METHOD(GetCurrentContext);
+		NAN_METHOD(GetCurrentWindow);
+		NAN_METHOD(GetDrawableSize);
+		NAN_METHOD(GetSwapInterval);
 	}
 }
 

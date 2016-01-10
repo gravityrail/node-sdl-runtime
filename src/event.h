@@ -11,39 +11,39 @@ namespace sdl {
 		void Init(v8::Handle<v8::Object> exports);
 	}
 
-	// v8::Handle<v8::Value> AddEventWatch(const v8::Arguments& args);
-	// v8::Handle<v8::Value> DelEventWatch(const v8::Arguments& args);
-	v8::Handle<v8::Value> EventState(const v8::Arguments& args);
+	// NAN_METHOD(AddEventWatch);
+	// NAN_METHOD(DelEventWatch);
+	NAN_METHOD(EventState);
 
-	// v8::Handle<v8::Value> FilterEvents(const v8::Arguments& args);
-	// v8::Handle<v8::Value> GetEventFilter(const v8::Arguments& args);
-	// v8::Handle<v8::Value> SetEventFilter(const v8::Arguments& args);
+	// NAN_METHOD(FilterEvents);
+	// NAN_METHOD(GetEventFilter);
+	// NAN_METHOD(SetEventFilter);
 
-	v8::Handle<v8::Value> FlushEvent(const v8::Arguments& args);
-	v8::Handle<v8::Value> FlushEvents(const v8::Arguments& args);
+	NAN_METHOD(FlushEvent);
+	NAN_METHOD(FlushEvents);
 
-	v8::Handle<v8::Value> GetNumTouchDevices(const v8::Arguments& args);
-	v8::Handle<v8::Value> GetNumTouchFingers(const v8::Arguments& args);
-	v8::Handle<v8::Value> GetTouchDevice(const v8::Arguments& args);
-	v8::Handle<v8::Value> GetTouchFinger(const v8::Arguments& args);
-	v8::Handle<v8::Value> RecordGesture(const v8::Arguments& args);
+	NAN_METHOD(GetNumTouchDevices);
+	NAN_METHOD(GetNumTouchFingers);
+	NAN_METHOD(GetTouchDevice);
+	NAN_METHOD(GetTouchFinger);
+	NAN_METHOD(RecordGesture);
 
-	v8::Handle<v8::Value> HasEvent(const v8::Arguments& args);
-	v8::Handle<v8::Value> HasEvents(const v8::Arguments& args);
+	NAN_METHOD(HasEvent);
+	NAN_METHOD(HasEvents);
 
-	// v8::Handle<v8::Value> LoadDollarTemplates(const v8::Arguments& args);
-	// v8::Handle<v8::Value> SaveAllDollarTemplates(const v8::Arguments& args);
-	// v8::Handle<v8::Value> SaveDollarTemplate(const v8::Arguments& args);
+	// NAN_METHOD(LoadDollarTemplates);
+	// NAN_METHOD(SaveAllDollarTemplates);
+	// NAN_METHOD(SaveDollarTemplate);
 
-	v8::Handle<v8::Value> WaitEvent(const v8::Arguments& args);
-	v8::Handle<v8::Value> WaitEventTimeout(const v8::Arguments& args);
-	v8::Handle<v8::Value> PollEvent(const v8::Arguments& args);
-	// v8::Handle<v8::Value> PeepEvents(const v8::Arguments& args);
-	// v8::Handle<v8::Value> PumpEvents(const v8::Arguments& args);
-	// v8::Handle<v8::Value> PushEvent(const v8::Arguments& args);
-	// v8::Handle<v8::Value> RegisterEvents(const v8::Arguments& args);
+	NAN_METHOD(WaitEvent);
+	NAN_METHOD(WaitEventTimeout);
+	NAN_METHOD(PollEvent);
+	// NAN_METHOD(PeepEvents);
+	// NAN_METHOD(PumpEvents);
+	// NAN_METHOD(PushEvent);
+	// NAN_METHOD(RegisterEvents);
 
-	v8::Handle<v8::Value> QuitRequested(const v8::Arguments& args);
+	NAN_METHOD(QuitRequested);
 
 	v8::Local<v8::Object> SDLEventToJavascriptObject(const SDL_Event& event);
 }
