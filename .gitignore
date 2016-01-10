@@ -1,5 +1,6 @@
 .svn
 *.o
 .lock-wscript
+npm-debug.log
 build
 node_modules
