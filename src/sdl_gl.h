@@ -11,7 +11,7 @@ namespace sdl {
 	namespace gl {
 		void Init(v8::Handle<v8::Object> exports);
 
-		class ContextWrapper : node::ObjectWrap {
+		class ContextWrapper : Nan::ObjectWrap {
 		public:
 			ContextWrapper();
 			ContextWrapper(v8::Handle<v8::Object> obj);

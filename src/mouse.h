@@ -12,7 +12,7 @@ namespace sdl {
 		void Init(v8::Handle<v8::Object> exports);
 	}
 
-	class CursorWrapper : public node::ObjectWrap {
+	class CursorWrapper : public Nan::ObjectWrap {
 	public:
 		static v8::Persistent<v8::FunctionTemplate> wrap_template_;
 		static v8::Persistent<v8::FunctionTemplate> wrap_template_system_;

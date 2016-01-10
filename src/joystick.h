@@ -12,7 +12,7 @@ namespace sdl {
 		void Init(v8::Handle<v8::Object> exports);
 	}
 
-	class JoystickWrapper : public node::ObjectWrap {
+	class JoystickWrapper : public Nan::ObjectWrap {
 	public:
 		static v8::Persistent<v8::FunctionTemplate> wrap_template_;
 

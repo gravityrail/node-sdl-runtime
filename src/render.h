@@ -8,7 +8,7 @@
 
 
 namespace sdl {
-	class RendererWrapper : public node::ObjectWrap {
+	class RendererWrapper : public Nan::ObjectWrap {
 	public:
 		static v8::Persistent<v8::FunctionTemplate> render_wrap_template_;
 		static v8::Persistent<v8::FunctionTemplate> software_render_wrap_template_;

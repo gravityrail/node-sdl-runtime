@@ -488,7 +488,7 @@ NAN_METHOD(sdl::ShowSimpleMessageBox) {
     int flags = info[0]->Int32Value();
     String::Utf8Value title(info[1]);
     String::Utf8Value message(info[2]);
-    WindowWrapper* window = node::ObjectWrap::Unwrap<WindowWrapper>(Handle<Object>::Cast(info[3]));
+    WindowWrapper* window = Nan::ObjectWrap::Unwrap<WindowWrapper>(Handle<Object>::Cast(info[3]));
     int err = SDL_ShowSimpleMessageBox(flags, *title, *message, window->window_);
     if(err < 0) {
       return ThrowSDLException(__func__);

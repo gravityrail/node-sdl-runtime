@@ -9,7 +9,7 @@ using namespace v8;
 using namespace node;
 
 
-Persistent<FunctionTemplate> sdl::TTF::FontWrapper::wrap_template_;
+Nan::Persistent<FunctionTemplate> sdl::TTF::FontWrapper::wrap_template_;
 
 sdl::TTF::FontWrapper::FontWrapper() {
 }
@@ -26,49 +26,49 @@ void sdl::TTF::FontWrapper::Init(Handle<Object> exports) {
 	wrap_template_->InstanceTemplate()->SetInternalFieldCount(1);
 	wrap_template_->SetClassName(Nan::New<String>("FontWrapper"));
 
-	NODE_SET_PROTOTYPE_METHOD(wrap_template_, "renderTextSolid", RenderTextSolid);
-	NODE_SET_PROTOTYPE_METHOD(wrap_template_, "renderUtf8Solid", RenderUTF8Solid);
-	NODE_SET_PROTOTYPE_METHOD(wrap_template_, "renderUnicodeSolid", RenderUnicodeSolid);
-	NODE_SET_PROTOTYPE_METHOD(wrap_template_, "renderGlyphSolid", RenderGlyphSolid);
+	Nan::SetPrototypeMethod(wrap_template_, "renderTextSolid", RenderTextSolid);
+	Nan::SetPrototypeMethod(wrap_template_, "renderUtf8Solid", RenderUTF8Solid);
+	Nan::SetPrototypeMethod(wrap_template_, "renderUnicodeSolid", RenderUnicodeSolid);
+	Nan::SetPrototypeMethod(wrap_template_, "renderGlyphSolid", RenderGlyphSolid);
 
-	NODE_SET_PROTOTYPE_METHOD(wrap_template_, "renderTextShaded", RenderTextShaded);
-	NODE_SET_PROTOTYPE_METHOD(wrap_template_, "renderUtf8Shaded", RenderUTF8Shaded);
-	NODE_SET_PROTOTYPE_METHOD(wrap_template_, "renderUnicodeShaded", RenderUnicodeShaded);
-	NODE_SET_PROTOTYPE_METHOD(wrap_template_, "renderGlyphShaded", RenderGlyphShaded);
+	Nan::SetPrototypeMethod(wrap_template_, "renderTextShaded", RenderTextShaded);
+	Nan::SetPrototypeMethod(wrap_template_, "renderUtf8Shaded", RenderUTF8Shaded);
+	Nan::SetPrototypeMethod(wrap_template_, "renderUnicodeShaded", RenderUnicodeShaded);
+	Nan::SetPrototypeMethod(wrap_template_, "renderGlyphShaded", RenderGlyphShaded);
 
-	NODE_SET_PROTOTYPE_METHOD(wrap_template_, "renderTextBlended", RenderTextBlended);
-	NODE_SET_PROTOTYPE_METHOD(wrap_template_, "renderUtf8Blended", RenderUTF8Blended);
-	NODE_SET_PROTOTYPE_METHOD(wrap_template_, "renderUnicodeBlended", RenderUnicodeBlended);
-	NODE_SET_PROTOTYPE_METHOD(wrap_template_, "renderGlyphBlended", RenderGlyphBlended);
+	Nan::SetPrototypeMethod(wrap_template_, "renderTextBlended", RenderTextBlended);
+	Nan::SetPrototypeMethod(wrap_template_, "renderUtf8Blended", RenderUTF8Blended);
+	Nan::SetPrototypeMethod(wrap_template_, "renderUnicodeBlended", RenderUnicodeBlended);
+	Nan::SetPrototypeMethod(wrap_template_, "renderGlyphBlended", RenderGlyphBlended);
 
 	Nan::Set(exports, Nan::New<String>("Font").ToLocalChecked(), wrap_template_->GetFunction()));
 }
 NAN_METHOD(sdl::TTF::FontWrapper::New) {
-	if(!args.IsConstructCall()) {
+	if(!info.IsConstructCall()) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("A Font must be created with the new operator.")));
 	}
 
 	HandleScope scope;
 
-	if(args[0]->IsExternal()) {
+	if(info[0]->IsExternal()) {
 		FontWrapper* obj = new FontWrapper();
-		obj->font_ = static_cast<TTF_Font*>(Handle<External>::Cast(args[0])->Value());
-		obj->Wrap(args.This());
-		return args.This();
+		obj->font_ = static_cast<TTF_Font*>(Handle<External>::Cast(info[0])->Value());
+		obj->Wrap(info.This());
+		return info.This();
 	}
 	else {
-		if(!args[0]->IsString()) {
+		if(!info[0]->IsString()) {
 			return ThrowException(Exception::TypeError(
 				Nan::New<String>("Invalid arguments: First argument to new sdl.Font must be a String.")));
 		}
-		if(!args[1]->IsNumber()) {
+		if(!info[1]->IsNumber()) {
 			return ThrowException(Exception::TypeError(
 				Nan::New<String>("Invalid arguments: Second argument to new sdl.Font must be a Number.")));
 		}
 
-		String::Utf8Value file(args[0]);
-		int ptsize = args[1]->Int32Value();
+		String::Utf8Value file(info[0]);
+		int ptsize = info[1]->Int32Value();
 		TTF_Font* font = TTF_OpenFont(*file, ptsize);
 		if(NULL == font) {
 			return ThrowSDLException(__func__);
@@ -76,8 +76,8 @@ NAN_METHOD(sdl::TTF::FontWrapper::New) {
 
 		FontWrapper* obj = new FontWrapper();
 		obj->font_ = font;
-		obj->Wrap(args.This());
-		return args.This();
+		obj->Wrap(info.This());
+		return info.This();
 	}
 }
 
@@ -85,22 +85,22 @@ NAN_METHOD(sdl::TTF::FontWrapper::RenderTextSolid) {
 	HandleScope scope;
 	Context::Scope context_scope(Context::GetCurrent());
 
-	FontWrapper* font = ObjectWrap::Unwrap<FontWrapper>(args.This());
+	FontWrapper* font = Nan::ObjectWrap::Unwrap<FontWrapper>(info.This());
 	if(NULL == font) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Could not unwrap 'this' for some reason. (did you not use a Font object?)")));
 	}
-	if(!args[0]->IsString()) {
+	if(!info[0]->IsString()) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Invalid arguments: First argument to renderTextSolid must be a String.")));
 	}
-	if(!args[1]->IsObject()) {
+	if(!info[1]->IsObject()) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Invalid arguments: Second argument to renderTextSolid must be an sdl.Color.")));
 	}
 
-	String::Utf8Value text(args[0]);
-	ColorWrapper* color = ObjectWrap::Unwrap<ColorWrapper>(Handle<Object>::Cast(args[1]));
+	String::Utf8Value text(info[0]);
+	ColorWrapper* color = Nan::ObjectWrap::Unwrap<ColorWrapper>(Handle<Object>::Cast(info[1]));
 	if(NULL == color) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Could not unwrap second argument to renderTextSolid for some reason. (is it not an sdl.Color?)")));
@@ -119,22 +119,22 @@ NAN_METHOD(sdl::TTF::FontWrapper::RenderTextSolid) {
 NAN_METHOD(sdl::TTF::FontWrapper::RenderUTF8Solid) {
 	HandleScope scope;
 
-	FontWrapper* font = ObjectWrap::Unwrap<FontWrapper>(args.This());
+	FontWrapper* font = Nan::ObjectWrap::Unwrap<FontWrapper>(info.This());
 	if(NULL == font) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Could not unwrap 'this' for some reason. (did you not use a Font object?)")));
 	}
-	if(!args[0]->IsString()) {
+	if(!info[0]->IsString()) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Invalid arguments: First argument to renderUtf8Solid must be a String.")));
 	}
-	if(!args[1]->IsObject()) {
+	if(!info[1]->IsObject()) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Invalid arguments: Second argument to renderUtf8Solid must be an sdl.Color.")));
 	}
 
-	String::Utf8Value text(args[0]);
-	ColorWrapper* color = ObjectWrap::Unwrap<ColorWrapper>(Handle<Object>::Cast(args[1]));
+	String::Utf8Value text(info[0]);
+	ColorWrapper* color = Nan::ObjectWrap::Unwrap<ColorWrapper>(Handle<Object>::Cast(info[1]));
 	if(NULL == color) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Could not unwrap second argument to renderUtf8Solid for some reason. (is it not an sdl.Color?)")));
@@ -153,18 +153,18 @@ NAN_METHOD(sdl::TTF::FontWrapper::RenderUTF8Solid) {
 NAN_METHOD(sdl::TTF::FontWrapper::RenderUnicodeSolid) {
 	HandleScope scope;
 
-	FontWrapper* font = ObjectWrap::Unwrap<FontWrapper>(args.This());
+	FontWrapper* font = Nan::ObjectWrap::Unwrap<FontWrapper>(info.This());
 	if(NULL == font) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Could not unwrap 'this' for some reason. (did you not use a Font object?)")));
 	}
-	if(!args[1]->IsObject()) {
+	if(!info[1]->IsObject()) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Invalid arguments: Second argument to renderUnicodeSolid must be an sdl.Color.")));
 	}
 
-	String::Value text(args[0]);
-	ColorWrapper* color = ObjectWrap::Unwrap<ColorWrapper>(Handle<Object>::Cast(args[1]));
+	String::Value text(info[0]);
+	ColorWrapper* color = Nan::ObjectWrap::Unwrap<ColorWrapper>(Handle<Object>::Cast(info[1]));
 	if(NULL == color) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Could not unwrap second argument to renderUnicodeSolid for some reason. (is it not an sdl.Color?)")));
@@ -183,22 +183,22 @@ NAN_METHOD(sdl::TTF::FontWrapper::RenderUnicodeSolid) {
 NAN_METHOD(sdl::TTF::FontWrapper::RenderGlyphSolid) {
 	HandleScope scope;
 
-	FontWrapper* font = ObjectWrap::Unwrap<FontWrapper>(args.This());
+	FontWrapper* font = Nan::ObjectWrap::Unwrap<FontWrapper>(info.This());
 	if(NULL == font) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Could not unwrap 'this' for some reason. (did you not use a Font object?)")));
 	}
-	if(!args[1]->IsObject()) {
+	if(!info[1]->IsObject()) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Invalid arguments: Second argument to renderGlyphSolid must be an sdl.Color.")));
 	}
 
-	String::Value text(args[0]);
+	String::Value text(info[0]);
 	if(0 == text.length()) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Invalid arguments: First argument to renderGlyphSolid must be able to convert to a string of at least length 1.")));
 	}
-	ColorWrapper* color = ObjectWrap::Unwrap<ColorWrapper>(Handle<Object>::Cast(args[1]));
+	ColorWrapper* color = Nan::ObjectWrap::Unwrap<ColorWrapper>(Handle<Object>::Cast(info[1]));
 	if(NULL == color) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Could not unwrap second argument to renderGlyphSolid for some reason. (is it not an sdl.Color?)")));
@@ -218,31 +218,31 @@ NAN_METHOD(sdl::TTF::FontWrapper::RenderGlyphSolid) {
 NAN_METHOD(sdl::TTF::FontWrapper::RenderTextShaded) {
 	HandleScope scope;
 
-	FontWrapper* font = ObjectWrap::Unwrap<FontWrapper>(args.This());
+	FontWrapper* font = Nan::ObjectWrap::Unwrap<FontWrapper>(info.This());
 	if(NULL == font) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Could not unwrap 'this' for some reason. (did you not use a Font object?)")));
 	}
-	if(!args[0]->IsString()) {
+	if(!info[0]->IsString()) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Invalid arguments: First argument to renderTextShaded must be a String.")));
 	}
-	if(!args[1]->IsObject()) {
+	if(!info[1]->IsObject()) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Invalid arguments: Second argument to renderTextShaded must be an sdl.Color.")));
 	}
-	if(!args[2]->IsObject()) {
+	if(!info[2]->IsObject()) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Invalid arguments: Third argument to renderTextShaded must be an sdl.Color.")));
 	}
 
-	String::Utf8Value text(args[0]);
-	ColorWrapper* fg = ObjectWrap::Unwrap<ColorWrapper>(Handle<Object>::Cast(args[1]));
+	String::Utf8Value text(info[0]);
+	ColorWrapper* fg = Nan::ObjectWrap::Unwrap<ColorWrapper>(Handle<Object>::Cast(info[1]));
 	if(NULL == fg) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Could not unwrap second argument to renderTextShaded for some reason. (is it not an sdl.Color?)")));
 	}
-	ColorWrapper* bg = ObjectWrap::Unwrap<ColorWrapper>(Handle<Object>::Cast(args[2]));
+	ColorWrapper* bg = Nan::ObjectWrap::Unwrap<ColorWrapper>(Handle<Object>::Cast(info[2]));
 	if(NULL == bg) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Could not unwrap third argument to renderTextShaded for some reason. (is it not an sdl.Color?)")));
@@ -261,31 +261,31 @@ NAN_METHOD(sdl::TTF::FontWrapper::RenderTextShaded) {
 NAN_METHOD(sdl::TTF::FontWrapper::RenderUTF8Shaded) {
 	HandleScope scope;
 
-	FontWrapper* font = ObjectWrap::Unwrap<FontWrapper>(args.This());
+	FontWrapper* font = Nan::ObjectWrap::Unwrap<FontWrapper>(info.This());
 	if(NULL == font) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Could not unwrap 'this' for some reason. (did you not use a Font object?)")));
 	}
-	if(!args[0]->IsString()) {
+	if(!info[0]->IsString()) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Invalid arguments: First argument to renderUtf8Shaded must be a String.")));
 	}
-	if(!args[1]->IsObject()) {
+	if(!info[1]->IsObject()) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Invalid arguments: Second argument to renderUtf8Shaded must be an sdl.Color.")));
 	}
-	if(!args[2]->IsObject()) {
+	if(!info[2]->IsObject()) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Invalid arguments: Third argument to renderUtf8Shaded must be an sdl.Color.")));
 	}
 
-	String::Utf8Value text(args[0]);
-	ColorWrapper* fg = ObjectWrap::Unwrap<ColorWrapper>(Handle<Object>::Cast(args[1]));
+	String::Utf8Value text(info[0]);
+	ColorWrapper* fg = Nan::ObjectWrap::Unwrap<ColorWrapper>(Handle<Object>::Cast(info[1]));
 	if(NULL == fg) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Could not unwrap second argument to renderUtf8Shaded for some reason. (is it not an sdl.Color?)")));
 	}
-	ColorWrapper* bg = ObjectWrap::Unwrap<ColorWrapper>(Handle<Object>::Cast(args[2]));
+	ColorWrapper* bg = Nan::ObjectWrap::Unwrap<ColorWrapper>(Handle<Object>::Cast(info[2]));
 	if(NULL == bg) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Could not unwrap third argument to renderUtf8Shaded for some reason. (is it not an sdl.Color?)")));
@@ -304,31 +304,31 @@ NAN_METHOD(sdl::TTF::FontWrapper::RenderUTF8Shaded) {
 NAN_METHOD(sdl::TTF::FontWrapper::RenderUnicodeShaded) {
 	HandleScope scope;
 
-	FontWrapper* font = ObjectWrap::Unwrap<FontWrapper>(args.This());
+	FontWrapper* font = Nan::ObjectWrap::Unwrap<FontWrapper>(info.This());
 	if(NULL == font) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Could not unwrap 'this' for some reason. (did you not use a Font object?)")));
 	}
-	if(!args[0]->IsString()) {
+	if(!info[0]->IsString()) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Invalid arguments: First argument to renderUnicodeShaded must be a String.")));
 	}
-	if(!args[1]->IsObject()) {
+	if(!info[1]->IsObject()) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Invalid arguments: Second argument to renderUnicodeShaded must be an sdl.Color.")));
 	}
-	if(!args[2]->IsObject()) {
+	if(!info[2]->IsObject()) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Invalid arguments: Third argument to renderUnicodeShaded must be an sdl.Color.")));
 	}
 
-	String::Value text(args[0]);
-	ColorWrapper* fg = ObjectWrap::Unwrap<ColorWrapper>(Handle<Object>::Cast(args[1]));
+	String::Value text(info[0]);
+	ColorWrapper* fg = Nan::ObjectWrap::Unwrap<ColorWrapper>(Handle<Object>::Cast(info[1]));
 	if(NULL == fg) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Could not unwrap second argument to renderUnicodeShaded for some reason. (is it not an sdl.Color?)")));
 	}
-	ColorWrapper* bg = ObjectWrap::Unwrap<ColorWrapper>(Handle<Object>::Cast(args[2]));
+	ColorWrapper* bg = Nan::ObjectWrap::Unwrap<ColorWrapper>(Handle<Object>::Cast(info[2]));
 	if(NULL == bg) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Could not unwrap third argument to renderUnicodeShaded for some reason. (is it not an sdl.Color?)")));
@@ -347,35 +347,35 @@ NAN_METHOD(sdl::TTF::FontWrapper::RenderUnicodeShaded) {
 NAN_METHOD(sdl::TTF::FontWrapper::RenderGlyphShaded) {
 	HandleScope scope;
 
-	FontWrapper* font = ObjectWrap::Unwrap<FontWrapper>(args.This());
+	FontWrapper* font = Nan::ObjectWrap::Unwrap<FontWrapper>(info.This());
 	if(NULL == font) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Could not unwrap 'this' for some reason. (did you not use a Font object?)")));
 	}
-	if(!args[0]->IsString()) {
+	if(!info[0]->IsString()) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Invalid arguments: First argument to renderUnicodeShaded must be a String.")));
 	}
-	if(!args[1]->IsObject()) {
+	if(!info[1]->IsObject()) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Invalid arguments: Second argument to renderUnicodeShaded must be an sdl.Color.")));
 	}
-	if(!args[2]->IsObject()) {
+	if(!info[2]->IsObject()) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Invalid arguments: Third argument to renderUnicodeShaded must be an sdl.Color.")));
 	}
 
-	String::Value text(args[0]);
+	String::Value text(info[0]);
 	if(0 == text.length()) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Invalid arguments: First argument to renderGlyphShaded must be able to convert to a string of at least length 1.")));
 	}
-	ColorWrapper* fg = ObjectWrap::Unwrap<ColorWrapper>(Handle<Object>::Cast(args[1]));
+	ColorWrapper* fg = Nan::ObjectWrap::Unwrap<ColorWrapper>(Handle<Object>::Cast(info[1]));
 	if(NULL == fg) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Could not unwrap second argument to renderUnicodeShaded for some reason. (is it not an sdl.Color?)")));
 	}
-	ColorWrapper* bg = ObjectWrap::Unwrap<ColorWrapper>(Handle<Object>::Cast(args[2]));
+	ColorWrapper* bg = Nan::ObjectWrap::Unwrap<ColorWrapper>(Handle<Object>::Cast(info[2]));
 	if(NULL == bg) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Could not unwrap third argument to renderUnicodeShaded for some reason. (is it not an sdl.Color?)")));
@@ -395,22 +395,22 @@ NAN_METHOD(sdl::TTF::FontWrapper::RenderGlyphShaded) {
 NAN_METHOD(sdl::TTF::FontWrapper::RenderTextBlended) {
 	HandleScope scope;
 
-	FontWrapper* font = ObjectWrap::Unwrap<FontWrapper>(args.This());
+	FontWrapper* font = Nan::ObjectWrap::Unwrap<FontWrapper>(info.This());
 	if(NULL == font) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Could not unwrap 'this' for some reason. (did you not use a Font object?)")));
 	}
-	if(!args[0]->IsString()) {
+	if(!info[0]->IsString()) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Invalid arguments: First argument to renderTextBlended must be a String.")));
 	}
-	if(!args[1]->IsObject()) {
+	if(!info[1]->IsObject()) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Invalid arguments: Second argument to renderTextBlended must be an sdl.Color.")));
 	}
 
-	String::Utf8Value text(args[0]);
-	ColorWrapper* color = ObjectWrap::Unwrap<ColorWrapper>(Handle<Object>::Cast(args[1]));
+	String::Utf8Value text(info[0]);
+	ColorWrapper* color = Nan::ObjectWrap::Unwrap<ColorWrapper>(Handle<Object>::Cast(info[1]));
 	if(NULL == color) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Could not unwrap second argument to renderTextBlended for some reason. (is it not an sdl.Color?)")));
@@ -429,22 +429,22 @@ NAN_METHOD(sdl::TTF::FontWrapper::RenderTextBlended) {
 NAN_METHOD(sdl::TTF::FontWrapper::RenderUTF8Blended) {
 	HandleScope scope;
 
-	FontWrapper* font = ObjectWrap::Unwrap<FontWrapper>(args.This());
+	FontWrapper* font = Nan::ObjectWrap::Unwrap<FontWrapper>(info.This());
 	if(NULL == font) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Could not unwrap 'this' for some reason. (did you not use a Font object?)")));
 	}
-	if(!args[0]->IsString()) {
+	if(!info[0]->IsString()) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Invalid arguments: First argument to renderUtf8Blended must be a String.")));
 	}
-	if(!args[1]->IsObject()) {
+	if(!info[1]->IsObject()) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Invalid arguments: Second argument to renderUtf8Blended must be an sdl.Color.")));
 	}
 
-	String::Utf8Value text(args[0]);
-	ColorWrapper* color = ObjectWrap::Unwrap<ColorWrapper>(Handle<Object>::Cast(args[1]));
+	String::Utf8Value text(info[0]);
+	ColorWrapper* color = Nan::ObjectWrap::Unwrap<ColorWrapper>(Handle<Object>::Cast(info[1]));
 	if(NULL == color) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Could not unwrap second argument to renderUtf8Blended for some reason. (is it not an sdl.Color?)")));
@@ -463,18 +463,18 @@ NAN_METHOD(sdl::TTF::FontWrapper::RenderUTF8Blended) {
 NAN_METHOD(sdl::TTF::FontWrapper::RenderUnicodeBlended) {
 	HandleScope scope;
 
-	FontWrapper* font = ObjectWrap::Unwrap<FontWrapper>(args.This());
+	FontWrapper* font = Nan::ObjectWrap::Unwrap<FontWrapper>(info.This());
 	if(NULL == font) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Could not unwrap 'this' for some reason. (did you not use a Font object?)")));
 	}
-	if(!args[1]->IsObject()) {
+	if(!info[1]->IsObject()) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Invalid arguments: Second argument to renderUnicodeBlended must be an sdl.Color.")));
 	}
 
-	String::Value text(args[0]);
-	ColorWrapper* color = ObjectWrap::Unwrap<ColorWrapper>(Handle<Object>::Cast(args[1]));
+	String::Value text(info[0]);
+	ColorWrapper* color = Nan::ObjectWrap::Unwrap<ColorWrapper>(Handle<Object>::Cast(info[1]));
 	if(NULL == color) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Could not unwrap second argument to renderUnicodeBlended for some reason. (is it not an sdl.Color?)")));
@@ -493,22 +493,22 @@ NAN_METHOD(sdl::TTF::FontWrapper::RenderUnicodeBlended) {
 NAN_METHOD(sdl::TTF::FontWrapper::RenderGlyphBlended) {
 	HandleScope scope;
 
-	FontWrapper* font = ObjectWrap::Unwrap<FontWrapper>(args.This());
+	FontWrapper* font = Nan::ObjectWrap::Unwrap<FontWrapper>(info.This());
 	if(NULL == font) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Could not unwrap 'this' for some reason. (did you not use a Font object?)")));
 	}
-	if(!args[1]->IsObject()) {
+	if(!info[1]->IsObject()) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Invalid arguments: Second argument to renderGlyphBlended must be an sdl.Color.")));
 	}
 
-	String::Value text(args[0]);
+	String::Value text(info[0]);
 	if(0 == text.length()) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Invalid arguments: First argument to renderGlyphBlended must be able to convert to a string of at least length 1.")));
 	}
-	ColorWrapper* color = ObjectWrap::Unwrap<ColorWrapper>(Handle<Object>::Cast(args[1]));
+	ColorWrapper* color = Nan::ObjectWrap::Unwrap<ColorWrapper>(Handle<Object>::Cast(info[1]));
 	if(NULL == color) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Could not unwrap second argument to renderGlyphBlended for some reason. (is it not an sdl.Color?)")));
@@ -528,10 +528,10 @@ NAN_METHOD(sdl::TTF::FontWrapper::RenderGlyphBlended) {
 void sdl::TTF::Initialize(Handle<Object> exports) {
 	Handle<Object> TTF = Nan::New<Object>();
 	Nan::Set(exports, Nan::New<String>("TTF").ToLocalChecked(), TTF));
-	NODE_SET_METHOD(TTF, "init", Init);
-	NODE_SET_METHOD(TTF, "wasInit", WasInit);
-	NODE_SET_METHOD(TTF, "quit", Quit);
-	NODE_SET_METHOD(TTF, "getError", GetError);
+	Nan::SetMethod(TTF, "init", Init);
+	Nan::SetMethod(TTF, "wasInit", WasInit);
+	Nan::SetMethod(TTF, "quit", Quit);
+	Nan::SetMethod(TTF, "getError", GetError);
 
 	FontWrapper::Init(TTF);
 }
@@ -539,7 +539,7 @@ void sdl::TTF::Initialize(Handle<Object> exports) {
 NAN_METHOD(sdl::TTF::Init) {
 	HandleScope scope;
 
-	if (!(args.Length() == 0)) {
+	if (!(info.Length() == 0)) {
 		return ThrowException(Exception::TypeError(Nan::New<String>("Invalid arguments: Expected TTF::Init()")));
 	}
 
@@ -587,12 +587,12 @@ NAN_METHOD(sdl::TTF::GetError) {
 // NAN_METHOD(sdl::TTF::OpenFont) {
 // 	HandleScope scope;
 
-// 	if (!(args.Length() == 2 && args[0]->IsString() && args[1]->IsNumber())) {
+// 	if (!(info.Length() == 2 && info[0]->IsString() && info[1]->IsNumber())) {
 // 		return ThrowException(Exception::TypeError(Nan::New<String>("Invalid arguments: Expected TTF::OpenFont(String, Number)")));
 // 	}
 
-// 	String::Utf8Value file(args[0]);
-// 	int ptsize = (args[1]->Int32Value());
+// 	String::Utf8Value file(info[0]);
+// 	int ptsize = (info[1]->Int32Value());
 
 // 	TTF_Font* font = TTF_OpenFont(*file, ptsize);
 // 	if (font == NULL) {
@@ -609,14 +609,14 @@ NAN_METHOD(sdl::TTF::GetError) {
 // static NAN_METHOD(sdl::TTF::RenderTextBlended) {
 //   HandleScope scope;
 
-//   if (!(args.Length() == 3 && args[0]->IsObject() && args[1]->IsString() && args[2]->IsNumber())) {
+//   if (!(info.Length() == 3 && info[0]->IsObject() && info[1]->IsString() && info[2]->IsNumber())) {
 //     return ThrowException(Exception::TypeError(Nan::New<String>("Invalid arguments: Expected TTF::RenderTextBlended(Font, String, Number)")));
 //   }
 
 //   SDL_PixelFormat* vfmt = SDL_GetVideoInfo()->vfmt;
-//   TTF_Font* font = UnwrapFont(args[0]->ToObject());
-//   String::Utf8Value text(args[1]);
-//   int colorCode = args[2]->Int32Value();
+//   TTF_Font* font = UnwrapFont(info[0]->ToObject());
+//   String::Utf8Value text(info[1]);
+//   int colorCode = info[2]->Int32Value();
 
 //   Uint8 r, g, b;
 //   SDL_GetRGB(colorCode, vfmt, &r, &g, &b);

@@ -8,7 +8,7 @@
 
 
 namespace sdl {
-	class SurfaceWrapper : public node::ObjectWrap {
+	class SurfaceWrapper : public Nan::ObjectWrap {
 	public:
 	    static v8::Persistent<v8::FunctionTemplate> wrap_template_;
 

@@ -14,7 +14,7 @@
 
 #ifdef ENABLE_ARG_CHECKING
 #define CHECK_ARGLEN(function_name, num_args) \
-	if(!args[0]->IsExternal() && args.Length() < num_args) { \
+	if(!info[0]->IsExternal() && info.Length() < num_args) { \
 		std::stringstream ss; \
 		ss << "Invalid arguments: Expected "; \
 		ss << num_args; \
@@ -26,7 +26,7 @@
 	}
 
 #define CHECK_STRING(arg_n) \
-	if(!args[arg_n]->IsString()) { \
+	if(!info[arg_n]->IsString()) { \
 		std::stringstream ss; \
 		ss << "Invalid arguments: Expected argument "; \
 		ss << arg_n; \
@@ -35,7 +35,7 @@
 			v8::Nan::New<String>(ss.str().c_str()))); \
 	}
 #define CHECK_STRING_F(arg_n, function_name) \
-	if(!args[arg_n]->IsString()) { \
+	if(!info[arg_n]->IsString()) { \
 		std::stringstream ss; \
 		ss << "Invalid arguments: Expected argument "; \
 		ss << arg_n; \
@@ -47,7 +47,7 @@
 	}
 
 #define CHECK_NUMBER(arg_n) \
-	if(!args[arg_n]->IsNumber()) { \
+	if(!info[arg_n]->IsNumber()) { \
 		std::stringstream ss; \
 		ss << "Invalid arguments: Expected argument "; \
 		ss << arg_n; \
@@ -56,7 +56,7 @@
 			v8::Nan::New<String>(ss.str().c_str()))); \
 	}
 #define CHECK_NUMBER_F(arg_n, function_name) \
-	if(!args[arg_n]->IsNumber()) { \
+	if(!info[arg_n]->IsNumber()) { \
 		std::stringstream ss; \
 		ss << "Invalid arguments: Expected argument "; \
 		ss << arg_n; \
@@ -68,7 +68,7 @@
 	}
 
 #define CHECK_BOOL(arg_n) \
-	if(!args[arg_n]->IsBoolean()) { \
+	if(!info[arg_n]->IsBoolean()) { \
 		std::stringstream ss; \
 		ss << "Invalid arguments: Expected argument "; \
 		ss << arg_n; \
@@ -77,7 +77,7 @@
 			v8::Nan::New<String>(ss.str().c_str()))); \
 	}
 #define CHECK_BOOL_F(arg_n, function_name) \
-	if(!args[arg_n]->IsBoolean()) { \
+	if(!info[arg_n]->IsBoolean()) { \
 		std::stringstream ss; \
 		ss << "Invalid arguments: Expected argument "; \
 		ss << arg_n; \
@@ -99,7 +99,7 @@
 	}
 
 #define CHECK_CONSTRUCT(class_name) \
-	if(!args.IsConstructCall()) { \
+	if(!info.IsConstructCall()) { \
 		std::stringstream ss; \
 		ss << "Must use the new operator to create instances of class " << S(type); \
 		return v8::ThrowException(v8::Exception::TypeError( \
@@ -107,7 +107,7 @@
 	}
 
 #define CHECK_EXTERNAL(arg_n) \
-  if(!args[0]->IsExternal()) { \
+  if(!info[0]->IsExternal()) { \
     std::stringstream ss; \
     ss << "Invalid arguments: Expected argument "; \
     ss << arg_n; \
@@ -164,22 +164,22 @@
 
 #define EXTRACT_STRING(name, arg_n) \
 	CHECK_STRING(arg_n); \
-	v8::String::Utf8Value name(args[arg_n])
+	v8::String::Utf8Value name(info[arg_n])
 #define EXTRACT_BOOL(name, arg_n) \
 	CHECK_BOOL(arg_n); \
-	bool name = args[arg_n]->BooleanValue()
+	bool name = info[arg_n]->BooleanValue()
 #define EXTRACT_NUMBER(name, arg_n) \
 	CHECK_NUMBER(arg_n); \
-	double name = args[arg_n]->NumberValue()
+	double name = info[arg_n]->NumberValue()
 #define EXTRACT_INT64(name, arg_n) \
 	CHECK_NUMBER(arg_n); \
-	int64_t name = args[arg_n]->IntegerValue()
+	int64_t name = info[arg_n]->IntegerValue()
 #define EXTRACT_INT32(name, arg_n) \
 	CHECK_NUMBER(arg_n); \
-	int name = args[arg_n]->Int32Value()
+	int name = info[arg_n]->Int32Value()
 #define EXTRACT_UINT32(name, arg_n) \
 	CHECK_NUMBER(arg_n); \
-	uint32_t name = args[arg_n]->Uint32Value()
+	uint32_t name = info[arg_n]->Uint32Value()
 
 #ifdef ENABLE_ARG_CHECKING
 #define VALUE_STRING(name) \
@@ -200,7 +200,7 @@
 #define VALUE_UINT32(name) \
 	if(value->IsUint32()) { \
 		uint32_t name = value->Uint32Value();
-#define UNWRAP_THIS_SETTER(type, from, name) type* name = node::ObjectWrap::Unwrap<type>(from.This()); \
+#define UNWRAP_THIS_SETTER(type, from, name) type* name = Nan::ObjectWrap::Unwrap<type>(from.This()); \
 	if(NULL != name) {
 #define END_VALUE } else { \
 	std::cout << "Unable to unwrap value in '" << __func__ << ":" << __LINE__ << "'." << std::endl; \
@@ -222,15 +222,15 @@
 #define VALUE_UINT32(name) \
 	uint32_t name = value->Uint32Value();
 #define UNWRAP_THIS_SETTER(type, from, name) \
-	type* name = node::ObjectWrap::Unwrap<type>(from.This());
+	type* name = Nan::ObjectWrap::Unwrap<type>(from.This());
 #define END_VALUE
 #define UNWRAP_END
 #endif
 
-#define UNWRAP_THIS(type, from, name) type* name = node::ObjectWrap::Unwrap<type>(from.This()); \
+#define UNWRAP_THIS(type, from, name) type* name = Nan::ObjectWrap::Unwrap<type>(from.This()); \
 	CHECK_WRAPPER(name, type)
 
-#define OPEN_OBJECTWRAP(type) class type : public node::ObjectWrap { \
+#define OPEN_OBJECTWRAP(type) class type : public Nan::ObjectWrap { \
 	public: \
 		static v8::Persistent<v8::FunctionTemplate> wrap_template_; \
 		~type(); \
@@ -260,12 +260,12 @@
 
 #define UNWRAP_EXTERNAL(type, name, arg) \
   CHECK_EXTERNAL(arg) \
-  type* name = static_cast<type*>(Handle<External>::Cast(args[arg])->Value())
+  type* name = static_cast<type*>(Handle<External>::Cast(info[arg])->Value())
 #define START_NEW(prefix, type, num_args) NAN_METHOD(prefix::type::New) { \
 	CHECK_CONSTRUCT(S(type)) \
 	HandleScope scope; \
 	CHECK_ARGLEN(S(type), num_args);
-#define END_NEW return args.This(); \
+#define END_NEW return info.This(); \
   }
 
 #define NEW_WRAPPED(pointer, type, ret) \

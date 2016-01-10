@@ -10,7 +10,7 @@
 
 namespace sdl {
 	namespace TTF {
-		class FontWrapper : public node::ObjectWrap {
+		class FontWrapper : public Nan::ObjectWrap {
 		public:
 			static v8::Persistent<v8::FunctionTemplate> wrap_template_;
 

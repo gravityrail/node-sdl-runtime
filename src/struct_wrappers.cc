@@ -100,7 +100,7 @@ namespace sdl {
 			for(int j = 0; j < symbols; j++) {
 				// std::cout << "Creating symbol: " << symbolNames[j] << std::endl;
 				// std::cout << "This symbol " << (setters[j] != 0 ? "has" : "does not have") << " a setter." << std::endl;
-				raw_template->SetAccessor(Nan::New<String>(symbolNames[j].c_str()), getters[j], setters[j] == 0 ? 0 : setters[j]);
+				Nan::SetAccessor(raw_template, Nan::New<String>(symbolNames[j].c_str()), getters[j], setters[j] == 0 ? 0 : setters[j]);
 			}
 
 			// std::cout << "Directly setting the ObjectTemplate with the template that has the accessors." << std::endl;
@@ -108,7 +108,7 @@ namespace sdl {
 
 			if(allConstructors[i] != 0) {
 				// std::cout << "Creating constructor with name: " << constructorNames[i] << "." << std::endl;
-				NODE_SET_METHOD(exports, constructorNames[i].c_str(), allConstructors[i]);
+				Nan::SetMethod(exports, constructorNames[i].c_str(), allConstructors[i]);
 			}
 			// std::cout << std::endl;
 		}
@@ -138,53 +138,53 @@ namespace sdl {
 		point_wrap_template_->SetClassName(Nan::New<String>("PointWrapper"));
 
 		Local<ObjectTemplate> proto = point_wrap_template_->PrototypeTemplate();
-		proto->SetAccessor(Nan::New<String>("x"), GetX, SetX);
-		proto->SetAccessor(Nan::New<String>("y"), GetY, SetY);
-		NODE_SET_PROTOTYPE_METHOD(point_wrap_template_, "toString", ToString);
+		Nan::SetAccessor(proto, Nan::New<String>("x"), GetX, SetX);
+		Nan::SetAccessor(proto, Nan::New<String>("y"), GetY, SetY);
+		Nan::SetPrototypeMethod(point_wrap_template_, "toString", ToString);
 
 		Nan::Set(exports, Nan::New<String>("Point"), point_wrap_template_->GetFunction());
 	}
 	NAN_METHOD(sdl::PointWrapper::New) {
-		if(!args.IsConstructCall()) {
+		if(!info.IsConstructCall()) {
 			return ThrowException(Exception::TypeError(
 				Nan::New<String>("Use the new operator to create instances of a Point.")));
 		}
 
 		HandleScope scope;
 
-		int x = args[0]->IsUndefined() ? 0 : args[0]->Int32Value();
-		int y = args[0]->IsUndefined() ? 0 : args[1]->Int32Value();
+		int x = info[0]->IsUndefined() ? 0 : info[0]->Int32Value();
+		int y = info[0]->IsUndefined() ? 0 : info[1]->Int32Value();
 		PointWrapper* obj = new PointWrapper();
 		obj->point_ = new SDL_Point;
 		obj->point_->x = x;
 		obj->point_->y = y;
-		obj->Wrap(args.This());
-		return args.This();
+		obj->Wrap(info.This());
+		return info.This();
 	}
 
 	Handle<Value> sdl::PointWrapper::GetX(Local<String> name, const AccessorInfo& info) {
 		HandleScope scope;
 
-		PointWrapper* obj = ObjectWrap::Unwrap<PointWrapper>(info.This());
+		PointWrapper* obj = Nan::ObjectWrap::Unwrap<PointWrapper>(info.This());
 		return scope.Close(Nan::New<Number>(obj->point_->x));
 	}
 	Handle<Value> sdl::PointWrapper::GetY(Local<String> name, const AccessorInfo& info) {
 		HandleScope scope;
 
-		PointWrapper* obj = ObjectWrap::Unwrap<PointWrapper>(info.This());
+		PointWrapper* obj = Nan::ObjectWrap::Unwrap<PointWrapper>(info.This());
 		return scope.Close(Nan::New<Number>(obj->point_->y));
 	}
 	void sdl::PointWrapper::SetX(Local<String> name, Local<Value> value, const AccessorInfo& info) {
 		HandleScope scope;
 
-		PointWrapper* obj = ObjectWrap::Unwrap<PointWrapper>(info.This());
+		PointWrapper* obj = Nan::ObjectWrap::Unwrap<PointWrapper>(info.This());
 		int x = value->Int32Value();
 		obj->point_->x = x;
 	}
 	void sdl::PointWrapper::SetY(Local<String> name, Local<Value> value, const AccessorInfo& info) {
 		HandleScope scope;
 
-		PointWrapper* obj = ObjectWrap::Unwrap<PointWrapper>(info.This());
+		PointWrapper* obj = Nan::ObjectWrap::Unwrap<PointWrapper>(info.This());
 		int y = value->Int32Value();
 		obj->point_->y = y;
 	}
@@ -192,9 +192,9 @@ namespace sdl {
 	NAN_METHOD(sdl::PointWrapper::ToString) {
 		HandleScope scope;
 
-		// PointWrapper* obj = ObjectWrap::Unwrap<PointWrapper>(args.This());
-		int x = args.This()->Get(Nan::New<String>("x"))->Int32Value();
-		int y = args.This()->Get(Nan::New<String>("y"))->Int32Value();
+		// PointWrapper* obj = Nan::ObjectWrap::Unwrap<PointWrapper>(info.This());
+		int x = info.This()->Get(Nan::New<String>("x"))->Int32Value();
+		int y = info.This()->Get(Nan::New<String>("y"))->Int32Value();
 		std::stringstream ss;
 		ss << "{x: " << x << ", y:" << y << "}";
 		return scope.Close(Nan::New<String>(ss.str().c_str()));
@@ -205,15 +205,15 @@ namespace sdl {
 	NAN_METHOD(ConstructColor) {
 		HandleScope scope;
 
-		if(args.Length() < 1) {
+		if(info.Length() < 1) {
 			return ThrowException(Exception::TypeError(Nan::New<String>("Invalid call. Excpected: ConstructRect(x, y, width, height)")));
 		}
 
 		SDL_Color *color = new SDL_Color;
-		color->r = args[0]->Int32Value();
-		color->g = args[1]->Int32Value();
-		color->b = args[2]->Int32Value();
-		color->a = args[3]->Int32Value();
+		color->r = info[0]->Int32Value();
+		color->g = info[1]->Int32Value();
+		color->b = info[2]->Int32Value();
+		color->a = info[3]->Int32Value();
 
 		return scope.Close(WrapColor(color));
 	}
@@ -295,11 +295,11 @@ namespace sdl {
 	NAN_METHOD(ConstructPalette) {
 		HandleScope scope;
 
-		if(args.Length() < 1) {
+		if(info.Length() < 1) {
 			return ThrowException(Exception::TypeError(Nan::New<String>("Invalid call. Excpected: ConstructPalette(Array)")));
 		}
 
-		Handle<Array> colors = Handle<Array>::Cast(args[0]);
+		Handle<Array> colors = Handle<Array>::Cast(info[0]);
 		int length = colors->Length();
 		SDL_Palette* palette = new SDL_Palette;
 		palette->ncolors = length;
@@ -365,10 +365,10 @@ namespace sdl {
 		Handle<ObjectTemplate> result = ObjectTemplate::New();
 		result->SetInternalFieldCount(1);
 
-		result->SetAccessor(Nan::New<String>("format"), GetDisplayModeFormat);
-		result->SetAccessor(Nan::New<String>("w"), GetDisplayModeWidth);
-		result->SetAccessor(Nan::New<String>("h"), GetDisplayModeHeight);
-		result->SetAccessor(Nan::New<String>("refreshRate"), GetDisplayModeRefreshRate);
+		Nan::SetAccessor(result, Nan::New<String>("format"), GetDisplayModeFormat);
+		Nan::SetAccessor(result, Nan::New<String>("w"), GetDisplayModeWidth);
+		Nan::SetAccessor(result, Nan::New<String>("h"), GetDisplayModeHeight);
+		Nan::SetAccessor(result, Nan::New<String>("refreshRate"), GetDisplayModeRefreshRate);
 
 		return scope.Close(result);
 	}

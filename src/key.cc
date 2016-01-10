@@ -518,37 +518,37 @@ void sdl::key::Init(Handle<Object> exports) {
 	Nan::Set(KMOD, Nan::New<String>("ALT"), Nan::New<Number>(KMOD_ALT));
 	Nan::Set(KMOD, Nan::New<String>("GUI"), Nan::New<Number>(KMOD_GUI));
 
-	NODE_SET_METHOD(exports, "getKeyFromName", GetKeyFromName);
-	NODE_SET_METHOD(exports, "getKeyFromScancode", GetKeyFromScancode);
-	NODE_SET_METHOD(exports, "getKeyName", GetKeyName);
+	Nan::SetMethod(exports, "getKeyFromName", GetKeyFromName);
+	Nan::SetMethod(exports, "getKeyFromScancode", GetKeyFromScancode);
+	Nan::SetMethod(exports, "getKeyName", GetKeyName);
 
-	NODE_SET_METHOD(exports, "getScancodeFromKey", GetScancodeFromKey);
-	NODE_SET_METHOD(exports, "getScancodeFromName", GetScancodeFromName);
-	NODE_SET_METHOD(exports, "getScancodeName", GetScancodeName);
+	Nan::SetMethod(exports, "getScancodeFromKey", GetScancodeFromKey);
+	Nan::SetMethod(exports, "getScancodeFromName", GetScancodeFromName);
+	Nan::SetMethod(exports, "getScancodeName", GetScancodeName);
 
-	NODE_SET_METHOD(exports, "hasScreenKeyboardSupport", HasScreenKeyboardSupport);
-	NODE_SET_METHOD(exports, "isScreenKeyboardShown", IsScreenKeyboardShown);
+	Nan::SetMethod(exports, "hasScreenKeyboardSupport", HasScreenKeyboardSupport);
+	Nan::SetMethod(exports, "isScreenKeyboardShown", IsScreenKeyboardShown);
 
-	NODE_SET_METHOD(exports, "getKeyboardFocus", GetKeyboardFocus);
-	NODE_SET_METHOD(exports, "getKeyboardState", GetKeyboardState);
-	NODE_SET_METHOD(exports, "getModState", GetModState);
-	NODE_SET_METHOD(exports, "setModState", SetModState);
+	Nan::SetMethod(exports, "getKeyboardFocus", GetKeyboardFocus);
+	Nan::SetMethod(exports, "getKeyboardState", GetKeyboardState);
+	Nan::SetMethod(exports, "getModState", GetModState);
+	Nan::SetMethod(exports, "setModState", SetModState);
 
-	NODE_SET_METHOD(exports, "isTextInputActive", IsTextInputActive);
-	NODE_SET_METHOD(exports, "setTextInputRect", SetTextInputRect);
-	NODE_SET_METHOD(exports, "startTextInput", StartTextInput);
-	NODE_SET_METHOD(exports, "stopTextInput", StopTextInput);
+	Nan::SetMethod(exports, "isTextInputActive", IsTextInputActive);
+	Nan::SetMethod(exports, "setTextInputRect", SetTextInputRect);
+	Nan::SetMethod(exports, "startTextInput", StartTextInput);
+	Nan::SetMethod(exports, "stopTextInput", StopTextInput);
 }
 
 // NAN_METHOD(sdl::GetKeyFromName) {
 // 	HandleScope scope;
 
-// 	if(args.Length() < 1) {
+// 	if(info.Length() < 1) {
 // 		return ThrowException(Exception::TypeError(
 // 			Nan::New<String>("Invalid arguments: Expected GetKeyFromName(String)")));
 // 	}
 
-// 	String::Utf8Value name(args[0]);
+// 	String::Utf8Value name(info[0]);
 // 	SDL_Keycode code = SDL_GetKeyFromName(*name);
 
 // 	return scope.Close(Nan::New<Number>(code));
@@ -561,12 +561,12 @@ FUNCTION_END(Nan::New<Number>(code))
 // NAN_METHOD(sdl::GetKeyFromScancode) {
 // 	HandleScope scope;
 
-// 	if(args.Length() < 1) {
+// 	if(info.Length() < 1) {
 // 		return ThrowException(Exception::TypeError(
 // 			Nan::New<String>("Invalid arguments: Expected GetKeyFromScancode(Number)")));
 // 	}
 
-// 	SDL_Scancode scan = static_cast<SDL_Scancode>(args[0]->Int32Value());
+// 	SDL_Scancode scan = static_cast<SDL_Scancode>(info[0]->Int32Value());
 // 	SDL_Keycode key = SDL_GetKeyFromScancode(scan);
 
 // 	return scope.Close(Nan::New<Number>(key));
@@ -579,12 +579,12 @@ FUNCTION_END(Nan::New<Number>(key))
 NAN_METHOD(sdl::GetKeyName) {
 	HandleScope scope;
 
-	if(args.Length() < 1) {
+	if(info.Length() < 1) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Invalid arguments: Expected GetKeyName(Number)")));
 	}
 
-	SDL_Keycode key = static_cast<SDL_Keycode>(args[0]->Int32Value());
+	SDL_Keycode key = static_cast<SDL_Keycode>(info[0]->Int32Value());
 	const char *name = SDL_GetKeyName(key);
 
 	return scope.Close(Nan::New<String>(name));
@@ -593,12 +593,12 @@ NAN_METHOD(sdl::GetKeyName) {
 NAN_METHOD(sdl::GetScancodeFromKey) {
 	HandleScope scope;
 
-	if(args.Length() < 1) {
+	if(info.Length() < 1) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Invalid arguments: Expected GetScancodeFromKey(Number)")));
 	}
 
-	SDL_Keycode key = static_cast<SDL_Keycode>(args[0]->Int32Value());
+	SDL_Keycode key = static_cast<SDL_Keycode>(info[0]->Int32Value());
 	SDL_Scancode scan = SDL_GetScancodeFromKey(key);
 
 	return scope.Close(Nan::New<Number>(scan));
@@ -606,12 +606,12 @@ NAN_METHOD(sdl::GetScancodeFromKey) {
 NAN_METHOD(sdl::GetScancodeFromName) {
 	HandleScope scope;
 
-	if(args.Length() < 1) {
+	if(info.Length() < 1) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Invalid arguments: Expected GetScancodeFromName(String)")));
 	}
 
-	String::Utf8Value name(args[0]);
+	String::Utf8Value name(info[0]);
 	SDL_Scancode scan = SDL_GetScancodeFromName(*name);
 
 	return scope.Close(Nan::New<Number>(scan));
@@ -619,12 +619,12 @@ NAN_METHOD(sdl::GetScancodeFromName) {
 NAN_METHOD(sdl::GetScancodeName) {
 	HandleScope scope;
 
-	if(args.Length() < 1) {
+	if(info.Length() < 1) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Invalid arguments: Expected GetScancodeName(Number)")));
 	}
 
-	SDL_Scancode scan = static_cast<SDL_Scancode>(args[0]->Int32Value());
+	SDL_Scancode scan = static_cast<SDL_Scancode>(info[0]->Int32Value());
 	const char *name = SDL_GetScancodeName(scan);
 
 	return scope.Close(Nan::New<String>(name));
@@ -640,12 +640,12 @@ NAN_METHOD(sdl::HasScreenKeyboardSupport) {
 NAN_METHOD(sdl::IsScreenKeyboardShown) {
 	HandleScope scope;
 
-	if(args.Length() < 1) {
+	if(info.Length() < 1) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Invalid arguments: Expected IsScreenKeyboardShown(Window)")));
 	}
 
-	WindowWrapper* wrap = ObjectWrap::Unwrap<WindowWrapper>(Handle<Object>::Cast(args[0]));
+	WindowWrapper* wrap = Nan::ObjectWrap::Unwrap<WindowWrapper>(Handle<Object>::Cast(info[0]));
 	SDL_bool ret = SDL_IsScreenKeyboardShown(wrap->window_);
 
 	return scope.Close(Nan::New<Boolean>(ret ? true : false));
@@ -690,12 +690,12 @@ NAN_METHOD(sdl::GetModState) {
 NAN_METHOD(sdl::SetModState) {
 	HandleScope scope;
 
-	if(args.Length() < 1) {
+	if(info.Length() < 1) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Invalid arguments: Expected SetModState(Number)")));
 	}
 
-	SDL_Keymod mod = static_cast<SDL_Keymod>(args[0]->Int32Value());
+	SDL_Keymod mod = static_cast<SDL_Keymod>(info[0]->Int32Value());
 	SDL_SetModState(mod);
 
 	return Undefined();
@@ -711,12 +711,12 @@ NAN_METHOD(sdl::IsTextInputActive) {
 NAN_METHOD(sdl::SetTextInputRect) {
 	HandleScope scope;
 
-	if(args.Length() < 1) {
+	if(info.Length() < 1) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Invalid arguments: Expected SetTextInputRect(Rect)")));
 	}
 
-	RectWrapper* rect = ObjectWrap::Unwrap<RectWrapper>(Handle<Object>::Cast(args[0]));
+	RectWrapper* rect = Nan::ObjectWrap::Unwrap<RectWrapper>(Handle<Object>::Cast(info[0]));
 	SDL_SetTextInputRect(rect->wrapped);
 
 	return Undefined();

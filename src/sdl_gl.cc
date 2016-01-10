@@ -12,23 +12,23 @@ void sdl::gl::Init(Handle<Object> exports) {
 	Nan::Set(exports, Nan::New<String>("GL").ToLocalChecked(), GL));
 	ContextWrapper::Init(GL);
 
-	NODE_SET_METHOD(GL, "bindTexture", BindTexture);
-	NODE_SET_METHOD(GL, "unbindTexture", UnbindTexture);
+	Nan::SetMethod(GL, "bindTexture", BindTexture);
+	Nan::SetMethod(GL, "unbindTexture", UnbindTexture);
 
-	NODE_SET_METHOD(GL, "extensionSupported", ExtensionSupported);
+	Nan::SetMethod(GL, "extensionSupported", ExtensionSupported);
 
-	NODE_SET_METHOD(GL, "loadLibrary", LoadLibrary);
-	NODE_SET_METHOD(GL, "unloadLibrary", UnloadLibrary);
+	Nan::SetMethod(GL, "loadLibrary", LoadLibrary);
+	Nan::SetMethod(GL, "unloadLibrary", UnloadLibrary);
 
-	NODE_SET_METHOD(GL, "setAttribute", SetAttribute);
-	NODE_SET_METHOD(GL, "makeCurrent", MakeCurrent);
-	NODE_SET_METHOD(GL, "setSwapInterval", SetSwapInterval);
+	Nan::SetMethod(GL, "setAttribute", SetAttribute);
+	Nan::SetMethod(GL, "makeCurrent", MakeCurrent);
+	Nan::SetMethod(GL, "setSwapInterval", SetSwapInterval);
 
-	NODE_SET_METHOD(GL, "getAttribute", GetAttribute);
-	NODE_SET_METHOD(GL, "getCurrentContext", GetCurrentContext);
-	NODE_SET_METHOD(GL, "getCurrentWindow", GetCurrentWindow);
-	NODE_SET_METHOD(GL, "getDrawableSize", GetDrawableSize);
-	NODE_SET_METHOD(GL, "getSwapInterval", GetSwapInterval);
+	Nan::SetMethod(GL, "getAttribute", GetAttribute);
+	Nan::SetMethod(GL, "getCurrentContext", GetCurrentContext);
+	Nan::SetMethod(GL, "getCurrentWindow", GetCurrentWindow);
+	Nan::SetMethod(GL, "getDrawableSize", GetDrawableSize);
+	Nan::SetMethod(GL, "getSwapInterval", GetSwapInterval);
 
 	// SDL_GLattr enum.
 	Nan::Set(GL, Nan::New<String>("RED_SIZE").ToLocalChecked(), Nan::New<Number>(SDL_GL_RED_SIZE)));
@@ -66,7 +66,7 @@ void sdl::gl::Init(Handle<Object> exports) {
 	Nan::Set(GL, Nan::New<String>("CONTEXT_RESET_ISOLATION_FLAG").ToLocalChecked(), Nan::New<Number>(SDL_GL_CONTEXT_RESET_ISOLATION_FLAG)));
 }
 
-Persistent<FunctionTemplate> sdl::gl::ContextWrapper::wrap_template_;
+Nan::Persistent<FunctionTemplate> sdl::gl::ContextWrapper::wrap_template_;
 
 sdl::gl::ContextWrapper::ContextWrapper() {
 }
@@ -90,12 +90,12 @@ void sdl::gl::ContextWrapper::Init(Handle<Object> exports) {
 NAN_METHOD(sdl::gl::ContextWrapper::New) {
 	HandleScope scope;
 
-	if(args.Length() < 1) {
+	if(info.Length() < 1) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Invalid arguments: Expected new sdl.ContextWrapper(Window)")));
 	}
 
-	WindowWrapper* window = ObjectWrap::Unwrap<WindowWrapper>(Handle<Object>::Cast(args[0]));
+	WindowWrapper* window = Nan::ObjectWrap::Unwrap<WindowWrapper>(Handle<Object>::Cast(info[0]));
 	SDL_GLContext context = SDL_GL_CreateContext(window->window_);
 	if(NULL == context) {
 		return ThrowSDLException(__func__);
@@ -103,24 +103,24 @@ NAN_METHOD(sdl::gl::ContextWrapper::New) {
 
 	ContextWrapper* obj = new ContextWrapper();
 	obj->context_ = context;
-	obj->Wrap(args.This());
-	return args.This();
+	obj->Wrap(info.This());
+	return info.This();
 }
 
 NAN_METHOD(sdl::gl::BindTexture) {
-	if(!args.IsConstructCall()) {
+	if(!info.IsConstructCall()) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Must create a Context with the new operator.")));
 	}
 
 	HandleScope scope;
 
-	if(args.Length() < 1) {
+	if(info.Length() < 1) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Invalid arguments: Expected BindTexture(Texture)")));
 	}
 
-	TextureWrapper* obj = ObjectWrap::Unwrap<TextureWrapper>(Handle<Object>::Cast(args[0]));
+	TextureWrapper* obj = Nan::ObjectWrap::Unwrap<TextureWrapper>(Handle<Object>::Cast(info[0]));
 	float texw, texh;
 	int err = SDL_GL_BindTexture(obj->texture_, &texw, &texh);
 	if(err < 0) {
@@ -135,12 +135,12 @@ NAN_METHOD(sdl::gl::BindTexture) {
 NAN_METHOD(sdl::gl::UnbindTexture) {
 	HandleScope scope;
 
-	if(args.Length() < 1) {
+	if(info.Length() < 1) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Invalid arguments: Expected BindTexture(Texture)")));
 	}
 
-	TextureWrapper* obj = ObjectWrap::Unwrap<TextureWrapper>(Handle<Object>::Cast(args[0]));
+	TextureWrapper* obj = Nan::ObjectWrap::Unwrap<TextureWrapper>(Handle<Object>::Cast(info[0]));
 	int err = SDL_GL_UnbindTexture(obj->texture_);
 	if(err < 0) {
 		return ThrowSDLException(__func__);
@@ -152,12 +152,12 @@ NAN_METHOD(sdl::gl::UnbindTexture) {
 NAN_METHOD(sdl::gl::ExtensionSupported) {
 	HandleScope scope;
 
-	if(args.Length() < 1) {
+	if(info.Length() < 1) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Invalid arguments: Expected ExtensionSupported(String)")));
 	}
 
-	String::Utf8Value name(args[0]);
+	String::Utf8Value name(info[0]);
 	SDL_bool ret = SDL_GL_ExtensionSupported(*name);
 	return scope.Close(Nan::New<Boolean>(ret ? true : false));
 }
@@ -166,11 +166,11 @@ NAN_METHOD(sdl::gl::LoadLibrary) {
 	HandleScope scope;
 
 	int err;
-	if(args[0]->IsUndefined()) {
+	if(info[0]->IsUndefined()) {
 		err = SDL_GL_LoadLibrary(NULL);
 	}
 	else {
-		String::Utf8Value name(args[0]);
+		String::Utf8Value name(info[0]);
 		err = SDL_GL_LoadLibrary(*name);
 	}
 	if(err < 0) {
@@ -190,12 +190,12 @@ NAN_METHOD(sdl::gl::UnloadLibrary) {
 NAN_METHOD(sdl::gl::SetAttribute) {
 	HandleScope scope;
 
-	if (!(args.Length() == 2 && args[0]->IsNumber() && args[1]->IsNumber())) {
+	if (!(info.Length() == 2 && info[0]->IsNumber() && info[1]->IsNumber())) {
 		return ThrowException(Exception::TypeError(Nan::New<String>("Invalid arguments: Expected SetAttribute(Number, Number)")));
 	}
 
-	int attr = args[0]->Int32Value();
-	int value = args[1]->Int32Value();
+	int attr = info[0]->Int32Value();
+	int value = info[1]->Int32Value();
 
 	if (SDL_GL_SetAttribute((SDL_GLattr)attr, value)) return ThrowSDLException(__func__);
 	return Undefined();
@@ -203,13 +203,13 @@ NAN_METHOD(sdl::gl::SetAttribute) {
 NAN_METHOD(sdl::gl::MakeCurrent) {
 	HandleScope scope;
 
-	if(args.Length() < 2) {
+	if(info.Length() < 2) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Invalid arguments: Expected MakeCurrent(Window, GLContext)")));
 	}
 
-	WindowWrapper* window = ObjectWrap::Unwrap<WindowWrapper>(Handle<Object>::Cast(args[0]));
-	ContextWrapper* context = ObjectWrap::Unwrap<ContextWrapper>(Handle<Object>::Cast(args[1]));
+	WindowWrapper* window = Nan::ObjectWrap::Unwrap<WindowWrapper>(Handle<Object>::Cast(info[0]));
+	ContextWrapper* context = Nan::ObjectWrap::Unwrap<ContextWrapper>(Handle<Object>::Cast(info[1]));
 	int err = SDL_GL_MakeCurrent(window->window_, context->context_);
 	if(err < 0) {
 		return ThrowSDLException(__func__);
@@ -220,12 +220,12 @@ NAN_METHOD(sdl::gl::MakeCurrent) {
 NAN_METHOD(sdl::gl::SetSwapInterval) {
 	HandleScope scope;
 
-	if(args.Length() < 1) {
+	if(info.Length() < 1) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Invalid arguments: Exception SetSwapInterval(Number)")));
 	}
 
-	int interval = args[0]->Int32Value();
+	int interval = info[0]->Int32Value();
 	int err = SDL_GL_SetSwapInterval(interval);
 	if(err < 0) {
 		return ThrowSDLException(__func__);
@@ -237,11 +237,11 @@ NAN_METHOD(sdl::gl::SetSwapInterval) {
 NAN_METHOD(sdl::gl::GetAttribute) {
 	HandleScope scope;
 
-	if (!(args.Length() == 1 && args[0]->IsNumber())) {
+	if (!(info.Length() == 1 && info[0]->IsNumber())) {
 		return ThrowException(Exception::TypeError(Nan::New<String>("Invalid arguments: Expected GetAttribute(Number)")));
 	}
 
-	int attr = args[0]->Int32Value();
+	int attr = info[0]->Int32Value();
 	int value;
 
 	if (SDL_GL_GetAttribute((SDL_GLattr)attr, &value)) return ThrowSDLException(__func__);
@@ -278,12 +278,12 @@ NAN_METHOD(sdl::gl::GetCurrentWindow) {
 NAN_METHOD(sdl::gl::GetDrawableSize) {
 	HandleScope scope;
 
-	if(args.Length() < 1) {
+	if(info.Length() < 1) {
 		return ThrowException(Exception::TypeError(
 			Nan::New<String>("Invalid arguments: Expected GetDrawableSize(Window)")));
 	}
 
-	WindowWrapper* wrap = ObjectWrap::Unwrap<WindowWrapper>(Handle<Object>::Cast(args[0]));
+	WindowWrapper* wrap = Nan::ObjectWrap::Unwrap<WindowWrapper>(Handle<Object>::Cast(info[0]));
 	int w, h;
 	SDL_GL_GetDrawableSize(wrap->window_, &w, &h);
 

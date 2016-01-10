@@ -22,7 +22,7 @@ namespace sdl {
 
 	///////////////////////////////////////////////////////////////////////////////
 	// SDL_Point Wrapper/Unwrapper.
-	class PointWrapper : public node::ObjectWrap {
+	class PointWrapper : public Nan::ObjectWrap {
 	public:
 	    static v8::Persistent<v8::FunctionTemplate> point_wrap_template_;
 

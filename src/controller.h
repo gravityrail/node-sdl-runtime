@@ -11,7 +11,7 @@ namespace sdl {
 	namespace controller {
 		void Init(v8::Handle<v8::Object> exports);
 
-		class GameControllerWrapper : public node::ObjectWrap {
+		class GameControllerWrapper : public Nan::ObjectWrap {
 		public:
 			static v8::Persistent<v8::FunctionTemplate> wrap_template_;
 

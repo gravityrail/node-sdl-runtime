@@ -7,7 +7,7 @@
 #include "SDL.h"
 
 namespace sdl {
-	class WindowWrapper : public node::ObjectWrap {
+	class WindowWrapper : public Nan::ObjectWrap {
 	public:
 		WindowWrapper();
 		WindowWrapper(v8::Handle<v8::Object> obj);
